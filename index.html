@@ -1,0 +1,3235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maximilien Tragarz</title>
+<meta name="description" content="Engineering physics student in Monterrey. Scientific computing and mathematics, homelabs and research.">
+<link rel="canonical" href="https://bladedgoose13.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maximilien Tragarz">
+<meta property="og:description" content="Scientific computing and mathematics, from Monterrey.">
+<meta property="og:url" content="https://bladedgoose13.github.io/">
+<meta property="og:image" content="https://bladedgoose13.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cpath fill='%23c9a476' d='M4 0h1v1H4zM2 1h2v1H2zM5 1h2v1H5zM0 2h2v1H0zM7 2h2v1H7zM0 3h1v3H0zM8 3h1v3H8zM0 6h2v1H0zM7 6h2v1H7zM2 7h2v1H2zM5 7h2v1H5zM4 8h1v1H4z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap">
+<!-- Loaded on its own line so the rest of the type still loads if this one ever fails. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Pixel&display=swap">
+<style>
+  /* Mockup 10. Same palette and format as mockup 9, wider, with a longer desk:
+     a bookcase with the NAS on the left and the coffee minibar on the right. */
+  :root {
+    color-scheme: dark;
+    --bg: #15100c;        /* sumi coffee */
+    --panel: #1c1510;     /* walnut */
+    --panel-2: #241b14;
+    --hair: rgba(239, 228, 210, .09);
+    --hair-2: rgba(239, 228, 210, .17);
+    --cross: rgba(239, 228, 210, .36);
+    --ink: #efe4d2;       /* washi */
+    --muted: #b5a48e;     /* hojicha latte */
+    --amber: #d99a52;     /* the lamp */
+    --amber-hi: #e9b06a;
+    --hinoki: #c9a476;    /* light wood */
+    --matcha: #9aae6b;
+    --ai: #8094bd;        /* indigo */
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --pixel: "Geist Pixel", "Geist Mono", ui-monospace, monospace;
+    --width: 72rem;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--amber-hi); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: .2em; }
+  :focus-visible { outline: 2px solid var(--amber-hi); outline-offset: 2px; border-radius: 4px; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--hair);
+    background: rgba(21, 16, 12, .74);
+    -webkit-backdrop-filter: saturate(130%) blur(10px);
+    backdrop-filter: saturate(130%) blur(10px);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: var(--width);
+    height: 3.5rem;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  .logo { display: inline-flex; align-items: center; gap: .6rem; color: var(--ink); font-family: var(--pixel); font-size: 1.05rem; }
+  .logo:hover { text-decoration: none; }
+  .logo svg { width: 18px; height: 18px; }
+  .links { display: flex; gap: 1.4rem; margin-left: auto; font-size: .92rem; }
+  .links a { color: var(--muted); }
+  .links a:hover { color: var(--ink); text-decoration: none; }
+
+  .menu { position: relative; display: none; margin-left: auto; }
+  .menu summary {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 8px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary svg { width: 16px; height: 16px; stroke: var(--ink); fill: none; stroke-width: 1.6; stroke-linecap: round; }
+  .menu nav {
+    position: absolute;
+    top: calc(100% + .5rem);
+    right: 0;
+    display: grid;
+    min-width: 11rem;
+    padding: .35rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 10px;
+    background: var(--panel);
+  }
+  .menu nav a { padding: .45rem .7rem; border-radius: 6px; color: var(--ink); font-size: .92rem; }
+  .menu nav a:hover { background: var(--panel-2); text-decoration: none; }
+
+  /* ---------- The grid: a column between two guides, cells with crosshairs ---------- */
+  .column {
+    max-width: var(--width);
+    margin: 0 auto;
+    border-right: 1px solid var(--hair);
+    border-left: 1px solid var(--hair);
+  }
+
+  .cell { position: relative; padding: 2.5rem 2.5rem; border-top: 1px solid var(--hair); }
+  .cell:first-child { border-top: 0; }
+  .cell::before,
+  .cell::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    width: 9px;
+    height: 9px;
+    background:
+      linear-gradient(var(--cross), var(--cross)) center / 1px 100% no-repeat,
+      linear-gradient(var(--cross), var(--cross)) center / 100% 1px no-repeat;
+    pointer-events: none;
+  }
+  .cell::before { left: -5px; }
+  .cell::after { right: -5px; }
+  .cell:first-child::before,
+  .cell:first-child::after { display: none; }
+
+  /* ---------- The desk ---------- */
+  .hero { margin: 0; padding: 0; }
+  .scene { position: relative; overflow: hidden; }
+  .scene canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 224 / 90;
+    background: var(--bg);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  .scene-tip {
+    position: absolute;
+    bottom: .75rem;
+    left: .75rem;
+    padding: .2rem .55rem;
+    border: 1px solid rgba(239, 228, 210, .22);
+    border-radius: 6px;
+    background: rgba(21, 16, 12, .85);
+    color: var(--ink);
+    font-family: var(--pixel);
+    font-size: .8rem;
+    max-width: calc(100% - 1.5rem);
+    opacity: 0;
+    transition: opacity .15s ease;
+    pointer-events: none;
+  }
+  .scene-tip.show { opacity: 1; }
+
+  .hero-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6rem 1rem;
+    padding: .65rem 1rem;
+    border-top: 1px solid var(--hair);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: .76rem;
+  }
+  .bar-left { display: flex; flex-wrap: wrap; gap: .3rem 1.25rem; }
+  .secrets.done { color: var(--amber-hi); }
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  #scene:focus-visible { outline: 2px solid var(--amber-hi); outline-offset: -2px; }
+  .xp-link { display: inline-block; margin-top: .9rem; font-size: .9rem; font-weight: 500; }
+  .repo-row { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+  dialog.note { max-width: min(34rem, calc(100vw - 2rem)); border: 0; background: #efe4d2; color: #2a2018; transform: rotate(-.6deg); }
+  .note-title { margin: 0 0 .6rem; color: #6b4a35; font-family: var(--mono); font-size: .8rem; }
+  .note-body { max-height: 60vh; margin: 0 0 1rem; overflow: auto; color: #2a2018; font-family: var(--mono); font-size: .74rem; line-height: 1.45; white-space: pre; }
+  .btn-note { height: 2.1rem; padding: 0 1rem; border: 1px solid rgba(42, 32, 24, .35); border-radius: 8px; background: transparent; color: #2a2018; font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; }
+  .btn-note:hover { background: rgba(42, 32, 24, .06); }
+  .reset-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(181, 164, 142, .4);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .reset-btn:hover { color: var(--ink); text-decoration-color: currentColor; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem; }
+
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .2rem .1rem;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    cursor: pointer;
+  }
+  .switch:hover { color: var(--ink); }
+  .track {
+    position: relative;
+    width: 28px;
+    height: 16px;
+    border-radius: 999px;
+    background: rgba(239, 228, 210, .16);
+    transition: background-color .2s ease;
+  }
+  .knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ink);
+    transition: transform .2s ease;
+  }
+  .switch[aria-pressed="true"] .track { background: var(--amber); }
+  .switch[aria-pressed="true"] .knob { transform: translateX(12px); }
+
+  .chip-btn {
+    height: 1.65rem;
+    padding: 0 .6rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+  .chip-btn:hover { border-color: rgba(201, 164, 118, .55); }
+
+  /* ---------- Greeting and name card ---------- */
+  .cell .greeting {
+    max-width: 46rem;
+    margin: 0 auto 2.25rem;
+    padding: .85rem 1rem;
+    border: 1px solid rgba(201, 164, 118, .26);
+    border-radius: 10px;
+    background: rgba(201, 164, 118, .07);
+    font-family: var(--pixel);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .namecard { display: flex; align-items: center; gap: 1.25rem; }
+  .coaster {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 14px;
+    background: var(--panel-2);
+    box-shadow: inset 0 1px 0 rgba(239, 228, 210, .06);
+  }
+  .coaster svg { width: 4rem; height: 4rem; }
+  .namecard h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.035em; }
+  .namecard .role { margin: .3rem 0 0; color: var(--muted); }
+
+  /* ---------- Sections ---------- */
+  .cell h2 {
+    display: inline-block;
+    margin: 0 0 1.35rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-decoration: underline;
+    text-decoration-color: rgba(201, 164, 118, .55);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 7px;
+  }
+  .cell p { max-width: 68ch; margin: 0 0 1rem; }
+
+  /* Areas of interest */
+  .areas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 2.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .areas li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 0 .95rem; align-items: start; }
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 10px;
+    background: var(--panel-2);
+  }
+  .tile svg { width: 2.2rem; height: 2.2rem; }
+  .areas h3 { margin: .15rem 0 .3rem; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+  .areas p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+  /* Timeline: one line per step, details on demand */
+  .timeline { margin: 0; padding: 0; list-style: none; }
+  .timeline > li { position: relative; padding-left: 1.75rem; }
+  .timeline > li::before {
+    content: "";
+    position: absolute;
+    top: 1.425rem;
+    bottom: -1.425rem;
+    left: 4px;
+    width: 2px;
+    background: var(--hair-2);
+  }
+  .timeline > li:last-child::before { display: none; }
+  .timeline > li::after {
+    content: "";
+    position: absolute;
+    top: calc(1.425rem - 5px);
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--dot, var(--amber));
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .timeline > li.award::after { border-radius: 2px; transform: rotate(45deg) scale(.9); }
+  .timeline > li.planned::after { border: 2px dashed var(--dot, var(--amber)); background: var(--bg); }
+  .timeline > li.root::after { border: 2px solid var(--muted); background: var(--bg); }
+  .timeline > li.future::after { border: 2px dotted var(--muted); background: var(--bg); }
+  /* Summers: the natural break between school years */
+  .timeline > li.summer::after { top: calc(1.425rem - 8px); left: -3px; width: 16px; height: 16px; border-radius: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23e9b06a' d='M3 0h1v1H3zM1 1h1v1H1zM5 1h1v1H5zM2 2h3v3H2zM0 3h1v1H0zM6 3h1v1H6zM1 5h1v1H1zM5 5h1v1H5zM3 6h1v1H3z'/%3E%3C/svg%3E") center / contain no-repeat, var(--bg); box-shadow: 0 0 0 3px var(--bg); }
+  .timeline > li.summer > details { margin: .35rem 0 .35rem -.6rem; padding: 0 .9rem 0 .6rem; border: 1px dashed rgba(233, 176, 106, .45); border-radius: 12px; background: rgba(217, 154, 82, .07); }
+  .timeline > li.summer .t-date { color: var(--amber-hi); }
+  .timeline > li.year { padding-top: 1.4rem; padding-bottom: .15rem; }
+  .timeline > li.year::after { top: calc(1.4rem + .45em); left: -2px; width: 14px; height: 2px; border-radius: 0; background: var(--hinoki); box-shadow: none; }
+  .timeline > li.year::before { top: 0; }
+  .y-label { color: var(--hinoki); font-family: var(--mono); font-size: .76rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .y-range { margin-left: .7rem; color: var(--muted); font-family: var(--mono); font-size: .76rem; }
+
+  .reading-log .book { margin: 0 0 1rem; padding: .7rem .8rem; border-radius: 8px; }
+  .reading-log .book.current { background: rgba(42, 32, 24, .08); box-shadow: inset 3px 0 0 #b07a50; }
+  .reading-log .book p { margin: 0 0 .3rem; color: #3d2f24; font-size: .9rem; }
+  .reading-log .book-title { color: #2a2018 !important; font-size: 1rem !important; font-weight: 600; }
+  .reading-log .book-by { font-style: italic; }
+  .reading-log .book-status { color: #8a5a3a !important; font-family: var(--mono); font-size: .74rem !important; }
+
+  .timeline summary,
+  .t-row {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr) auto 1rem;
+    gap: .1rem 1.5rem;
+    align-items: baseline;
+    padding: .6rem 0;
+  }
+  .timeline summary { cursor: pointer; list-style: none; }
+  .timeline summary::-webkit-details-marker { display: none; }
+  .timeline summary:hover .t-title { color: var(--amber-hi); }
+  .t-date { color: var(--ink); font-family: var(--mono); font-size: .84rem; font-weight: 600; }
+  .t-date .to { display: block; color: var(--muted); font-weight: 400; line-height: 1.3; }
+  .t-title { font-weight: 500; }
+  .t-meta { display: flex; gap: .75rem; color: var(--muted); font-size: .84rem; white-space: nowrap; }
+  .t-mode { color: var(--hinoki); }
+  .future .t-title { color: var(--muted); font-weight: 400; }
+
+  .toggle { position: relative; align-self: center; width: .8rem; height: .8rem; }
+  .toggle::before,
+  .toggle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 1.5px;
+    margin-top: -.75px;
+    background: var(--muted);
+    transition: transform .2s ease;
+  }
+  .toggle::after { transform: rotate(90deg); }
+  .timeline details[open] > summary .toggle::before,
+  .timeline details[open] > summary .toggle::after { background: var(--amber-hi); }
+  .timeline details[open] > summary .toggle::after { transform: rotate(0deg); }
+  .timeline details[open] > summary .t-date { color: var(--amber-hi); }
+
+  .cell .t-body { max-width: 64ch; margin: 0 0 1rem calc(7rem + 1.5rem); color: var(--muted); font-size: .94rem; }
+
+  /* Projects, as a works grid with thumbnails */
+  .works {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2.75rem 1.75rem;
+    margin: .25rem 0 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+  }
+  .works > li { display: flex; flex-direction: column; grid-column: span 4; }
+  .thumb {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--hair);
+    border-radius: 12px;
+    background:
+      radial-gradient(rgba(239, 228, 210, .07) 1px, transparent 1.3px) 0 0 / 16px 16px,
+      var(--panel);
+  }
+  a.thumb:hover { border-color: rgba(201, 164, 118, .5); }
+  .thumb svg { display: block; width: 100%; height: 100%; }
+  .thumb text { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .work-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem .5rem; margin: .9rem 0 .35rem; }
+  .work-title h3 { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+  .work-title h3 a { color: var(--ink); }
+  .works p { max-width: none; margin: 0 auto .4rem; color: var(--muted); font-size: .9rem; }
+  .works .meta { color: var(--muted); font-family: var(--mono); font-size: .76rem; opacity: .85; }
+  .works .aside { color: var(--amber-hi); font-family: var(--mono); font-size: .78rem; }
+  .repo-row { margin-top: auto; padding-top: .6rem; }
+
+  .gh {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    height: 1.95rem;
+    padding: 0 .8rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 7px;
+    color: var(--ink);
+    font-size: .82rem;
+    font-weight: 500;
+  }
+  a.gh:hover { border-color: rgba(201, 164, 118, .6); background: rgba(201, 164, 118, .08); text-decoration: none; }
+  .gh svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .gh.off { border-style: dashed; color: var(--muted); }
+
+  .badge { padding: .05rem .5rem; border-radius: 999px; font-size: .72rem; font-weight: 500; line-height: 1.5; white-space: nowrap; }
+  .badge.private { background: rgba(128, 148, 189, .18); color: #aebbd9; }
+  .badge.public { background: rgba(239, 228, 210, .08); color: var(--muted); }
+  .badge.wip { background: rgba(154, 174, 107, .16); color: #b8ca8c; }
+  .badge.hack { background: rgba(217, 154, 82, .16); color: var(--amber-hi); }
+
+  /* Uses */
+  .uses { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: .7rem 1rem; margin: 0; }
+  .uses dt { color: var(--muted); font-size: .92rem; }
+  .uses dd { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0; }
+  .chip {
+    padding: .05rem .45rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 6px;
+    background: var(--panel);
+    font-family: var(--mono);
+    font-size: .78rem;
+  }
+
+  /* On the web */
+  .social { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+  .social a {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    height: 2.25rem;
+    padding: 0 .9rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 8px;
+    font-size: .92rem;
+  }
+  .social a:hover { border-color: rgba(233, 176, 106, .5); background: rgba(217, 154, 82, .07); text-decoration: none; }
+  .social svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  .foot { color: var(--muted); font-size: .85rem; text-align: center; }
+  .foot p { max-width: none; margin: 0; }
+
+  /* Experience: one large card per role */
+  .xp-list { display: grid; gap: 1.5rem; }
+  .xp {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 1.75rem;
+    padding: 1.5rem;
+    border: 1px solid var(--hair);
+    border-radius: 14px;
+    background: rgba(239, 228, 210, .02);
+  }
+  .xp-media {
+    position: relative;
+    align-self: start;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--hair);
+    border-radius: 10px;
+    background: var(--panel);
+  }
+  .slides {
+    display: flex;
+    height: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .slides::-webkit-scrollbar { display: none; }
+  .slides:focus-visible { outline: 2px solid var(--amber); outline-offset: -2px; }
+  .slide { position: relative; flex: 0 0 100%; height: 100%; margin: 0; scroll-snap-align: start; }
+  .slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .slide figcaption {
+    position: absolute;
+    left: .6rem;
+    bottom: .6rem;
+    padding: .15rem .5rem;
+    border: 1px solid rgba(239, 228, 210, .22);
+    border-radius: 6px;
+    background: rgba(21, 16, 12, .8);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: .72rem;
+  }
+  .slide-btn {
+    position: absolute;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid rgba(239, 228, 210, .25);
+    border-radius: 50%;
+    background: rgba(21, 16, 12, .75);
+    color: var(--ink);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity .15s ease;
+  }
+  .slide-btn svg { width: .9rem; height: .9rem; }
+  .slide-btn.prev { left: .5rem; }
+  .slide-btn.next { right: .5rem; }
+  .xp-media:hover .slide-btn, .slide-btn:focus-visible { opacity: 1; }
+  .slide-btn[disabled] { visibility: hidden; }
+  .dots { position: absolute; right: .5rem; bottom: .6rem; display: flex; padding: 0 .15rem; border-radius: 999px; background: rgba(21, 16, 12, .6); }
+  .dots button { width: 1.05rem; height: 1.05rem; padding: .3rem; border: 0; background: transparent; cursor: pointer; }
+  .dots button::before { content: ""; display: block; width: 100%; height: 100%; border-radius: 50%; background: rgba(239, 228, 210, .5); }
+  .dots button[aria-current="true"]::before { background: var(--amber-hi); }
+  @media (hover: none) { .slide-btn { opacity: .9; } }
+  @media (prefers-reduced-motion: reduce) { .slides { scroll-behavior: auto; } }
+  .xp-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .25rem 1rem; }
+  .xp h3 { margin: 0; font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+  .cell .xp-org { margin: .1rem 0 0; color: var(--ink); }
+  .cell .xp-when { margin: 0; color: var(--amber-hi); font-family: var(--mono); font-size: .82rem; white-space: nowrap; }
+  .cell .xp-meta { display: flex; gap: .75rem; margin: .45rem 0 .9rem; color: var(--muted); font-size: .85rem; }
+  .xp-points { margin: 0 0 1rem; padding-left: 1.1rem; font-size: .95rem; }
+  .xp-points li { margin-bottom: .4rem; }
+  .xp-points li::marker { color: var(--amber); }
+  .cell .xp-stack { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0; }
+
+  /* The puzzle box and the ending */
+  dialog {
+    max-width: min(36rem, calc(100vw - 2rem));
+    padding: 1.5rem 1.6rem;
+    border: 1px solid rgba(201, 164, 118, .35);
+    border-radius: 16px;
+    background: #1c1510;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+    color: var(--ink);
+  }
+  dialog::backdrop { background: rgba(10, 7, 5, .62); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .dlg-title { margin: 0 0 .25rem; font-family: var(--pixel); font-size: 1.35rem; }
+  dialog p { margin: 0 0 .9rem; color: var(--muted); }
+  dialog .dlg-sub { margin-bottom: 1.25rem; font-size: .92rem; }
+  .dials { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; }
+  .dial {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: .35rem;
+    padding: .8rem .4rem .7rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 12px;
+    background: #241b14;
+  }
+  .dial.found { border-color: rgba(154, 174, 107, .55); }
+  .dial.found::after { content: "✓"; position: absolute; top: .3rem; right: .5rem; color: var(--matcha); font-size: .8rem; }
+  .carving svg { display: block; width: 2rem; height: 2rem; }
+  .turn {
+    width: 2.1rem;
+    height: 1.6rem;
+    border: 1px solid var(--hair-2);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    font-size: .7rem;
+    cursor: pointer;
+  }
+  .turn:hover { border-color: rgba(201, 164, 118, .6); color: var(--ink); }
+  .digit { color: var(--amber-hi); font-family: var(--pixel); font-size: 2rem; line-height: 1; }
+  .hint { color: var(--muted); font-size: .72rem; line-height: 1.3; text-align: center; }
+  dialog .dlg-msg { min-height: 1.5em; margin: 1rem 0 .6rem; color: var(--amber-hi); font-family: var(--pixel); }
+  .dlg-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .btn-wood, .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    height: 2.25rem;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font: inherit;
+    font-size: .92rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-wood { border: 0; background: var(--hinoki); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .18); color: #1a120c; }
+  .btn-wood:hover { background: #d8b98e; text-decoration: none; }
+  .btn-ghost { border: 1px solid var(--hair-2); background: transparent; color: var(--ink); }
+  .btn-ghost:hover { border-color: rgba(201, 164, 118, .6); text-decoration: none; }
+  .shake { animation: shake .35s ease; }
+  @keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+  .friends { display: grid; gap: 1rem; margin: .2rem 0 1.1rem; padding: 1rem 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+  .friend { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: .9rem; align-items: start; }
+  .friend-pic { display: grid; place-items: center; width: 3.25rem; height: 3.25rem; border-radius: 10px; background: #cbb08a; }
+  .friend-pic svg { display: block; width: 2.6rem; height: 2.6rem; }
+  dialog .friend-name { margin: 0 0 .2rem; color: var(--ink); font-weight: 600; }
+  dialog .friend p:last-child { margin: 0; font-size: .92rem; }
+  dialog.morning { max-height: calc(100vh - 2rem); overflow: auto; }
+  @media (max-width: 860px) { .xp { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .dials { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (prefers-reduced-motion: reduce) { .shake { animation: none; } }
+
+  @media (max-width: 1000px) {
+    .works > li { grid-column: span 6; }
+  }
+
+  @media (max-width: 760px) {
+    .column { margin: 0 .75rem; }
+    .areas { grid-template-columns: 1fr; }
+    /* On narrow screens show the middle of the desk at 16:9 */
+    .scene { aspect-ratio: 16 / 9; }
+    .scene canvas { width: 140%; max-width: none; margin-left: -20%; }
+  }
+
+  @media (max-width: 640px) {
+    .links { display: none; }
+    .menu { display: block; }
+    .cell { padding: 1.75rem 1.25rem; }
+    .hero { padding: 0; }
+    .scene-tip { display: none; }
+    .scene-tip.flash { display: block; }
+    .coaster { width: 4.5rem; height: 4.5rem; border-radius: 12px; }
+    .coaster svg { width: 3.25rem; height: 3.25rem; }
+    .timeline summary, .t-row { grid-template-columns: minmax(0, 1fr) 1rem; gap: .1rem .75rem; }
+    .t-date { grid-column: 1; grid-row: 1; }
+    .t-date .to { display: inline; margin-left: .4rem; }
+    .toggle { grid-column: 2; grid-row: 1; }
+    .t-title, .t-meta { grid-column: 1 / -1; }
+    .t-meta { white-space: normal; }
+    .cell .t-body { margin-left: 0; }
+    .works > li { grid-column: 1 / -1; }
+    .uses { grid-template-columns: 1fr; gap: .2rem; }
+    .uses dd { margin-bottom: .7rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .track, .knob, .scene-tip, .toggle::before, .toggle::after { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#top" aria-label="Maximilien Tragarz, back to top">
+      <svg viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#c9a476" d="M4 0h1v1H4zM2 1h2v1H2zM5 1h2v1H5zM0 2h2v1H0zM7 2h2v1H7zM0 3h1v3H0zM8 3h1v3H8zM0 6h2v1H0zM7 6h2v1H7zM2 7h2v1H2zM5 7h2v1H5zM4 8h1v1H4z"/></svg>
+      <span>Maximilien Tragarz</span>
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#uses">Uses</a>
+      <a href="#contact">Contact</a>
+      <a href="cv.pdf">CV</a>
+      <a href="https://github.com/BladedGoose13/BladedGoose13.github.io">Source</a>
+    </nav>
+    <details class="menu">
+      <summary aria-label="Menu"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/></svg></summary>
+      <nav aria-label="Sections">
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#uses">Uses</a>
+        <a href="#contact">Contact</a>
+        <a href="cv.pdf">CV</a>
+        <a href="https://github.com/BladedGoose13/BladedGoose13.github.io">Source</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<main class="column" id="top">
+
+  <figure class="cell hero">
+    <div class="scene">
+      <canvas id="scene" width="224" height="90" tabindex="0" role="application" aria-roledescription="interactive scene" aria-label="A pixel-art room at night: a bookcase with a NAS, a desk by a latticed window with indigo curtains and rain, a paper lantern, a bonsai, a pour-over set and a cup, a monitor, a desk lamp, a computer under the desk, and a coffee minibar with an espresso machine. Many things in it can be clicked, and a locked puzzle box sits on the desk. Mila, a black pug, sleeps on a cushion under the desk, and two birds, Bolita and Flaquis, visit the porch beam outside the window. The cabinets on both sides open. Use the arrow keys to move between things and Enter to use them."></canvas>
+      <span class="scene-tip" id="scene-tip" aria-hidden="true"></span>
+      <p class="sr-only" id="scene-live" aria-live="polite"></p>
+    </div>
+    <figcaption class="hero-bar">
+      <div class="bar-left">
+        <span id="clock">Monterrey</span>
+        <span class="secrets" id="secrets">Clues 0/4</span>
+        <button class="reset-btn" id="reset" type="button">Restart</button>
+      </div>
+      <div class="controls">
+        <button class="chip-btn" id="curtains" type="button">Close curtains</button>
+        <button class="switch" id="lantern" type="button" aria-pressed="true">Lantern <span class="track" aria-hidden="true"><span class="knob"></span></span></button>
+        <button class="switch" id="lamp" type="button" aria-pressed="true">Desk lamp <span class="track" aria-hidden="true"><span class="knob"></span></span></button>
+        <button class="chip-btn" id="screen" type="button">Screen: Terminal</button>
+      </div>
+    </figcaption>
+  </figure>
+
+  <section class="cell" aria-labelledby="name">
+    <p class="greeting">Hi, I’m Max. I do Scientific Computing and Mathematics in Monterrey.</p>
+    <div class="namecard">
+      <div class="coaster">
+        <svg viewBox="0 0 16 16" shape-rendering="crispEdges" role="img" aria-label="A pixel-art cup of coffee">
+          <g style="fill: rgba(239, 228, 210, .5)">
+            <rect x="6" y="0" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/>
+            <rect x="10" y="1" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/>
+          </g>
+          <g fill="#efe4d2">
+            <rect x="3" y="5" width="10" height="1"/>
+            <rect x="12" y="6" width="1" height="1"/>
+            <rect x="4" y="7" width="9" height="1"/>
+            <rect x="4" y="9" width="9" height="1"/>
+            <rect x="5" y="10" width="7" height="1"/>
+            <rect x="6" y="11" width="5" height="1"/>
+            <rect x="13" y="7" width="2" height="1"/><rect x="14" y="8" width="1" height="1"/><rect x="13" y="9" width="2" height="1"/>
+          </g>
+          <rect x="4" y="6" width="8" height="1" fill="#4b2d1d"/>
+          <rect x="4" y="8" width="9" height="1" fill="#3e5072"/>
+          <g fill="#c9b79a">
+            <rect x="3" y="6" width="1" height="4"/>
+            <rect x="4" y="10" width="1" height="1"/>
+            <rect x="5" y="11" width="1" height="1"/>
+          </g>
+          <rect x="1" y="12" width="14" height="1" fill="#d6c4a4"/>
+          <rect x="2" y="13" width="12" height="1" fill="#a8916f"/>
+        </svg>
+      </div>
+      <div>
+        <h1 id="name">Maximilien Tragarz Quintana</h1>
+        <p class="role">Engineering physics at Tec de Monterrey</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cell" id="experience" aria-labelledby="experience-title">
+    <h2 id="experience-title">Experience</h2>
+    <div class="xp-list">
+
+      <article class="xp">
+        <div class="xp-media" role="group" aria-roledescription="carousel" aria-label="MSCI in pictures">
+          <!-- Photos of the place: swap in your own whenever you have them. -->
+          <div class="slides" tabindex="0">
+            <figure class="slide"><img src="img/msci-selfie.webp" alt="Max in front of the MSCI logo at the office" loading="lazy" decoding="async"><figcaption>MSCI, Monterrey</figcaption></figure>
+            <figure class="slide"><img src="img/msci-office.webp" alt="MSCI logo on a wooden slat wall, next to a meeting room with a view of the mountains" loading="lazy" decoding="async"><figcaption>MSCI office</figcaption></figure>
+            <figure class="slide"><img src="img/msci-moss.webp" alt="MSCI logo on a wood wall lined with moss" loading="lazy" decoding="async"></figure>
+          </div>
+          <button class="slide-btn prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="slide-btn next" type="button" aria-label="Next photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="dots"></div>
+        </div>
+        <div class="xp-body">
+          <header class="xp-head">
+            <div>
+              <h3>Quantitative Research Intern</h3>
+              <p class="xp-org">MSCI Inc., Private Assets Index R&amp;D</p>
+            </div>
+            <p class="xp-when">Aug 2026 to present</p>
+          </header>
+          <p class="xp-meta"><span>Monterrey, MX</span><span class="t-mode">On-site, full-time</span></p>
+          <ul class="xp-points">
+            <li>Build automation workflows and internal software using Python, Snowflake, FastAPI and Azure DevOps (CI/CD), reducing research and analytics production time by ~75% across real estate index workflows.</li>
+            <li>Develop and validate quantitative indexes, and maintain and re-weight custom indexes, translating methodology requirements into reproducible data and software workflows.</li>
+            <li>Work with large financial datasets using Python, SQL and Snowflake for automated analysis, index review and market sizing, including the UK PFI index and a new Infrastructure index.</li>
+          </ul>
+          <p class="xp-stack"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Snowflake</span><span class="chip">FastAPI</span><span class="chip">Azure DevOps</span></p>
+          <!-- More detail goes here: the problem, what you built, the result (a number if you can), what you learned. -->
+        </div>
+      </article>
+
+      <article class="xp">
+        <div class="xp-media" role="group" aria-roledescription="carousel" aria-label="NIMS in pictures">
+          <!-- Photos of the place: swap in your own whenever you have them. -->
+          <div class="slides" tabindex="0">
+            <figure class="slide"><img src="img/nims-sign-own.webp" alt="Entrance sign of the National Institute for Materials Science" loading="lazy" decoding="async"><figcaption>NIMS, Tsukuba</figcaption></figure>
+            <figure class="slide"><img src="img/nims-badge.webp" alt="Max’s NIMS entry permit, with his photo and name" loading="lazy" decoding="async"><figcaption>My entry permit</figcaption></figure>
+            <figure class="slide"><img src="img/nims-building.webp" alt="NIMS building in Tsukuba" loading="lazy" decoding="async"></figure>
+            <figure class="slide"><img src="img/tsukuba.webp" alt="The TSUKUBA letters in a flower bed by the station plaza" loading="lazy" decoding="async"><figcaption>Tsukuba</figcaption></figure>
+            <figure class="slide"><img src="img/fuji.webp" alt="Max on the trail near the summit of Mt. Fuji, below a torii gate" loading="lazy" decoding="async"><figcaption>Climbing Fuji</figcaption></figure>
+          </div>
+          <button class="slide-btn prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="slide-btn next" type="button" aria-label="Next photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="dots"></div>
+        </div>
+        <div class="xp-body">
+          <header class="xp-head">
+            <div>
+              <h3>Visiting Researcher</h3>
+              <p class="xp-org">NIMS, with Dr. Youhei Yamaji</p>
+            </div>
+            <p class="xp-when">Summer 2026 to present</p>
+          </header>
+          <p class="xp-meta"><span>Tsukuba, Japan</span><span class="t-mode">On-site for the summer, then remote</span></p>
+          <ul class="xp-points">
+            <li>Designed and built, from scope to working pipeline, a six-stage materials screening system combining generative AI, machine-learning models and physics-based filters over a large crystal candidate space.</li>
+            <li>Integrated CrystalFormer for structure generation, CHGNet for machine-learned stability screening, crystal-field and symmetry models, and a Qwen3-32B LLM ranker using vLLM/RAG tooling; traced baseline failures to their root causes and documented the limits of the approach.</li>
+            <li>Now working remotely with the same group, analyzing many-body and orbital physics in strongly correlated systems.</li>
+          </ul>
+          <p class="xp-stack"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">CrystalFormer</span><span class="chip">CHGNet</span><span class="chip">vLLM</span><span class="chip">RAG</span></p>
+          <!-- Future update: link to nims.html (research notes) -->
+          <!-- More detail goes here: the problem, what you built, the result (a number if you can), what you learned. -->
+        </div>
+      </article>
+
+      <article class="xp">
+        <div class="xp-media" role="group" aria-roledescription="carousel" aria-label="Tec de Monterrey in pictures">
+          <!-- Photos of the place: swap in your own whenever you have them. -->
+          <div class="slides" tabindex="0">
+            <figure class="slide"><img src="img/tec-campus.webp" alt="Aerial view of the Tec de Monterrey campus with Cerro de la Silla behind" loading="lazy" decoding="async"><figcaption>Campus Monterrey</figcaption></figure>
+            <figure class="slide"><img src="img/tec-entrance.webp" alt="Tecnológico de Monterrey entrance sign with the campus pyramids behind" loading="lazy" decoding="async"><figcaption>Main entrance</figcaption></figure>
+            <figure class="slide"><img src="img/tec-lab.webp" alt="A research lab with black benches" loading="lazy" decoding="async"><figcaption>Lab</figcaption></figure>
+          </div>
+          <button class="slide-btn prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="slide-btn next" type="button" aria-label="Next photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="dots"></div>
+        </div>
+        <div class="xp-body">
+          <header class="xp-head">
+            <div>
+              <h3>Undergraduate Student Researcher</h3>
+              <p class="xp-org">Tec de Monterrey, with Dr. José Ángel Reyes Retana</p>
+            </div>
+            <p class="xp-when">Nov 2025 to present</p>
+          </header>
+          <p class="xp-meta"><span>Monterrey, MX</span><span class="t-mode">Part-time, remote</span></p>
+          <ul class="xp-points">
+            <li>Study Rashba spin splitting in 2D Janus monolayers (MoSSe) using Density Functional Theory (Quantum ESPRESSO); manuscript in preparation.</li>
+            <li>Started as a trainee learning Quantum ESPRESSO, Linux and HPC; part-time research student since March 2026.</li>
+            <li>Presented a poster on silicon-doped graphene at my home university’s research congress.</li>
+          </ul>
+          <p class="xp-stack"><span class="chip">Quantum ESPRESSO</span><span class="chip">MPI</span><span class="chip">Slurm</span><span class="chip">Linux/Bash</span></p>
+          <!-- Future update: link to dft.html (research notes) -->
+          <!-- More detail goes here: the problem, what you built, the result (a number if you can), what you learned. -->
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="cell" id="interests" aria-labelledby="interests-title">
+    <h2 id="interests-title">Areas of Interest</h2>
+    <ul class="areas">
+      <li>
+        <span class="tile"><svg data-icon="sim" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+        <div>
+          <h3>Computer simulations</h3>
+          <p>I love doing simulations, whether it’s DFT or training my own machine learning models. I love the freedom of building fulfilling projects on my own PC.</p>
+        </div>
+      </li>
+      <li>
+        <span class="tile"><svg data-icon="homelab" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+        <div>
+          <h3>Homelabs</h3>
+          <p>Supporting my own research with my own workstation. I’m planning on adding my own NAS and building some home automation with a Raspberry Pi 5 and ESP32s ¯\_(ツ)_/¯</p>
+        </div>
+      </li>
+      <li>
+        <span class="tile"><svg data-icon="research" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+        <div>
+          <h3>Research</h3>
+          <p>So far I have focused on theoretical condensed matter, quantum chemistry and financial research. But my main goal is specializing in the branch uniting all of them: computational mathematics.</p>
+        </div>
+      </li>
+      <li>
+        <span class="tile"><svg data-icon="extra" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+        <div>
+          <h3>Extra</h3>
+          <p>As a good human being with hobbies (maybe), I like touching grass at the gym, making coffee (I have my own coffee minibar!) and playing plenty of video games on my (work) computer (sure! who doesn’t love playing Stardew Valley on a micro data center?).</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="cell" id="timeline" aria-labelledby="timeline-title">
+    <h2 id="timeline-title">Timeline</h2>
+    <ol class="timeline">
+      <li class="summer">
+        <details>
+          <summary>
+            <span class="t-date">Summer 2025<span class="to">after Year 1</span></span>
+            <span class="t-title">International Summer Exchange at SKKU</span>
+            <span class="t-meta"><span>Seoul, South Korea</span><span class="t-mode">On-site</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Sungkyunkwan University: Thermodynamics &amp; Statistics in Python (6 credits).</p>
+        </details>
+      </li>
+      <li class="year"><span class="y-label">Year 2</span><span class="y-range">2025 to 2026</span></li>
+      <li style="--dot: var(--amber)">
+        <details>
+          <summary>
+            <span class="t-date">Nov 2025</span>
+            <span class="t-title">Research Training at Tec de Monterrey</span>
+            <span class="t-meta"><span>Puebla, MX</span><span class="t-mode">Remote</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Learning Quantum ESPRESSO, Linux, and HPC basics, following Nguyen T. Hung, Ahmad R. T. Nugraha and Riichiro Saito’s <cite>Quantum ESPRESSO Course for Solid-State Physics</cite>.</p>
+        </details>
+      </li>
+      <li class="award" style="--dot: var(--hinoki)">
+        <details>
+          <summary>
+            <span class="t-date">Nov 2025</span>
+            <span class="t-title">DigiEduHack 2025 Global Winner</span>
+            <span class="t-meta"><span>Puebla, MX</span><span class="t-mode">On-site</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Led a team of 5 to develop PathWise, an end-to-end PWA prototype for social mobility in LATAM; I owned the backend architecture (FastAPI, Docker, SQLite) and the LLM pipeline. Won the regional, national and international brackets among 800+ teams across 32+ countries, and presented the project at the European Commission headquarters in Brussels.</p>
+        </details>
+      </li>
+      <li style="--dot: var(--amber)">
+        <details>
+          <summary>
+            <span class="t-date">Mar 2026</span>
+            <span class="t-title">Undergraduate Student Researcher at Tec de Monterrey</span>
+            <span class="t-meta"><span>Monterrey, MX</span><span class="t-mode">Part-time, remote</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Transition from trainee to part-time research student with Dr. Reyes Retana, following the silicon-doped graphene poster presented at my home university’s research congress. Research focused on Janus TMD monolayers.</p>
+        </details>
+      </li>
+      <li style="--dot: var(--matcha)">
+        <details>
+          <summary>
+            <span class="t-date">May 2026</span>
+            <span class="t-title">MIT.nano Workshop, Micro &amp; Nanofabrication</span>
+            <span class="t-meta"><span>Massachusetts, USA</span><span class="t-mode">On-site</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">MIT-Tec Fellow. Online coursework on nanofabrication techniques, followed by a fully funded, 40-hour hands-on program in MIT.nano’s cleanroom facilities: CVD, lithography, etching and PVD.</p>
+        </details>
+      </li>
+      <!-- Month not on the CV yet: move this entry to where it belongs. -->
+      <li class="award" style="--dot: var(--hinoki)">
+        <details>
+          <summary>
+            <span class="t-date">2026</span>
+            <span class="t-title">Tec Engineering Awards: Outstanding Trajectory</span>
+            <span class="t-meta"><span>Tec de Monterrey</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Top 1% of engineering students.</p>
+        </details>
+      </li>
+      <li class="summer">
+        <details>
+          <summary>
+            <span class="t-date">Summer 2026<span class="to">after Year 2</span></span>
+            <span class="t-title">Visiting Researcher at NIMS</span>
+            <span class="t-meta"><span>Tsukuba, Japan</span><span class="t-mode">On-site, then remote</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">An LLM-orchestrated ML pipeline that generates and screens crystal structure candidates for a new multiferroic material mechanism. On site for the summer, and still working remotely with the group.</p>
+        </details>
+      </li>
+      <li class="year"><span class="y-label">Year 3</span><span class="y-range">2026 to 2027</span></li>
+      <li style="--dot: var(--ai)">
+        <details>
+          <summary>
+            <span class="t-date">Aug 2026<span class="to">to present</span></span>
+            <span class="t-title">Quantitative Research Intern at MSCI Inc.</span>
+            <span class="t-meta"><span>Monterrey, MX</span><span class="t-mode">On-site, full-time</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Working with Executive Directors on the Real Capital Analytics team, in the Research &amp; Development department, focused on Private Assets.</p>
+        </details>
+      </li>
+      <li class="planned" style="--dot: var(--amber)">
+        <details>
+          <summary>
+            <span class="t-date">Feb 2027<span class="to">to Jun 2027</span></span>
+            <span class="t-title">Academic Research Stay</span>
+            <span class="t-meta"><span>Monterrey &amp; Querétaro, MX</span><span class="t-mode">Hybrid</span></span>
+            <span class="toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="t-body">Simulating nitrogen-doped carbon quantum dots (CQDs) on Quantum ESPRESSO, with Dr. Reyes Retana.</p>
+        </details>
+      </li>
+      <li class="root">
+        <div class="t-row">
+          <span class="t-date">2028</span>
+          <span class="t-title">B.S. Engineering Physics, Tec de Monterrey</span>
+          <span class="t-meta"><span>Expected</span></span>
+          <span></span>
+        </div>
+      </li>
+      <li class="future">
+        <div class="t-row">
+          <span class="t-date">2029…</span>
+          <span class="t-title">who knows 👀</span>
+          <span></span>
+          <span></span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Research section: off for now, to be extended later. -->
+
+  <section class="cell" id="projects" aria-labelledby="projects-title">
+    <h2 id="projects-title">Projects</h2>
+    <ul class="works">
+
+      <li>
+        <a class="thumb" href="https://github.com/BladedGoose13/QE-Workflow" aria-label="QE-Workflow on GitHub">
+          <svg viewBox="0 0 320 180" role="img" aria-label="Band structure of graphene with the Dirac point at K">
+            <g fill="none" stroke-width="1" style="stroke: rgba(239, 228, 210, .17)">
+              <path d="M40 24V150M130 24V150M182 24V150M290 24V150" stroke-dasharray="2 4"/>
+              <path d="M40 150H290"/>
+            </g>
+            <path d="M40 92H290" fill="none" stroke-width="1.2" stroke-dasharray="4 4" style="stroke: var(--hinoki)" opacity=".75"/>
+            <g fill="none" stroke-width="1.5" style="stroke: var(--matcha)" opacity=".6">
+              <path d="M40 128C90 124 150 140 182 136S260 126 290 128"/>
+              <path d="M40 140C100 142 160 132 210 140S270 146 290 142"/>
+            </g>
+            <g fill="none" stroke-width="2.2" stroke-linecap="round" style="stroke: var(--amber)">
+              <path d="M40 30C80 34 110 58 130 62C150 70 170 86 182 92C200 80 250 40 290 30"/>
+              <path d="M40 150C80 146 110 124 130 120C150 112 170 98 182 92C200 104 250 142 290 150"/>
+            </g>
+            <circle cx="182" cy="92" r="3.5" style="fill: var(--hinoki)"/>
+            <text x="40" y="167" text-anchor="middle">Γ</text>
+            <text x="130" y="167" text-anchor="middle">M</text>
+            <text x="182" y="167" text-anchor="middle">K</text>
+            <text x="290" y="167" text-anchor="middle">Γ</text>
+          </svg>
+        </a>
+        <div class="work-title"><h3><a href="https://github.com/BladedGoose13/QE-Workflow">QE-Workflow</a></h3><span class="badge public">Public</span></div>
+        <p>Band structures of Si-doped graphene with Quantum ESPRESSO.</p>
+        <p class="meta">Quantum ESPRESSO, Gnuplot</p>
+        <div class="repo-row"><a class="gh" href="https://github.com/BladedGoose13/QE-Workflow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 7.5L4 12l4.5 4.5M15.5 7.5L20 12l-4.5 4.5"/></svg>GitHub</a></div>
+      </li>
+
+      <li>
+        <div class="thumb">
+          <svg viewBox="0 0 320 180" role="img" aria-label="A day of household power use, with compute runs placed under the budget line">
+            <path d="M28 150H300" fill="none" stroke-width="1" style="stroke: rgba(239, 228, 210, .17)"/>
+            <path d="M28 123L39 126L51 129L62 129L73 129L85 126L96 114L107 84L119 72L130 93L141 102L153 99L164 93L175 96L187 102L198 99L209 90L221 72L232 54L243 45L254 48L266 66L277 93L288 111L300 120V150H28Z" stroke-width="1.5" stroke-linejoin="round" style="fill: rgba(154, 174, 107, .16); stroke: var(--matcha)"/>
+            <path d="M28 78H300" fill="none" stroke-width="1.5" stroke-dasharray="5 4" style="stroke: var(--hinoki)"/>
+            <g style="fill: var(--amber)">
+              <rect x="31" y="98" width="62" height="22" rx="3"/>
+              <rect x="176" y="81" width="32" height="12" rx="3"/>
+            </g>
+            <text x="300" y="72" text-anchor="end">budget</text>
+            <text x="62" y="92" text-anchor="middle">runs</text>
+            <text x="28" y="167" text-anchor="middle">00</text>
+            <text x="96" y="167" text-anchor="middle">06</text>
+            <text x="164" y="167" text-anchor="middle">12</text>
+            <text x="232" y="167" text-anchor="middle">18</text>
+            <text x="300" y="167" text-anchor="middle">24</text>
+          </svg>
+        </div>
+        <div class="work-title"><h3>homelab</h3><span class="badge wip">WIP</span></div>
+        <p>Software that automates computational simulations based on electricity consumption. Working on a public repository for independent researchers on constrained resource budgets.</p>
+        <p class="meta">Python, codecarbon, XGBoost</p>
+        <!-- No repository yet: swap this for a GitHub button once it is public. -->
+        <div class="repo-row"><span class="gh off">Repository soon</span></div>
+      </li>
+
+      <li>
+        <div class="thumb">
+          <svg viewBox="0 0 320 180" role="img" aria-label="A voice command becomes a purchase order, with one field read automatically and one sent to a person">
+            <g style="fill: var(--amber)">
+              <rect x="34" y="84" width="3" height="12" rx="1.5"/>
+              <rect x="40" y="78" width="3" height="24" rx="1.5"/>
+              <rect x="46" y="72" width="3" height="36" rx="1.5"/>
+              <rect x="52" y="81" width="3" height="18" rx="1.5"/>
+              <rect x="58" y="75" width="3" height="30" rx="1.5"/>
+              <rect x="64" y="83" width="3" height="14" rx="1.5"/>
+              <rect x="70" y="79" width="3" height="22" rx="1.5"/>
+            </g>
+            <path d="M78 90H94" fill="none" stroke-width="1.2" stroke-dasharray="2 3" style="stroke: rgba(239, 228, 210, .3)"/>
+            <rect x="96" y="16" width="128" height="148" rx="6" style="fill: #241b14; stroke: rgba(239, 228, 210, .17)"/>
+            <g style="fill: rgba(239, 228, 210, .14)">
+              <rect x="108" y="30" width="56" height="5" rx="2.5"/>
+              <rect x="108" y="42" width="92" height="4" rx="2"/>
+              <rect x="108" y="80" width="84" height="4" rx="2"/>
+              <rect x="108" y="90" width="64" height="4" rx="2"/>
+              <rect x="108" y="128" width="96" height="4" rx="2"/>
+              <rect x="108" y="138" width="72" height="4" rx="2"/>
+              <rect x="108" y="148" width="40" height="4" rx="2"/>
+            </g>
+            <rect x="105" y="55" width="94" height="15" rx="3" fill="none" stroke-width="1.5" style="stroke: var(--matcha)"/>
+            <rect x="105" y="103" width="72" height="15" rx="3" fill="none" stroke-width="1.5" stroke-dasharray="4 3" style="stroke: var(--amber)"/>
+            <path d="M199 62H236M177 110H236" fill="none" stroke-width="1" style="stroke: rgba(239, 228, 210, .25)"/>
+            <text x="240" y="66" style="fill: var(--matcha)">0.97 auto</text>
+            <text x="240" y="114" style="fill: var(--amber-hi)">0.58 review</text>
+            <g fill="none" stroke-width="1.6" style="stroke: var(--amber)">
+              <circle cx="262" cy="128" r="4.5"/>
+              <path d="M253 142C254 136 270 136 271 142"/>
+            </g>
+          </svg>
+        </div>
+        <div class="work-title"><h3>ArcaVision</h3><span class="badge hack">2nd at Hack4Her 2026</span></div>
+        <p>A Playwright-supported agent reads voice commands and mimics the user’s intended use case from a single manual demonstration. Aimed at automating client purchase management. Uses Bayesian gates for confidence fields.</p>
+        <p class="meta">Python, Playwright, FastAPI</p>
+        <div class="repo-row"><span class="gh off">Private repository</span></div>
+      </li>
+
+      <li>
+        <a class="thumb" href="https://github.com/BladedGoose13/ESG-Framework-LUMIO" aria-label="LUMIO on GitHub">
+          <svg viewBox="0 0 320 180" role="img" aria-label="A histogram of Monte Carlo samples with the median marked">
+            <rect x="106" y="22" width="110" height="128" style="fill: rgba(201, 164, 118, .08)"/>
+            <path d="M30 150H290" fill="none" stroke-width="1" style="stroke: rgba(239, 228, 210, .17)"/>
+            <g id="bars" style="fill: rgba(154, 174, 107, .62)"></g>
+            <path d="M166 26V150" fill="none" stroke-width="2" style="stroke: var(--amber)"/>
+            <text x="172" y="36">p50</text>
+            <text x="290" y="167" text-anchor="end">score</text>
+          </svg>
+        </a>
+        <div class="work-title"><h3><a href="https://github.com/BladedGoose13/ESG-Framework-LUMIO">LUMIO</a></h3><span class="badge public">Public</span></div>
+        <p>ESG framework for social ROI, using a logarithmic mathematical approach supported by Monte Carlo and knapsack budget optimization.</p>
+        <p class="meta">Monte Carlo, knapsack</p>
+        <div class="repo-row"><a class="gh" href="https://github.com/BladedGoose13/ESG-Framework-LUMIO"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 7.5L4 12l4.5 4.5M15.5 7.5L20 12l-4.5 4.5"/></svg>GitHub</a></div>
+      </li>
+
+      <li>
+        <a class="thumb" href="https://github.com/BladedGoose13/ThermoHub.Sim---V1.0" aria-label="ThermoHub.Sim on GitHub">
+          <svg viewBox="0 0 320 180" role="img" aria-label="A temperature–entropy diagram with the saturation dome and two isobars">
+            <path d="M40 22V152H292" fill="none" stroke-width="1" style="stroke: rgba(239, 228, 210, .25)"/>
+            <g fill="none" stroke-width="1.5" style="stroke: var(--matcha)" opacity=".9">
+              <path d="M58 152L96 84L238 84C256 72 272 56 292 40"/>
+              <path d="M52 152L80 120L252 120C266 110 280 98 292 88"/>
+            </g>
+            <path d="M70 152C90 62 140 32 165 32C190 32 240 62 262 152" fill="none" stroke-width="2.2" style="stroke: var(--amber)"/>
+            <circle cx="165" cy="32" r="3.5" style="fill: var(--hinoki)"/>
+            <text x="30" y="28" text-anchor="middle">T</text>
+            <text x="292" y="167" text-anchor="middle">s</text>
+          </svg>
+        </a>
+        <div class="work-title"><h3><a href="https://github.com/BladedGoose13/ThermoHub.Sim---V1.0">ThermoHub.Sim</a></h3><span class="badge public">Public</span></div>
+        <p class="aside">// Heyyy!!! This is my first project, pls don’t judge the spaghetti code :D</p>
+        <p>Steam-table interpolation in Streamlit, derived from my summer exchange program in Seoul as a way to apply what I learnt in the two courses I took.</p>
+        <p class="meta">Python, Streamlit</p>
+        <div class="repo-row"><a class="gh" href="https://github.com/BladedGoose13/ThermoHub.Sim---V1.0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 7.5L4 12l4.5 4.5M15.5 7.5L20 12l-4.5 4.5"/></svg>GitHub</a></div>
+      </li>
+
+    </ul>
+  </section>
+
+  <section class="cell" id="uses" aria-labelledby="uses-title">
+    <h2 id="uses-title">Uses</h2>
+    <dl class="uses">
+      <dt>Languages</dt><dd><span class="chip">Python</span><span class="chip">C++</span><span class="chip">Bash</span></dd>
+      <dt>Compute</dt><dd><span class="chip">Linux</span><span class="chip">Slurm</span><span class="chip">CUDA</span><span class="chip">Docker</span></dd>
+      <dt>Machine learning</dt><dd><span class="chip">PyTorch</span><span class="chip">JAX</span><span class="chip">Hugging Face</span><span class="chip">vLLM</span></dd>
+      <dt>Physics</dt><dd><span class="chip">Quantum ESPRESSO</span><span class="chip">NumPy</span><span class="chip">SciPy</span><span class="chip">MATLAB</span></dd>
+      <dt>Workstation</dt><dd><span class="chip">RTX 5070 Ti</span><span class="chip">Ryzen 9 9950X3D</span><span class="chip">64 GB DDR5</span><span class="chip">16 TB NAS</span><span class="chip">Ubuntu</span></dd>
+      <dt>Minibar</dt><dd><span class="chip">De’Longhi Stilosa EC260BK</span><span class="chip">Talavera and Japanese ceramics</span><span class="chip">Garat roasted espresso</span></dd>
+    </dl>
+  </section>
+
+  <section class="cell" id="contact" aria-labelledby="web-title">
+    <h2 id="web-title">On the web</h2>
+    <ul class="social">
+      <li><a href="https://github.com/BladedGoose13"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 7.5L4 12l4.5 4.5M15.5 7.5L20 12l-4.5 4.5"/></svg>@BladedGoose13</a></li>
+      <li><a href="https://www.linkedin.com/in/maxitq/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>in/maxitq</a></li>
+      <!-- The addresses are put together by the script so simple scrapers don't pick them up. -->
+      <li><a class="mail" data-user="BladedGoose" data-domain="gmail.com" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg><span>BladedGoose [at] gmail.com</span></a></li>
+      <li><a class="mail" data-user="A01735557" data-domain="tec.mx" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg><span>A01735557 [at] tec.mx</span></a></li>
+      <!-- cv.pdf sits next to index.html in the repo root -->
+      <li><a href="cv.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20z"/><path d="M14 3.5V8h4"/></svg>CV (PDF)</a></li>
+    </ul>
+  </section>
+
+  <footer class="cell foot">
+    <p>© 2026 Maximilien Tragarz Quintana. Set in Geist; the desk is 224 by 90 pixels.</p>
+  </footer>
+</main>
+
+<dialog class="lockbox" id="lockbox" aria-labelledby="lock-title">
+  <p class="dlg-title" id="lock-title">Himitsu-bako</p>
+  <p class="dlg-sub">A Japanese puzzle box. Four dials, four carvings.</p>
+  <div class="dials">
+    <div class="dial" data-clue="moon">
+      <span class="carving"><svg data-icon="moon" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+      <button type="button" class="turn" data-step="1" aria-label="Moon dial up">▲</button>
+      <output class="digit">0</output>
+      <button type="button" class="turn" data-step="-1" aria-label="Moon dial down">▼</button>
+      <span class="hint">Shows in the dark</span>
+    </div>
+    <div class="dial" data-clue="leaf">
+      <span class="carving"><svg data-icon="leaf" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+      <button type="button" class="turn" data-step="1" aria-label="Leaf dial up">▲</button>
+      <output class="digit">0</output>
+      <button type="button" class="turn" data-step="-1" aria-label="Leaf dial down">▼</button>
+      <span class="hint">Bolita, then Mila</span>
+    </div>
+    <div class="dial" data-clue="cup">
+      <span class="carving"><svg data-icon="cupc" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+      <button type="button" class="turn" data-step="1" aria-label="Cup dial up">▲</button>
+      <output class="digit">0</output>
+      <button type="button" class="turn" data-step="-1" aria-label="Cup dial down">▼</button>
+      <span class="hint">Look under your coffee</span>
+    </div>
+    <div class="dial" data-clue="bolt">
+      <span class="carving"><svg data-icon="bolt" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+      <button type="button" class="turn" data-step="1" aria-label="Bolt dial up">▲</button>
+      <output class="digit">0</output>
+      <button type="button" class="turn" data-step="-1" aria-label="Bolt dial down">▼</button>
+      <span class="hint">Let the computer think</span>
+    </div>
+  </div>
+  <p class="dlg-msg" id="lock-msg" aria-live="polite"></p>
+  <div class="dlg-actions">
+    <button type="button" class="btn-wood" id="lock-try">Open the box</button>
+    <button type="button" class="btn-ghost" id="lock-close">Close</button>
+  </div>
+</dialog>
+
+<dialog class="note" id="nas-note" aria-labelledby="note-title">
+  <p class="note-title" id="note-title">scf.out, pulled off the NAS</p>
+  <pre class="note-body" id="note-body"></pre>
+  <div class="dlg-actions"><button type="button" class="btn-note" id="note-close">Close</button></div>
+</dialog>
+
+<dialog class="note reading-log" id="reading" aria-labelledby="reading-title">
+  <p class="note-title" id="reading-title">Reading log</p>
+  <article class="book" data-book="khomskii">
+    <p class="book-title">Transition Metal Compounds</p>
+    <p class="book-by">Daniel I. Khomskii. Cambridge University Press, 2014.</p>
+    <p>Crystal fields, Jahn–Teller distortions and orbital ordering: the physics behind the mechanism in my NIMS project.</p>
+    <p class="book-status">Reading</p>
+  </article>
+  <article class="book" data-book="cotton">
+    <p class="book-title">Chemical Applications of Group Theory</p>
+    <p class="book-by">F. Albert Cotton. Wiley, 3rd edition, 1990.</p>
+    <p>Point groups and symmetry, for the pipeline’s symmetry filters and for reading crystal structures properly.</p>
+    <p class="book-status">Reading</p>
+  </article>
+  <article class="book" data-book="qe">
+    <p class="book-title">Quantum ESPRESSO Course for Solid-State Physics</p>
+    <p class="book-by">Nguyen T. Hung, Ahmad R. T. Nugraha and Riichiro Saito. Jenny Stanford Publishing, 2022.</p>
+    <p>The course I learned DFT with, as a trainee in November 2025.</p>
+    <p class="book-status">Worked through</p>
+  </article>
+  <div class="dlg-actions"><button type="button" class="btn-note" id="reading-close">Close</button></div>
+</dialog>
+
+<dialog class="morning" id="morning" aria-labelledby="morning-title">
+  <p class="dlg-title" id="morning-title">Morning.</p>
+  <p>In Japan you paint a daruma’s second eye when a wish comes true. You just painted mine.</p>
+  <!-- Their stories: edit freely. -->
+  <div class="friends">
+    <div class="friend">
+      <span class="friend-pic"><svg data-icon="mila" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+      <div>
+        <p class="friend-name">Mila</p>
+        <p>My black pug. She was with me since I was five: the most loving little pug, always chasing her tail. She kept me company through my worst moments, in more than one country, and she passed away in my arms. She lives here now.</p>
+      </div>
+    </div>
+    <div class="friend">
+      <span class="friend-pic"><svg data-icon="birds" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"></svg></span>
+      <div>
+        <p class="friend-name">Bolita and Flaquis</p>
+        <p>When I studied in Puebla I lived with my grandma. One night a little bird started showing up on the porch beams outside my window, always at the same time. He’d stare at me, then peek through the glass. I called him Bolita, for being chubby. Then a skinny one started coming too: Flaquis. It’s been a whole year. Sometimes they switch beams, but they’re always there.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Write here whatever you want the people who finish to find. -->
+  <p>2029? Still a secret. If you made it this far, write me: coffee’s on me.</p>
+  <div class="dlg-actions">
+    <button type="button" class="btn-wood" id="morning-stay">Stay in the morning</button>
+    <a class="btn-ghost" id="morning-mail" href="#">Write me</a>
+    <button type="button" class="btn-ghost" id="morning-close">Back to the night</button>
+  </div>
+</dialog>
+
+<script>
+  // Small things around the page: pixel icons, histogram bars, the clock, the menu, the email links.
+  (function () {
+    const NS = 'http://www.w3.org/2000/svg';
+    const Wd = '#c9a476', D = '#8a6a48', S = '#191510', A = '#d99a52', M = '#9aae6b', P = '#efe4d2', G = '#8a7a66';
+    const ICONS = {
+      sim: [
+        [1, 2, 14, 1, Wd], [1, 11, 14, 1, Wd], [1, 2, 1, 10, Wd], [14, 2, 1, 10, Wd], [2, 3, 12, 8, S],
+        [6, 12, 4, 1, D], [4, 13, 8, 1, D],
+        [3, 9, 2, 1, A], [5, 8, 2, 1, A], [7, 7, 1, 1, A], [8, 6, 1, 1, A], [9, 5, 2, 1, A], [11, 4, 2, 1, A],
+        [3, 4, 1, 1, M], [4, 5, 1, 1, M], [5, 6, 1, 1, M], [6, 7, 1, 1, M], [7, 8, 2, 1, M], [9, 9, 4, 1, M]
+      ],
+      homelab: [
+        [3, 1, 10, 14, D], [4, 2, 8, 3, S], [4, 6, 8, 3, S], [4, 10, 8, 3, S],
+        [5, 3, 1, 1, A], [7, 3, 1, 1, M], [9, 3, 2, 1, '#3d342a'],
+        [5, 7, 1, 1, M], [7, 7, 1, 1, A], [9, 7, 2, 1, '#3d342a'],
+        [5, 11, 1, 1, A], [7, 11, 1, 1, A], [9, 11, 2, 1, '#3d342a'],
+        [4, 15, 1, 1, D], [11, 15, 1, 1, D]
+      ],
+      research: [
+        [1, 4, 6, 9, P], [9, 4, 6, 9, P], [7, 4, 2, 10, D], [1, 13, 14, 1, D],
+        [2, 6, 4, 1, G], [2, 8, 4, 1, G], [2, 10, 3, 1, G],
+        [10, 6, 4, 1, G], [10, 8, 3, 1, A], [10, 10, 4, 1, G],
+        [12, 0, 1, 3, M], [11, 1, 3, 1, M]
+      ],
+      extra: [
+        [3, 5, 10, 6, D], [2, 6, 12, 4, D], [2, 10, 3, 2, D], [11, 10, 3, 2, D],
+        [4, 7, 1, 3, A], [3, 8, 3, 1, A],
+        [11, 7, 1, 1, M], [12, 8, 1, 1, M], [10, 8, 1, 1, P], [11, 9, 1, 1, '#e9b06a'],
+        [7, 7, 2, 1, '#2a2018']
+      ]
+    };
+    // Carvings on the puzzle box dials, drawn as 12 × 12 pixel art
+    const art = (rows, c) => {
+      const out = [];
+      rows.forEach((row, y) => [...row].forEach((ch, x) => { if (ch === '#') out.push([x + 2, y + 2, 1, 1, c]); }));
+      return out;
+    };
+    ICONS.moon = art(['....####....', '..###.......', '.##.........', '.##.........', '##..........', '##..........', '##..........', '##..........', '.##.........', '.##.........', '..###.......', '....####....'], '#f1e6cf');
+    ICONS.leaf = art(['........####', '......######', '....#######.', '...######.#.', '..#####..#..', '..####..#...', '.####..#....', '.###..#.....', '.##..#......', '.#.##.......', '.##.........', '#...........'], '#93ad62');
+    ICONS.cupc = art(['..#..#......', '...#..#.....', '..#..#......', '............', '#########...', '#########.##', '#########..#', '#########.##', '.#######....', '..#####.....', '############', '.##########.'], '#efe4d2');
+    const sprite16 = (rows, pal, ox, oy) => {
+      const out = [];
+      rows.forEach((row, y) => [...row].forEach((ch, x) => { if (pal[ch]) out.push([x + ox, y + oy, 1, 1, pal[ch]]); }));
+      return out;
+    };
+    ICONS.mila = sprite16(['.....RRRRR.....', '.RkKKKKKKKKKkR.', 'RkkGGKKKKKGGkkR', 'kkKLEKwwwKLEKkk', '.kKEEKNNNKEEKk.', '..KKGGMNMGGKK..', '..KGGNNTNNGGK..', '...KGMMTMMGK...', '..KKKKGMGKKKK..', '.KKKKKKWKKKKKK.', '.KKGKKWWWKKGKK.', 'KKKKKKKKKKKKKKK', '.kkPP.....PPkk.'],
+      { K: '#2b2627', k: '#191516', R: '#4a4144', w: '#3b3335', G: '#6f696b', M: '#9a948e', E: '#0b0909', L: '#f2efe9', N: '#0b0909', T: '#e88a9a', W: '#d8d2c8', P: '#7a7476' }, 1, 2);
+    const BP = { h: '#3a3632', E: '#d9d2c7', b: '#7d746b', w: '#efe9e0', s: '#b9b0a4', f: '#2a2522' };
+    ICONS.birds = [
+      ...sprite16(['..hhh..', '.hEhEh.', 'bbwwwbb', 'bsbsbsb', '.bsbsb.', '..f.f..'], BP, 1, 6),
+      ...sprite16(['.hhh.', '.EhE.', 'bwwwb', 'bswsb', '.bsb.', '.bbb.', '.f.f.'], BP, 10, 5),
+      [0, 12, 16, 2, '#7a5a40']
+    ];
+    ICONS.bolt = art(['......####..', '.....####...', '....####....', '...####.....', '..#########.', '.........##.', '........##..', '.......##...', '......##....', '.....##.....', '....##......', '...#........'], '#e9b06a');
+    document.querySelectorAll('svg[data-icon]').forEach(svg => {
+      (ICONS[svg.dataset.icon] || []).forEach(([x, y, w, h, c]) => {
+        const r = document.createElementNS(NS, 'rect');
+        r.setAttribute('x', x); r.setAttribute('y', y);
+        r.setAttribute('width', w); r.setAttribute('height', h);
+        r.setAttribute('fill', c);
+        svg.append(r);
+      });
+    });
+
+    const bars = document.getElementById('bars');
+    if (bars) {
+      for (let i = 0; i < 22; i++) {
+        const h = Math.round(108 * Math.exp(-Math.pow((i - 11.2) / 4.6, 2)) + 4 + ((i * 7) % 5));
+        const r = document.createElementNS(NS, 'rect');
+        r.setAttribute('x', 34 + i * 11.6);
+        r.setAttribute('y', 150 - h);
+        r.setAttribute('width', 9);
+        r.setAttribute('height', h);
+        r.setAttribute('rx', 2);
+        bars.append(r);
+      }
+    }
+
+    document.querySelectorAll('a.mail').forEach(a => {
+      const address = `${a.dataset.user}@${a.dataset.domain}`;
+      a.href = `mailto:${address}`;
+      a.querySelector('span').textContent = address;
+    });
+
+    const clock = document.getElementById('clock');
+    try {
+      const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Monterrey' });
+      const tick = () => { clock.textContent = `Monterrey, ${fmt.format(new Date())}`; };
+      tick();
+      setInterval(tick, 30000);
+    } catch (e) { /* leave the plain label */ }
+
+    const menu = document.querySelector('.menu');
+    if (menu) menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.open = false; }));
+  })();
+
+  // The desk: 224 × 90 pixels. The middle 160 columns are the desk by the window (offset OX);
+  // a bookcase stands on the left and the coffee minibar on the right.
+  (function () {
+    const canvas = document.getElementById('scene');
+    if (!canvas || !canvas.getContext) return;
+    const W = 224, H = 90, OX = 32;
+    const ctx = canvas.getContext('2d');
+    const layer = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+    const back = layer(), wall = layer(), front = layer();
+    const bg = back.getContext('2d'), wg = wall.getContext('2d'), fg = front.getContext('2d');
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const narrow = window.matchMedia('(max-width: 760px)');
+
+    const SCREENS = ['Terminal', 'VS Code', 'Quantum ESPRESSO', 'Training', 'htop', 'Music', 'Wallpaper', 'Game night'];
+    const state = {
+      lamp: true, lantern: true, curtain: 0, curtainTarget: 0, screen: 0, hover: null,
+      trimmedAt: null, bird: null, leaves: [], run: null, nas: null, brew: null, cup: 3, emptySince: null,
+      solved: false, morning: false, note: null, runEnd: null, petals: [],
+      bolitaHome: false, bolitaArrive: null, flaquisArrive: null, milaSpin: null, noteUnderMila: false, noteFound: false,
+      win: 0, winTarget: 0, knock: null,
+      cabL: false, cabR: false, seeds: 0, milaTreat: null, concha: null, conchaEaten: false, duck: false, duckSay: 0,
+      crumbs: false, flq: null, duckAsleep: false, duckDebug: null, pcOff: null, gameEgg: 0, typedT: null,
+      routerT: null, plantT: null, pourT: null, matchaT: null, track: 0, trackT: 0
+    };
+    const seen = new Set([0]);
+
+    // The micro escape room. The code is the year in the timeline teaser: 2029.
+    const ROOM = { code: [2, 0, 2, 9] };
+
+    // Bolita and Flaquis visit the porch beam outside the window; Mila rests under the desk.
+    const BEAMS = [{ y: 26, x0: 14, x1: 84 }, { y: 19, x0: 14, x1: 56 }];
+    const beamIdx = Math.random() < 0.7 ? 0 : 1;   // sometimes they pick the other beam
+    const BEAM = BEAMS[beamIdx];
+    const SPOT = { bolita: { x: beamIdx ? 22 : 50, y: BEAM.y - 6 }, flaquis: { x: beamIdx ? 31 : 64, y: BEAM.y - 7 } };
+    const BIRD_FRONT = {
+      bolita: ['..hhh..', '.hEhEh.', 'bbwwwbb', 'bsbsbsb', '.bsbsb.', '..f.f..'],
+      flaquis: ['.hhh.', '.EhE.', 'bwwwb', 'bswsb', '.bsb.', '.bbb.', '.f.f.']
+    };
+    const BIRD_PAL = { h: '#3a3632', E: '#d9d2c7', b: '#7d746b', w: '#efe9e0', s: '#b9b0a4', f: '#2a2522' };
+    const MILA = {
+      front: ['.....RRRRR.....', '.RkKKKKKKKKKkR.', 'RkkGGKKKKKGGkkR', 'kkKLEKwwwKLEKkk', '.kKEEKNNNKEEKk.', '..KKGGMNMGGKK..', '..KGGNNTNNGGK..', '...KGMMTMMGK...', '..KKKKGMGKKKK..', '.KKKKKKWKKKKKK.', '.KKGKKWWWKKGKK.', 'KKKKKKKKKKKKKKK', '.kkPP.....PPkk.'],
+      back: ['.....RRRRR.....', '.RkKKKKKKKKKkR.', 'RkkKKKKKKKKKkkR', 'kkKKKKKKKKKKKkk', '.kKKKKKKKKKKKk.', '..KKKKKKKKKKK..', '..KKKKKKKKKKK..', '...KKKKKKKKK...', '..KKKKKKKKKKK..', '.KKKKKGGGKKKKK.', '.KKKKGKKKGKKKK.', 'KKKKKKGGGKKKKKK', '.kkPP.....PPkk.'],
+      side: ['..........RRR..', '..GG.....kKKKK.', '.G..G..RkkKKLEK', '..GGKRRKKkKKGMN', '...KKKKKKKKKGMM', '..KKKKKKKKKKKMT', '..KKKKKKKKKKGMT', '..KKKGKKKKKWKK.', '..KKKKKKKKKKK..', '..KK......KK...', '..PP......PP...'],
+      pal: { K: '#2b2627', k: '#191516', R: '#4a4144', w: '#3b3335', G: '#6f696b', M: '#9a948e', E: '#0b0909', L: '#f2efe9', N: '#0b0909', T: '#e88a9a', W: '#d8d2c8', P: '#7a7476' }
+    };
+    MILA.sideL = MILA.side.map(r => [...r].reverse().join(''));
+    MILA.sleepA = ['.GG...............', 'G..G..............', '.GGRRRRRRR........', '..KKKKKKKKKK.RRRR.', '..KKKKKKKKKKkKKKKK', '..KKKKKKKKKKkKzzKN', '..KKKKKKKKKKkKKGMM', '.KKKGKKKKKKKKKMMMT', '.KKKKKKKKKKKPPPPP.'];   // breathing out
+    MILA.sleepB = ['.GG...RRRR........', 'G..GRRKKKKRR......', '.GGKKKKKKKKK......', '..KKKKKKKKKK.RRRR.', '..KKKKKKKKKKkKKKKK', '..KKKKKKKKKKkKzzKN', '..KKKKKKKKKKkKKGMM', '.KKKGKKKKKKKKKMMMT', '.KKKKKKKKKKKPPPPP.'];   // breathing in
+    MILA.pal.z = '#8a8486';
+    const MILA_SLEEP = { x: 12, y: 74 };
+    const NOTE = ['..#', '..#', '.##', '##.'];
+    const pcIsOff = t => state.pcOff !== null && t - state.pcOff < 9000;
+    const screenOn = (name, t) => !state.run && !pcIsOff(t) && SCREENS[state.screen] === name;
+    const Z_SMALL = ['###', '.#.', '###'], Z_BIG = ['####', '..#.', '.#..', '####'];
+    const MILA_AT = { x: 13, y: 70 };
+    const FONT = {
+      0: ['111', '101', '101', '101', '111'], 1: ['010', '110', '010', '010', '111'],
+      2: ['111', '001', '111', '100', '111'], 3: ['111', '001', '111', '001', '111'],
+      4: ['101', '101', '111', '001', '001'], 5: ['111', '100', '111', '001', '111'],
+      6: ['111', '100', '111', '101', '111'], 7: ['111', '001', '010', '010', '010'],
+      8: ['111', '101', '111', '101', '111'], 9: ['111', '101', '111', '001', '111']
+    };
+
+    let seed = 11;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+
+    const C = {
+      beam: '#0f0a07', beamHi: '#2c1f15',
+      slat: ['#1b130e', '#20170f'], seam: '#120c08', slatEdge: 'rgba(255, 226, 190, 0.035)',
+      under: '#100b08', base: '#2b1f16', floor: '#1a120d', floorSeam: '#120c09',
+      frame: '#76573a', frameHi: '#a17b54', frameDark: '#4c3624', kumiko: '#5f4630',
+      sky: ['#121929', '#172034', '#1f2940', '#2c3147', '#433d4e', '#5f4a4f'],
+      dawn: ['#3a4a6e', '#5a5f86', '#8a7896', '#c98f8a', '#eeb28a', '#f6d29a'],
+      moon: '#f1e6cf', star: '#cfd6ea',
+      city: '#0d0c12', city2: '#16151d',
+      lit: ['#e9b06a', '#d99a52', '#f3d29a'],
+      rain: 'rgba(205, 214, 235, 0.36)',
+      deskHi: '#a97c55', desk: '#7f5a3d', deskLip: '#4a3324', leg: '#3a281c',
+      pool: ['#cf9a6b', '#ad7d54'],
+      bezel: '#0e0b09', screen: '#18150f',
+      code: ['#9aae6b', '#d99a52', '#efe4d2', '#c9a476', '#e9b06a'],
+      axis: '#3d342a',
+      cup: '#efe4d2', cupShade: '#c9b79a', cupBand: '#3e5072', coffee: '#4b2d1d', cupInside: '#d8c8ad',
+      saucer: '#d6c4a4', saucerShade: '#a8916f',
+      pot: '#3b4a64', potHi: '#53647f', potShade: '#2b3549',
+      trunk: '#5c3f29', leaf: '#6c8746', leafHi: '#93ad62',
+      dripper: '#e8dccb', dripperShade: '#bba98f', glass: 'rgba(210, 225, 240, 0.16)', glassEdge: '#9aa6b6', brew: '#5a3420',
+      tower: '#16100c', towerPanel: '#20170f', fan: '#3a2c20',
+      arm: '#4a3829', armHi: '#80613f',
+      shade: '#d99a52', shadeDark: '#a5682f', shadeOff: '#5a422f', shadeOffDark: '#3d2d20',
+      bulbOn: '#fff1cf', bulbOff: '#3a2d22',
+      lampLight: 'rgba(243, 186, 110, 0.13)', lampGlow: 'rgba(243, 186, 110, 0.09)',
+      screenGlow: 'rgba(170, 196, 225, 0.06)',
+      lantern: '#efdfbd', lanternRib: '#c7aa7b', lanternOff: '#7a6b55', lanternRibOff: '#5e5242',
+      lanternCap: '#1d140e', lanternGlow: 'rgba(245, 214, 160, 0.10)', tassel: '#9a3d2c',
+      rod: '#3a2a1d', curtain: '#2f3d5c', curtainHi: '#3e4f74', curtainShade: '#222c44', stitch: 'rgba(239, 228, 210, 0.12)',
+      wood: '#5e4330', woodHi: '#7f5a3d', woodDoor: '#4f3828', caseBack: '#21170f'
+    };
+
+    const GX0 = 14, GX1 = 84, GY0 = 12, GY1 = 50;
+    const BAYER = [[0, 2], [3, 1]];
+
+    function rect(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
+    function px(g, x, y, c) { g.fillStyle = c; g.fillRect(x, y, 1, 1); }
+    function line(g, x0, y0, x1, y1, c) {
+      const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+      const dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+      let err = dx + dy;
+      for (;;) {
+        px(g, x0, y0, c);
+        if (x0 === x1 && y0 === y1) break;
+        const e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
+      }
+    }
+    function sprite(g, rows, pal, x, y, swap) {
+      rows.forEach((row, j) => [...row].forEach((ch, i) => {
+        if (ch === '.') return;
+        const c = (swap && swap[ch]) || pal[ch];
+        if (c) px(g, x + i, y + j, c);
+      }));
+    }
+    function digit(g, d, x, y, c, k = 1) {
+      FONT[d].forEach((row, j) => [...row].forEach((b, i) => { if (b === '1') rect(g, x + i * k, y + j * k, k, k, c); }));
+    }
+    function glow(g, cx, cy, rx, ry, c) {
+      for (let y = Math.floor(cy - ry); y <= cy + ry; y++) for (let x = Math.floor(cx - rx); x <= cx + rx; x++) {
+        const d = Math.hypot((x - cx) / rx, (y - cy) / ry);
+        if (d < 1 && (BAYER[((y % 2) + 2) % 2][((x % 2) + 2) % 2] + 0.5) / 4 < (1 - d) * 1.6) px(g, x, y, c);
+      }
+    }
+    function blob(g, cx, cy, rx, ry) {
+      if (rx < 0.6 || ry < 0.6) return;
+      for (let y = Math.floor(cy - ry); y <= cy + ry; y++) for (let x = Math.floor(cx - rx); x <= cx + rx; x++) {
+        if (((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1) px(g, x, y, y < cy - ry * 0.25 ? C.leafHi : C.leaf);
+      }
+    }
+    function skyColor(x, y) {
+      const pal = state.morning ? C.dawn : C.sky;
+      const n = pal.length - 1;
+      const t = Math.min(n, (y - GY0) / (GY1 - 8 - GY0) * n);
+      const i = Math.min(n - 1, Math.floor(t));
+      const f = t - i;
+      return f > 0.5 + BAYER[y % 2][x % 2] / 8 ? pal[i + 1] : pal[i];
+    }
+    const inGlass = (x, y) => x >= GX0 && x <= GX1 && y >= GY0 && y <= GY1;
+
+    const backCity = [[14, 9, 17], [23, 7, 11], [30, 10, 21], [40, 8, 13], [48, 11, 19], [59, 7, 10], [66, 10, 16], [76, 9, 12]];
+    const frontCity = [[14, 6, 8], [20, 8, 12], [28, 5, 6], [33, 9, 10], [42, 6, 7], [50, 8, 14], [58, 6, 8], [64, 9, 11], [73, 6, 6], [79, 6, 9]];
+    const windows = [];
+    const stars = [[19, 15], [27, 21], [33, 14], [44, 18], [55, 15], [58, 24], [80, 16], [24, 27], [52, 27]];
+
+    // ---------- Back layer: room, sky and city ----------
+    function paintBack(g) {
+      g.clearRect(0, 0, W, H);
+      rect(g, 0, 0, W, 3, C.beam);
+      rect(g, 0, 3, W, 1, C.beamHi);
+      for (let x = 0; x < W; x++) {
+        const c = x % 6 === 0 ? C.seam : (Math.floor(x / 6) % 2 ? C.slat[1] : C.slat[0]);
+        rect(g, x, 4, 1, 81, c);
+        if (x % 6 === 1) rect(g, x, 4, 1, 81, C.slatEdge);
+      }
+      rect(g, 0, 85, W, 1, C.base);
+      rect(g, 0, 86, W, 4, C.floor);
+      for (let x = 5; x < W; x += 13) rect(g, x, 86, 1, 4, C.floorSeam);
+
+      g.save();
+      g.translate(OX, 0);
+      rect(g, 0, 66, 160, 19, C.under);
+      if (state.lantern) glow(g, 114, 15, 18, 14, C.lanternGlow);
+      glow(g, 115, 46, 31, 21, C.screenGlow);
+      if (state.lamp) glow(g, 141, 47, 15, 13, C.lampGlow);
+      for (let y = GY0; y <= GY1; y++) for (let x = GX0; x <= GX1; x++) px(g, x, y, skyColor(x, y));
+      if (state.morning) {
+        for (let y = 24; y <= 38; y++) for (let x = 64; x <= 78; x++) if ((x - 71) ** 2 + (y - 31) ** 2 <= 31) px(g, x, y, '#ffe2a8');
+      } else {
+        stars.forEach(([x, y]) => px(g, x, y, C.star));
+        for (let y = 13; y <= 25; y++) for (let x = 64; x <= 77; x++) {
+          const a = (x - 70) ** 2 + (y - 19) ** 2 <= 17;
+          const b = (x - 72) ** 2 + (y - 18) ** 2 <= 14;
+          if (a && !b) px(g, x, y, C.moon);
+        }
+      }
+      seed = 11;
+      windows.length = 0;
+      backCity.forEach(([x0, w, h]) => {
+        rect(g, x0, GY1 - h + 1, Math.min(w, GX1 - x0 + 1), h, C.city2);
+        for (let y = GY1 - h + 3; y < GY1 - 1; y += 3) for (let x = x0 + 2; x < x0 + w - 1 && x <= GX1; x += 3) {
+          if (rnd() < 0.18) px(g, x, y, '#6e5a3e');
+        }
+      });
+      frontCity.forEach(([x0, w, h]) => {
+        rect(g, x0, GY1 - h + 1, Math.min(w, GX1 - x0 + 1), h, C.city);
+        for (let y = GY1 - h + 3; y < GY1; y += 3) for (let x = x0 + 1; x < x0 + w - 1 && x <= GX1; x += 2) {
+          if (rnd() < (state.morning ? 0.08 : 0.38)) {
+            const c = C.lit[Math.floor(rnd() * C.lit.length)];
+            px(g, x, y, c);
+            windows.push({ x, y, c, off: false });
+          }
+        }
+      });
+      BEAMS.forEach(b => {
+        rect(g, b.x0, b.y, b.x1 - b.x0 + 1, 2, state.morning ? '#5a4330' : '#241a13');
+        rect(g, b.x0, b.y, b.x1 - b.x0 + 1, 1, state.morning ? '#7a5a40' : '#33261b');
+      });
+      for (let k = 0; k < 22; k++) {
+        const x = 20 + k, y = 48 - Math.round(k * 1.6);
+        if (inGlass(x, y)) px(g, x, y, 'rgba(255, 255, 255, 0.04)');
+        if (inGlass(x + 4, y)) px(g, x + 4, y, 'rgba(255, 255, 255, 0.03)');
+      }
+      g.restore();
+    }
+
+    // ---------- Wall layer: lantern, window frame, sill (the curtains hang in front of it) ----------
+    function paintWall(g) {
+      g.clearRect(0, 0, W, H);
+      g.save();
+      g.translate(OX, 0);
+      const body = state.lantern ? C.lantern : C.lanternOff;
+      const rib = state.lantern ? C.lanternRib : C.lanternRibOff;
+      rect(g, 114, 4, 1, 5, '#2c1f15');
+      rect(g, 111, 9, 7, 1, C.lanternCap);
+      [[111, 7], [110, 9], [109, 11], [109, 11], [109, 11], [109, 11], [109, 11], [109, 11], [110, 9], [111, 7]].forEach(([x, w], i) => {
+        rect(g, x, 10 + i, w, 1, i % 2 === 0 && i > 1 && i < 9 ? rib : body);
+      });
+      rect(g, 109, 12, 1, 6, rib);
+      rect(g, 119, 12, 1, 6, rib);
+      rect(g, 111, 20, 7, 1, C.lanternCap);
+      rect(g, 114, 21, 1, 3, C.tassel);
+
+      rect(g, 12, 10, 75, 2, C.frame);
+      rect(g, 12, 51, 75, 2, C.frame);
+      rect(g, 12, 10, 2, 43, C.frame);
+      rect(g, 85, 10, 2, 43, C.frame);
+      rect(g, 12, 10, 75, 1, C.frameHi);
+      rect(g, 12, 10, 1, 43, C.frameHi);
+      rect(g, 86, 11, 1, 42, C.frameDark);
+      rect(g, 13, 52, 74, 1, C.frameDark);
+      rect(g, 37, 12, 1, 39, C.kumiko);
+      rect(g, 61, 12, 1, 39, C.kumiko);
+      rect(g, 38, 31, 47, 1, C.kumiko);
+      rect(g, 9, 53, 81, 1, C.deskHi);
+      rect(g, 9, 54, 81, 2, C.desk);
+      rect(g, 10, 56, 79, 1, 'rgba(0, 0, 0, 0.3)');
+      g.restore();
+    }
+
+    // ---------- Front layer: the desk and what is on it, the bookcase, the minibar ----------
+    function paintFront(g) {
+      g.clearRect(0, 0, W, H);
+      g.save();
+      g.translate(OX, 0);
+      rect(g, 0, 66, 160, 1, C.deskHi);
+      rect(g, 0, 67, 160, 2, C.desk);
+      rect(g, 0, 69, 160, 1, C.deskLip);
+      rect(g, 4, 70, 3, 15, C.leg);
+      rect(g, 153, 70, 3, 15, C.leg);
+
+      rect(g, 124, 71, 14, 14, C.tower);
+      rect(g, 125, 72, 12, 12, C.towerPanel);
+      for (let a = 0; a < 24; a++) {
+        px(g, Math.round(130 + 3 * Math.cos(a / 24 * Math.PI * 2)), Math.round(78 + 3 * Math.sin(a / 24 * Math.PI * 2)), C.fan);
+      }
+      rect(g, 122, 85, 18, 1, 'rgba(233, 176, 106, 0.18)');
+
+      // Mila's cushion
+      glow(g, 20, 77, 12, 8, 'rgba(233, 176, 106, 0.07)');
+      rect(g, 11, 83, 19, 2, '#3e5072');
+      rect(g, 11, 83, 19, 1, '#53647f');
+      px(g, 11, 83, '#c9a476'); px(g, 29, 83, '#c9a476');
+
+      // pour-over
+      rect(g, 22, 59, 10, 7, C.glass);
+      rect(g, 23, 62, 8, 3, C.brew);
+      rect(g, 22, 59, 1, 7, C.glassEdge);
+      rect(g, 31, 59, 1, 7, C.glassEdge);
+      rect(g, 23, 65, 8, 1, C.glassEdge);
+      px(g, 32, 60, C.glassEdge); px(g, 33, 61, C.glassEdge); px(g, 33, 62, C.glassEdge); px(g, 32, 63, C.glassEdge);
+      rect(g, 21, 54, 12, 1, C.dripper);
+      rect(g, 22, 55, 10, 1, C.dripper);
+      rect(g, 23, 56, 8, 1, C.dripper);
+      rect(g, 24, 57, 6, 1, C.dripper);
+      rect(g, 26, 58, 2, 1, C.dripperShade);
+      px(g, 21, 54, C.dripperShade); px(g, 22, 55, C.dripperShade); px(g, 23, 56, C.dripperShade); px(g, 24, 57, C.dripperShade);
+
+      // himitsu-bako: a puzzle box with a yosegi pattern on its side
+      if (state.solved) {
+        rect(g, 56, 62, 8, 4, '#8a5a3a');
+        rect(g, 56, 62, 8, 1, '#ffd98a');
+        rect(g, 55, 58, 1, 4, '#b07a50');
+        rect(g, 56, 58, 7, 1, '#9a6a44');
+      } else {
+        rect(g, 56, 61, 8, 5, '#8a5a3a');
+        rect(g, 56, 61, 8, 1, '#b07a50');
+      }
+      for (let i = 0; i < 8; i += 2) {
+        px(g, 56 + i, 64, '#c9a476'); px(g, 57 + i, 64, '#5e4330');
+        px(g, 56 + i, 65, '#5e4330'); px(g, 57 + i, 65, '#c9a476');
+      }
+      px(g, 63, 62, '#e9b06a');
+
+      if (state.concha !== null) drawConcha(g, 66, 61, state.concha);
+      else if (state.crumbs) { px(g, 67, 65, '#d8b583'); px(g, 70, 65, '#c98a4a'); px(g, 72, 65, '#d8b583'); }
+
+      // cup and saucer (the coffee inside is drawn every frame)
+      rect(g, 38, 65, 12, 1, C.saucer);
+      px(g, 38, 65, C.saucerShade); px(g, 49, 65, C.saucerShade);
+      rect(g, 40, 60, 7, 5, C.cup);
+      rect(g, 40, 60, 1, 5, C.cupShade);
+      rect(g, 41, 62, 6, 1, C.cupBand);
+      px(g, 47, 61, C.cup); px(g, 48, 62, C.cup); px(g, 47, 63, C.cup);
+
+      // monitor body (the screen is drawn every frame)
+      rect(g, 95, 33, 41, 27, C.bezel);
+      rect(g, 113, 60, 5, 4, C.bezel);
+      rect(g, 106, 64, 19, 2, '#241a12');
+      rect(g, 92, 65, 26, 2, '#241a12');
+      for (let x = 93; x < 117; x += 2) px(g, x, 65, '#3a2b1f');
+      rect(g, 121, 65, 3, 1, '#3a2b1f');
+
+      if (state.lamp) {
+        for (let y = 48; y < 66; y++) {
+          const t = (y - 48) / 18;
+          const l = Math.round(137 - 19 * t), r = Math.round(145 + 11 * t);
+          rect(g, l, y, r - l, 1, C.lampLight);
+        }
+        rect(g, 118, 66, 39, 1, C.pool[0]);
+        rect(g, 120, 67, 35, 1, C.pool[1]);
+      }
+      rect(g, 141, 64, 11, 2, C.arm);
+      rect(g, 141, 64, 11, 1, C.armHi);
+      line(g, 146, 63, 151, 52, C.arm);
+      line(g, 147, 63, 152, 52, C.arm);
+      line(g, 151, 51, 143, 44, C.arm);
+      line(g, 152, 51, 144, 44, C.arm);
+      px(g, 151, 51, C.armHi); px(g, 152, 51, C.armHi);
+      const shade = state.lamp ? C.shade : C.shadeOff;
+      const under = state.lamp ? C.shadeDark : C.shadeOffDark;
+      rect(g, 140, 42, 6, 1, shade);
+      rect(g, 139, 43, 7, 1, shade);
+      rect(g, 138, 44, 8, 1, shade);
+      rect(g, 137, 45, 8, 1, shade);
+      rect(g, 136, 46, 8, 1, under);
+      rect(g, 138, 47, 3, 1, state.lamp ? C.bulbOn : C.bulbOff);
+      g.restore();
+
+      paintBookcase(g);
+      paintMinibar(g);
+    }
+
+    function paintBookcase(g) {
+      rect(g, 3, 20, 26, 66, C.wood);
+      rect(g, 5, 22, 22, 62, C.caseBack);
+      rect(g, 3, 20, 26, 1, C.woodHi);
+      rect(g, 3, 20, 1, 66, C.woodHi);
+      [34, 48, 62].forEach(y => { rect(g, 5, y, 22, 2, C.wood); rect(g, 5, y, 22, 1, C.woodHi); });
+      rect(g, 5, 64, 22, 20, C.wood);
+      if (state.cabL) paintOpenCabL(g);
+      else {
+        rect(g, 6, 65, 9, 18, C.woodDoor);
+        rect(g, 17, 65, 9, 18, C.woodDoor);
+        px(g, 14, 74, '#c9a476'); px(g, 17, 74, '#c9a476');
+      }
+      // top shelf: books and a small plant
+      [[6, 2, 10, '#3e5072'], [8, 2, 8, '#9aae6b'], [10, 1, 11, '#d99a52'], [11, 2, 9, '#efe4d2'], [13, 2, 10, '#8a3b2c'], [15, 1, 7, '#c9a476'], [16, 2, 11, '#5c3f29']]
+        .forEach(([x, w, h, c]) => rect(g, x, 34 - h, w, h, c));
+      line(g, 18, 33, 21, 25, '#3e5072');
+      line(g, 19, 33, 22, 25, '#3e5072');
+      rect(g, 23, 30, 3, 4, C.pot);
+      px(g, 24, 29, C.leaf); px(g, 23, 28, C.leafHi); px(g, 25, 28, C.leaf); px(g, 24, 27, C.leafHi);
+      // middle shelf: the NAS and the router
+      rect(g, 7, 39, 12, 9, '#141110');
+      rect(g, 7, 39, 12, 1, '#2a2420');
+      [8, 11, 14].forEach(x => rect(g, x, 40, 2, 6, '#24201c'));
+      rect(g, 20, 44, 6, 4, '#1c1815');
+      line(g, 21, 43, 21, 40, '#3a332d');
+      line(g, 24, 43, 25, 40, '#3a332d');
+      // lower shelf: a daruma with one eye painted, and some books
+      rect(g, 8, 54, 4, 1, '#b03a2e');
+      rect(g, 7, 55, 6, 6, '#b03a2e');
+      rect(g, 8, 61, 4, 1, '#8c2e24');
+      rect(g, 8, 56, 4, 3, '#efe4d2');
+      px(g, 9, 57, '#1a120c');
+      if (state.solved) px(g, 11, 57, '#1a120c');
+      px(g, 9, 60, '#e9b06a'); px(g, 10, 60, '#e9b06a');
+      rect(g, 15, 60, 11, 2, '#3e5072');
+      rect(g, 16, 58, 9, 2, '#c9a476');
+      rect(g, 15, 56, 8, 2, '#9aae6b');
+    }
+
+    // Bookcase cabinet: bird seeds, Mila's treats, old lab notebooks
+    function paintOpenCabL(g) {
+      rect(g, 6, 65, 20, 18, '#1a120d');
+      rect(g, 6, 65, 20, 1, '#120c08');
+      rect(g, 6, 73, 20, 2, C.wood);
+      rect(g, 6, 73, 20, 1, C.woodHi);
+      rect(g, 2, 64, 4, 20, C.woodDoor); px(g, 3, 74, '#c9a476');
+      rect(g, 26, 64, 4, 20, C.woodDoor); px(g, 28, 74, '#c9a476');
+      rect(g, 8, 67, 6, 6, '#c9b07a');
+      rect(g, 8, 66, 6, 1, '#a8925f');
+      [[10, 69], [11, 70], [9, 71], [12, 71], [10, 72]].forEach(([x, y]) => px(g, x, y, '#6b4a35'));
+      rect(g, 18, 67, 6, 6, 'rgba(210, 225, 235, 0.28)');
+      rect(g, 18, 66, 6, 1, '#b03a2e');
+      [[19, 70], [20, 70], [21, 71], [22, 69], [20, 72], [22, 72]].forEach(([x, y]) => px(g, x, y, '#d9b07a'));
+      rect(g, 8, 76, 2, 7, '#3e5072');
+      rect(g, 10, 77, 2, 6, '#8a3b2c');
+      rect(g, 12, 76, 2, 7, '#9aae6b');
+      rect(g, 15, 80, 9, 3, '#efe4d2');
+      rect(g, 15, 80, 9, 1, '#c9b79a');
+    }
+    // Minibar cabinet: a concha, a rubber duck, spare coffee
+    function paintOpenCabR(g) {
+      rect(g, 196, 67, 25, 16, '#1a120d');
+      rect(g, 196, 74, 25, 2, C.wood);
+      rect(g, 196, 74, 25, 1, '#a97c55');
+      rect(g, 192, 66, 4, 18, C.woodDoor); px(g, 193, 75, '#c9a476');
+      rect(g, 221, 66, 3, 18, C.woodDoor); px(g, 222, 75, '#c9a476');
+      if (state.concha === null && !state.conchaEaten) drawConcha(g, 199, 69, 3);
+      if (!state.duck) drawDuck(g, 212, 69);
+      rect(g, 198, 77, 4, 6, '#8a6a48');
+      rect(g, 203, 77, 4, 6, '#6e5238');
+      rect(g, 209, 80, 9, 3, '#efe4d2');
+    }
+    // A vanilla concha on a little plate; bites eat it from the right
+    function drawConcha(g, x, y, bites) {
+      const w = bites * 2;
+      rect(g, x - 1, y + 4, 8, 1, '#efe4d2');
+      const T = '#f3dfbf', P = '#d8b583', B = '#c98a4a';
+      const rows = [null, [T, P, T, P, T, T], [P, T, P, T, P, T], [B, B, B, B, B, B]];
+      for (let i = 1; i < Math.min(5, w); i++) px(g, x + i, y, T);
+      for (let j = 1; j < 4; j++) for (let i = 0; i < w; i++) px(g, x + i, y + j, rows[j][i]);
+      if (bites < 3) px(g, x + w, y + 3, P);
+    }
+    function drawDuck(g, x, y, asleep) {
+      const Y = '#f2c94c', D = '#d9a92e';
+      rect(g, x + 1, y, 3, 1, Y);
+      px(g, x, y + 1, '#e9883a'); px(g, x + 1, y + 1, Y); px(g, x + 2, y + 1, asleep ? '#b8862a' : '#1a120c'); px(g, x + 3, y + 1, Y); px(g, x + 5, y + 1, Y);
+      rect(g, x + 1, y + 2, 5, 1, Y);
+      px(g, x + 1, y + 3, Y); px(g, x + 2, y + 3, D); rect(g, x + 3, y + 3, 3, 1, Y);
+      rect(g, x + 2, y + 4, 3, 1, Y);
+    }
+
+    function paintMinibar(g) {
+      // wall shelf: a Talavera cup, a yunomi and a matcha bowl
+      rect(g, 195, 37, 27, 2, C.wood);
+      rect(g, 195, 37, 27, 1, C.woodHi);
+      px(g, 197, 39, C.wood); px(g, 219, 39, C.wood);
+      rect(g, 197, 31, 5, 6, '#efe4d2');
+      [[198, 32], [200, 32], [199, 34], [198, 35], [201, 35]].forEach(([x, y]) => px(g, x, y, '#2f4a8a'));
+      px(g, 200, 34, '#e9b06a');
+      px(g, 202, 32, '#efe4d2'); px(g, 203, 33, '#efe4d2'); px(g, 202, 34, '#efe4d2');
+      rect(g, 205, 30, 4, 7, '#6b4a35');
+      rect(g, 205, 30, 4, 2, '#7f9157');
+      px(g, 206, 32, '#7f9157');
+      rect(g, 211, 34, 8, 3, '#3f3a33');
+      rect(g, 212, 33, 6, 1, '#8a7a66');
+      rect(g, 213, 33, 4, 1, '#9aae6b');
+      // cabinet
+      rect(g, 194, 64, 28, 22, C.wood);
+      rect(g, 194, 64, 28, 1, '#a97c55');
+      if (state.cabR) paintOpenCabR(g);
+      else {
+        rect(g, 196, 67, 12, 16, C.woodDoor);
+        rect(g, 209, 67, 12, 16, C.woodDoor);
+        px(g, 207, 75, '#c9a476'); px(g, 209, 75, '#c9a476');
+      }
+      // espresso machine
+      rect(g, 198, 48, 13, 2, '#2a2725');
+      rect(g, 198, 48, 13, 1, '#8d8f94');
+      rect(g, 198, 50, 13, 14, '#1c1a19');
+      rect(g, 199, 51, 11, 3, '#4d5056');
+      px(g, 208, 52, '#c9cbd0');
+      rect(g, 201, 54, 6, 2, '#8d8f94');
+      rect(g, 202, 56, 4, 1, '#5d6066');
+      rect(g, 206, 56, 6, 1, '#2a2725');
+      px(g, 203, 57, '#8d8f94'); px(g, 204, 57, '#8d8f94');
+      rect(g, 199, 62, 11, 2, '#5d6066');
+      rect(g, 199, 62, 11, 1, '#8d8f94');
+      for (let y = 53; y <= 58; y++) px(g, 197, y, '#8d8f94');
+      // the espresso cup on the tray (Talavera)
+      rect(g, 202, 59, 4, 3, '#efe4d2');
+      rect(g, 203, 59, 2, 1, C.cupInside);
+      px(g, 202, 60, '#2f4a8a'); px(g, 205, 61, '#2f4a8a'); px(g, 206, 60, '#efe4d2');
+      // coffee bag and a ceramic cup
+      rect(g, 213, 54, 5, 10, '#8a6a48');
+      rect(g, 213, 54, 5, 1, '#6e5238');
+      rect(g, 214, 58, 3, 3, '#efe4d2');
+      px(g, 215, 56, '#2a2018');
+      rect(g, 219, 60, 3, 4, '#8c4d34');
+      rect(g, 219, 60, 3, 1, '#c9734a');
+    }
+
+    // ---------- Things that change every frame ----------
+    function bonsaiGrowth(t) {
+      if (state.trimmedAt === null) return 1;
+      const k = (t - state.trimmedAt) / 25000;
+      if (k >= 1) { state.trimmedAt = null; return 1; }
+      return 0.3 + 0.7 * Math.max(0, k);
+    }
+    function drawBonsai(g, t) {
+      const s = bonsaiGrowth(t);
+      const side = Math.max(0.65, s);
+      blob(g, 7, 55, 3.2 * side, 2.2 * side);
+      blob(g, 15, 55, 2.6 * side, 1.8 * side);
+      [[10, 60], [10, 59], [9, 58], [9, 57], [10, 56], [11, 55], [12, 56], [13, 55], [12, 54], [12, 53]].forEach(([x, y]) => px(g, x, y, C.trunk));
+      blob(g, 12, 52 + (1 - s) * 1.2, 3.6 * s, 2.4 * s);
+      rect(g, 4, 61, 14, 1, C.potHi);
+      rect(g, 5, 62, 12, 4, C.pot);
+      rect(g, 5, 62, 1, 4, C.potShade);
+    }
+    function drawLeaves(g, t) {
+      state.leaves = state.leaves.filter(l => t - l.t0 < l.dur + 1500);
+      state.leaves.forEach(l => {
+        const u = Math.min(1, Math.max(0, (t - l.t0) / l.dur));
+        const y = Math.round(l.y + (65 - l.y) * u);
+        const x = Math.round(l.x + Math.sin(u * 6 + l.x) * 1.5);
+        const a = u < 1 ? 1 : Math.max(0, 1 - (t - l.t0 - l.dur) / 1500);
+        g.globalAlpha = a;
+        px(g, x, y, l.c);
+        g.globalAlpha = 1;
+      });
+    }
+    function drawCup(g, t) {
+      rect(g, 41, 60, 5, 1, state.cup > 0 ? C.coffee : C.cupInside);
+      if (state.cup === 0) return;
+      const wisps = state.cup >= 3 ? 2 : 1;
+      for (let w = 0; w < wisps; w++) {
+        for (let i = 0; i < 6; i++) {
+          const q = ((t / 2600) + i / 6 + w * 0.37) % 1;
+          const y = Math.round(58 - q * 11);
+          const x = 42 + w * 2 + Math.round(Math.sin(q * 6.283 + w * 2) * 1.2);
+          px(g, x, y, `rgba(239, 228, 210, ${((state.cup === 1 ? 0.2 : 0.36) * (1 - q)).toFixed(3)})`);
+        }
+      }
+    }
+    function drawTower(g, t) {
+      if (pcIsOff(t)) { px(g, 126, 73, '#5a3a1e'); return; }
+      const run = !!state.run;
+      px(g, 126, 73, run ? '#e9b06a' : C.code[1]);
+      for (let y = 73; y <= 82; y++) {
+        const k = (Math.floor(t / (run ? 60 : 160)) + y) % 6;
+        px(g, 135, y, run ? (k % 2 ? '#e9b06a' : '#d4553a') : (k < 3 ? '#9aae6b' : '#d99a52'));
+      }
+      const a = t * (run ? 0.03 : 0.003);
+      for (let k = 0; k < 4; k++) {
+        px(g, 130 + Math.round(2 * Math.cos(a + k * Math.PI / 2)), 78 + Math.round(2 * Math.sin(a + k * Math.PI / 2)), '#8a7a66');
+      }
+      px(g, 130, 78, '#5a4a3a');
+    }
+    function drawNAS(g, t) {
+      const busy = !!state.nas;
+      [8, 11, 14].forEach((x, i) => {
+        const on = busy ? Math.floor(t / 70 + i) % 2 === 0 : Math.floor(t / 1700 + i * 0.7) % 3 !== 0;
+        px(g, x, 46, on ? (busy ? '#e9b06a' : '#9aae6b') : '#2a2420');
+      });
+      px(g, 17, 41, '#9aae6b');
+      const r = state.routerT !== null ? t - state.routerT : Infinity;
+      px(g, 22, 45, r < 1200 ? '#2a2420' : r < 2600 ? (Math.floor(t / 90) % 2 ? '#9aae6b' : '#2a2420') : '#9aae6b');
+      if (state.plantT !== null && t - state.plantT < 1400) {
+        const q = (t - state.plantT) / 1400;
+        px(g, 24, 24 + Math.floor(q * 5), '#8094bd');
+        px(g, 23 + Math.floor(t / 200) % 3, 27, 'rgba(154, 174, 107, 0.7)');
+      }
+      if (state.matchaT !== null && t - state.matchaT < 2200) {
+        for (let k = 0; k < 3; k++) px(g, 212 + Math.floor(Math.random() * 6), 33, k % 2 ? '#c8dc95' : '#9aae6b');
+      }
+    }
+    function drawEspresso(g, t) {
+      const b = state.brew;
+      px(g, 200, 52, b ? '#e9b06a' : '#4a3c2c');
+      if (!b) return;
+      const e = t - b.t0;
+      if (e > 500 && e < 3600) px(g, Math.floor(t / 120) % 2 ? 203 : 204, 58, '#5a3420');
+      const fill = Math.min(2, Math.floor(Math.max(0, e - 600) / 1100));
+      for (let r = 0; r <= fill; r++) rect(g, 203, 61 - r, 2, 1, r === fill ? '#c98b52' : '#4b2d1d');
+      for (let i = 0; i < 4; i++) {
+        const q = ((e / 900) + i / 4) % 1;
+        px(g, 204 + Math.round(Math.sin(q * 6 + i) * 1.5), 47 - Math.round(q * 8), `rgba(239, 228, 210, ${(0.45 * (1 - q)).toFixed(2)})`);
+      }
+    }
+
+    // Bolita, side view (very angry when you trim the bonsai)
+    function birdSprite(g, x, y, flip, flap, angry, t, slim) {
+      const P = (dx, dy, c) => px(g, flip ? x + 5 - dx : x + dx, y + dy, c);
+      const head = '#3a3632', body = '#7d746b', wing = '#2e2a27', beak = '#2a2522', eye = '#d9d2c7', belly = '#cfc6b8';
+      P(2, 0, head); P(3, 0, head);
+      P(1, 1, head); P(2, 1, head); P(3, 1, head); P(4, 1, eye); P(5, 1, beak);
+      for (let dx = 0; dx <= 4; dx++) P(dx, 2, body);
+      if (slim) { P(2, 3, belly); P(3, 3, belly); } else { P(1, 3, body); P(2, 3, belly); P(3, 3, belly); P(4, 3, body); }
+      P(-1, 2, wing); P(0, 2, wing);
+      if (flap) { P(1, 0, wing); P(0, 1, wing); } else { P(1, 2, wing); P(2, 2, wing); }
+      P(2, 4, beak); P(4, 4, beak);
+      if (angry) {
+        P(4, 0, '#120c08');
+        if (Math.floor(t / 300) % 2 === 0) {
+          const ax = flip ? x - 4 : x + 7, ay = y - 4;
+          px(g, ax, ay + 1, '#ff5a3c'); px(g, ax + 2, ay + 1, '#ff5a3c'); px(g, ax + 1, ay, '#ff5a3c'); px(g, ax + 1, ay + 2, '#ff5a3c');
+        }
+      }
+    }
+    const PERCH = { x: OX + 9, y: 48 };
+    const OPEN_PT = { x: OX + 24, y: 33 };   // the open pane, the only way in
+    const KNOCK = { x: 24, y: 37 };          // just outside the left pane (desk coordinates)
+    const SILL = { x: OX + 22, y: 47 };      // where he eats the seeds
+    const KEYS = { x: OX + 102, y: 60 };     // on the keyboard, playing
+    const POWER = { x: OX + 126, y: 66 };    // on top of the PC, by the power button
+    const CRUMBS = { x: OX + 66, y: 60 };    // Flaquis, on the desk
+    const SEED_PX = [[19, 52], [21, 52], [23, 52], [24, 52], [26, 52], [28, 52]];
+    const ease = u => u * u * (3 - 2 * u);
+    const along = (p, q, u, arc) => {
+      const k = ease(Math.min(1, Math.max(0, u)));
+      return { x: p.x + (q.x - p.x) * k, y: p.y + (q.y - p.y) * k - Math.sin(k * Math.PI) * arc };
+    };
+    function birdAt(t) {
+      const b = state.bird;
+      const e = t - b.t0;
+      const home = { x: OX + SPOT.bolita.x, y: SPOT.bolita.y };
+      const goal = b.goal;
+      const spot = { seeds: SILL, keys: KEYS, power: POWER }[goal] || PERCH;
+      const stay = { seeds: 3600, keys: 3800, power: 1800 }[goal] || 4600;
+      const leg = (a, c, u, arc) => ({ ...along(a, c, u, arc), flip: c.x < a.x });
+      if (e < 700) return { ...leg(b.from, OPEN_PT, e / 700, 4), out: true };
+      if (e < 1400) return leg(OPEN_PT, spot, (e - 700) / 700, goal === 'power' ? 2 : 3);
+      if (e < 1400 + stay) {
+        const u = (e - 1400) / stay;
+        if (goal === 'seeds') return { x: spot.x, y: spot.y + (Math.floor(e / 260) % 2), flip: true, still: true, eating: u };
+        if (goal === 'keys') return { x: spot.x + (Math.floor(e / 500) % 3) - 1, y: spot.y + (Math.floor(e / 180) % 2), still: true, playing: true };
+        if (goal === 'power') return { x: spot.x, y: spot.y + (u > 0.3 && u < 0.45 ? 1 : 0), still: true, press: u > 0.35 };
+        return { x: spot.x, y: spot.y - (Math.floor(e / 450) % 5 === 0 ? 1 : 0), angry: true, still: true };
+      }
+      if (e < 2100 + stay) return leg(spot, OPEN_PT, (e - 1400 - stay) / 700, 3);
+      if (e < 2800 + stay) return { ...leg(OPEN_PT, home, (e - 2100 - stay) / 700, 4), out: true };
+      return null;
+    }
+    // drawn twice per frame: once outside (behind the glass), once inside the room
+    function drawBird(g, t, outside) {
+      if (!state.bird) return;
+      const p = birdAt(t);
+      if (!p) {
+        const goal = state.bird.goal;
+        state.bird = null;
+        state.bolitaHome = true;
+        if (goal === 'seeds') { state.seeds = 0; flash('Bolita ate every seed and flew home', 3000); return; }
+        if (goal === 'keys') { state.seeds = 0; flash('Bolita logged off. He took the seeds to go', 3000); return; }
+        if (goal === 'power') { state.seeds = 0; flash('Bolita flew home. The PC comes back in a bit', 3000); return; }
+        if (!state.noteUnderMila) {
+          state.noteUnderMila = true;
+          flash('Bolita flew home. Something slipped under the desk', 3000);
+        }
+        return;
+      }
+      if (p.eating !== undefined) state.seeds = Math.ceil(SEED_PX.length * (1 - p.eating));
+      const b = state.bird;
+      if (p.playing && !b.said) { b.said = true; flash('Bolita took over the keyboard. He’s doing better than you', 3400); }
+      if (p.press && !b.said) { b.said = true; state.pcOff = t; flash('Bolita turned off your PC. For your own good. Go to sleep', 3800); }
+      if (p.playing && !outside) for (let k = 0; k < 3; k++) px(g, 93 + Math.floor(Math.random() * 24) + OX, 65, '#e9b06a');
+      if (!!p.out !== outside) return;
+      birdSprite(g, Math.round(p.x - (outside ? OX : 0)), Math.round(p.y), !!p.flip, p.still ? 0 : Math.floor(t / 90) % 2, !!p.angry, t);
+    }
+    function flqAt(t) {
+      const e = t - state.flq.t0;
+      const home = { x: OX + SPOT.flaquis.x, y: SPOT.flaquis.y };
+      const leg = (a, c, u, arc) => ({ ...along(a, c, u, arc), flip: c.x < a.x });
+      if (e < 700) return { ...leg(home, OPEN_PT, e / 700, 4), out: true };
+      if (e < 1500) return leg(OPEN_PT, CRUMBS, (e - 700) / 800, 4);
+      if (e < 4500) return { x: CRUMBS.x, y: CRUMBS.y + (Math.floor(e / 240) % 2), still: true, eating: (e - 1500) / 3000 };
+      if (e < 5300) return leg(CRUMBS, OPEN_PT, (e - 4500) / 800, 4);
+      if (e < 6000) return { ...leg(OPEN_PT, home, (e - 5300) / 700, 4), out: true };
+      return null;
+    }
+    function drawFlq(g, t, outside) {
+      if (!state.flq) return;
+      const p = flqAt(t);
+      if (!p) { state.flq = null; flash('Flaquis cleaned up the crumbs and went back to his beam', 3000); return; }
+      if (p.eating > 0.6 && state.crumbs) { state.crumbs = false; render(); }
+      if (!!p.out !== outside) return;
+      birdSprite(g, Math.round(p.x - (outside ? OX : 0)), Math.round(p.y), !!p.flip, p.still ? 0 : Math.floor(t / 90) % 2, false, t, true);
+    }
+    // Bolita at the glass, tapping, until someone slides the window open
+    function drawKnock(g, t) {
+      if (!state.knock) return;
+      const e = t - state.knock.t0;
+      if (e < 900) {
+        const p = along(SPOT.bolita, KNOCK, e / 900, 5);
+        birdSprite(g, Math.round(p.x), Math.round(p.y), true, Math.floor(t / 90) % 2, false, t);
+        return;
+      }
+      const angry = state.knock.goal !== 'seeds';
+      const tap = Math.floor(t / 260) % 3 === 0 && angry;
+      birdSprite(g, KNOCK.x - (tap ? 1 : 0), KNOCK.y + (Math.floor(t / 520) % 2), true, Math.floor(t / 110) % 2, angry, t);
+      if (tap) { px(g, KNOCK.x - 3, KNOCK.y, 'rgba(239, 228, 210, 0.6)'); px(g, KNOCK.x - 3, KNOCK.y + 2, 'rgba(239, 228, 210, 0.6)'); }
+    }
+    function drawSash(g) {
+      const dx = Math.round(23 * state.win);
+      rect(g, 14 + dx, 31, 23, 1, C.kumiko);
+      if (dx > 0) {
+        rect(g, 13 + dx, 12, 1, 39, C.kumiko);
+        rect(g, Math.min(37 + dx, 60), 12, 1, 39, C.kumiko);
+      }
+    }
+    function startTrip(from, goal = 'bonsai') {
+      state.knock = null;
+      state.bolitaHome = false;
+      state.bird = { t0: now(), from, goal };
+      flash(goal === 'seeds' ? 'Bolita came in for the seeds' : 'Tweet! (very angry)', 2600);
+      redraw();
+      setTimeout(redraw, 7500);
+    }
+
+    // ---------- Screens (x 96–134, y 34–58 in desk coordinates) ----------
+    const K = '#d99a52', N = '#e3d7c3', STR = '#9aae6b', CM = '#6b5d4c', PU = '#b5a48e';
+    const EDIT = [
+      [[109, 3, K], [113, 6, N]],
+      [[111, 4, N], [116, 1, PU], [118, 6, STR]],
+      [[111, 3, K], [115, 5, N], [121, 2, K], [124, 5, N]],
+      [[113, 4, N], [118, 1, PU], [120, 7, N]],
+      [[113, 4, N], [118, 8, N]],
+      [[111, 9, CM]],
+      [[109, 3, K], [113, 5, N]],
+      [[111, 5, N], [117, 1, PU], [119, 7, STR]],
+      [[111, 6, K], [118, 4, N]],
+      []
+    ];
+    const codeLines = [];
+    (function () {
+      let s = 5;
+      const r = () => ((s = (s * 48271) % 2147483647) / 2147483647);
+      const indents = [0, 2, 2, 4, 4, 2, 0, 2, 4, 2, 0];
+      for (let i = 0; i < 11; i++) {
+        const y = 36 + i * 2;
+        let x = 98 + indents[i];
+        const segs = [];
+        const n = 1 + Math.floor(r() * 3);
+        for (let k = 0; k < n && x < 115; k++) {
+          const len = 2 + Math.floor(r() * 6);
+          const end = Math.min(116, x + len);
+          segs.push([x, end - x, C.code[Math.floor(r() * C.code.length)]]);
+          x = end + 1;
+        }
+        codeLines.push({ y, segs, end: x });
+      }
+    })();
+    const cursor = { x: codeLines[codeLines.length - 1].end, y: codeLines[codeLines.length - 1].y };
+
+    const SCREEN_DRAW = {
+      'Terminal'(g, t, blink) {
+        rect(g, 96, 34, 39, 25, '#120f0b');
+        const prompt = (y, len) => { px(g, 98, y, K); rect(g, 100, y, len, 1, N); };
+        prompt(36, 9);
+        rect(g, 98, 38, 15, 1, '#7f9157');
+        prompt(40, 15);
+        rect(g, 98, 42, 20, 1, '#8a7a66');
+        prompt(44, 11);
+        [[98, 4], [104, 6], [112, 3], [117, 5], [124, 6]].forEach(([x, w]) => rect(g, x, 46, w, 1, '#6b5d4c'));
+        [[98, 4, N], [104, 6, N], [112, 1, STR], [117, 5, N], [124, 3, N]].forEach(([x, w, c]) => rect(g, x, 48, w, 1, c));
+        [[98, 4, N], [104, 5, N], [112, 2, K], [117, 4, N], [124, 3, N]].forEach(([x, w, c]) => rect(g, x, 50, w, 1, c));
+        prompt(52, 12);
+        rect(g, 98, 54, 6 + (Math.floor(t / 300) % 26), 1, '#a8c27a');
+        px(g, 98, 56, K);
+        if (blink) px(g, 100, 56, N);
+      },
+      'VS Code'(g, t, blink) {
+        rect(g, 96, 34, 39, 25, '#17140f');
+        rect(g, 96, 34, 2, 25, '#0f0c09');
+        [[97, 36, '#8a7a66'], [97, 39, K], [97, 42, '#8a7a66'], [97, 45, '#8a7a66']].forEach(([x, y, c]) => px(g, x, y, c));
+        rect(g, 98, 34, 8, 25, '#1c1812');
+        [[99, 37, 5], [100, 39, 4], [100, 41, 5], [100, 43, 3], [99, 45, 5], [100, 47, 4], [100, 49, 4]].forEach(([x, y, w], i) => rect(g, x, y, w, 1, i === 2 ? '#e9b06a' : '#7d6e5c'));
+        rect(g, 106, 34, 29, 2, '#120f0b');
+        rect(g, 106, 34, 10, 2, '#221c15');
+        rect(g, 106, 34, 10, 1, K);
+        rect(g, 117, 35, 7, 1, '#2a231b');
+        EDIT.forEach((segs, i) => {
+          const y = 37 + i * 2;
+          px(g, 107, y, '#4a4036');
+          segs.forEach(([x, w, c]) => rect(g, x, y, w, 1, c));
+        });
+        if (blink) px(g, 127, 45, N);
+        rect(g, 96, 58, 39, 1, '#3e5072');
+      },
+      'Quantum ESPRESSO'(g, t, blink) {
+        rect(g, 96, 34, 39, 25, '#120f0b');
+        rect(g, 96, 34, 39, 2, '#1c1712');
+        px(g, 98, 35, K);
+        rect(g, 100, 35, 9, 1, '#8a7a66');
+        rect(g, 99, 38, 1, 19, C.axis);
+        rect(g, 99, 56, 34, 1, C.axis);
+        [110, 121, 132].forEach(x => { for (let y = 38; y < 56; y += 2) px(g, x, y, C.axis); });
+        for (let x = 100; x <= 132; x += 2) px(g, x, 47, '#c9a476');
+        for (let x = 100; x <= 132; x++) {
+          const k = (x - 99) / 33;
+          px(g, x, Math.round(54 - 1.5 * Math.cos(2 * Math.PI * k)), 'rgba(217, 154, 82, 0.55)');
+          px(g, x, Math.round(40 + 1.5 * Math.cos(2 * Math.PI * k + 1)), 'rgba(154, 174, 107, 0.55)');
+          px(g, x, Math.min(55, Math.round(47 + 12 * Math.abs(k - 0.667))), K);
+          px(g, x, Math.max(39, Math.round(47 - 12 * Math.abs(k - 0.667))), STR);
+        }
+        if (blink) px(g, 132, 35, STR);
+      },
+      'Training'(g, t, blink) {
+        rect(g, 96, 34, 39, 25, C.screen);
+        codeLines.forEach(l => l.segs.forEach(([x, w, c]) => rect(g, x, l.y, w, 1, c)));
+        rect(g, 119, 37, 1, 21, C.axis);
+        rect(g, 119, 57, 15, 1, C.axis);
+        const reach = reduce ? 133 : 120 + Math.floor(((t / 7000) % 1) * 14);
+        for (let x = 120; x <= Math.min(133, reach); x++) {
+          const u = (x - 120) / 13;
+          px(g, x, Math.min(56, Math.round(38 + 13 * (1 - Math.exp(-2.6 * u)))), C.code[0]);
+          px(g, x, Math.min(56, Math.round(39 + 16 * (1 - Math.exp(-3 * u)) + (x % 3 === 0 ? 1 : 0))), C.code[1]);
+        }
+        if (blink) px(g, cursor.x, cursor.y, C.code[1]);
+      },
+      'htop'(g, t) {
+        const run = !!state.run;
+        rect(g, 96, 34, 39, 25, '#120f0b');
+        for (let i = 0; i < 16; i++) {
+          const x0 = i < 8 ? 98 : 117, y = 36 + (i % 8) * 2;
+          px(g, x0, y, '#6b5d4c');
+          const load = run ? 0.94 + 0.06 * Math.sin(t / 90 + i) : 0.2 + 0.55 * Math.abs(Math.sin(t / 1100 + i * 1.7));
+          const len = Math.max(1, Math.round(14 * load));
+          rect(g, x0 + 2, y, 14, 1, '#221b14');
+          rect(g, x0 + 2, y, len, 1, load > 0.85 ? '#d4553a' : load > 0.55 ? K : STR);
+        }
+        rect(g, 98, 53, 34, 1, '#221b14');
+        rect(g, 98, 53, Math.round(34 * (run ? 0.86 : 0.42)), 1, '#8094bd');
+        rect(g, 98, 55, run ? 26 : 18, 1, N);
+        rect(g, 98, 57, 12, 1, '#8a7a66');
+      },
+      'Music'(g, t) {
+        rect(g, 96, 34, 39, 25, '#16120e');
+        const art = ['#3e5072', '#3e5072', '#4a4a6a', '#6a4f6a', '#8a5a6a', '#b06a5e', '#d98a5a', '#e9a86a', '#2f3d5c', '#2a3550', '#232c44', '#1f2639', '#1a2030'];
+        art.forEach((c, i) => rect(g, 98, 36 + i, 13, 1, art[(i + state.track * 3) % art.length]));
+        for (let y = -2; y <= 2; y++) for (let x = -2; x <= 2; x++) if (x * x + y * y <= 4) px(g, 104 + x, 43 + y, '#f3d29a');
+        [[98, 46, 4], [101, 45, 3], [104, 46, 4], [107, 44, 4]].forEach(([x, y, w]) => rect(g, x, y, w, 49 - y, '#151c2a'));
+        rect(g, 113, 37, 18, 1, N);
+        rect(g, 113, 39, 12, 1, '#8a7a66');
+        for (let i = 0; i < 10; i++) {
+          const h = reduce ? 3 : 1 + Math.round(5 * Math.abs(Math.sin(t / 220 + i * 0.8)));
+          rect(g, 113 + i * 2, 49 - h, 1, h, i % 3 === 0 ? K : STR);
+        }
+        rect(g, 98, 52, 34, 1, '#3d342a');
+        rect(g, 98, 52, 1 + Math.floor(((t - state.trackT) / 900) % 34), 1, K);
+        px(g, 109, 55, '#8a7a66'); px(g, 108, 56, '#8a7a66'); px(g, 109, 57, '#8a7a66');
+        rect(g, 114, 54, 1, 4, N); rect(g, 116, 54, 1, 4, N);
+        px(g, 121, 55, '#8a7a66'); px(g, 122, 56, '#8a7a66'); px(g, 121, 57, '#8a7a66');
+      },
+      'Wallpaper'(g, t) {
+        const sky = ['#2b2a4a', '#4a3a5e', '#7a4a6a', '#b8606a', '#e08a6a'];
+        for (let y = 34; y <= 51; y++) rect(g, 96, y, 39, 1, sky[Math.min(4, Math.floor((y - 34) / 3.6))]);
+        for (let y = -4; y <= 4; y++) for (let x = -4; x <= 4; x++) if (x * x + y * y <= 16) px(g, 125 + x, 42 + y, '#d4553a');
+        for (let y = 39; y <= 51; y++) {
+          const half = Math.round((y - 39) * 1.3) + 1;
+          rect(g, 116 - half, y, half * 2 + 1, 1, y < 43 ? '#efe4d2' : '#3e5072');
+        }
+        px(g, 113, 44, '#efe4d2'); px(g, 119, 44, '#efe4d2'); px(g, 116, 45, '#efe4d2');
+        for (let y = 52; y <= 58; y++) rect(g, 96, y, 39, 1, y % 2 ? '#2f3d5c' : '#283450');
+        for (let x = 98; x < 134; x += 5) px(g, x + (Math.floor(t / 700) % 2), 54, '#8094bd');
+        line(g, 96, 36, 104, 39, '#3a2a1d');
+        [[99, 36], [101, 37], [103, 38], [100, 38], [97, 37], [104, 40], [102, 36], [98, 35]].forEach(([x, y]) => px(g, x, y, '#f2b8c8'));
+      },
+      'Game night'(g, t) {
+        rect(g, 96, 34, 39, 25, '#0f0c0a');
+        rect(g, 104, 35, 23, 23, '#22331d');
+        for (let y = 35; y < 58; y++) for (let x = 104; x < 127; x++) if ((x * 5 + y * 3) % 7 === 0) px(g, x, y, '#2b4024');
+        const lane = '#7a6a52';
+        rect(g, 106, 37, 1, 19, lane); rect(g, 106, 37, 19, 1, lane);
+        rect(g, 106, 55, 19, 1, lane); rect(g, 124, 37, 1, 19, lane);
+        for (let i = 0; i <= 18; i++) px(g, 106 + i, 55 - i, lane);
+        for (let i = 0; i <= 20; i++) { px(g, 105 + i, 36 + i, '#3e5072'); if (i < 20) px(g, 106 + i, 36 + i, '#33445f'); }
+        rect(g, 105, 53, 4, 4, '#5fa8a0');
+        rect(g, 122, 36, 4, 4, '#d99a52');
+        [[106, 46], [111, 50], [115, 55]].forEach(([x, y]) => px(g, x, y, '#5fa8a0'));
+        [[124, 46], [119, 42], [115, 37]].forEach(([x, y]) => px(g, x, y, '#d99a52'));
+        const p = (t / 3000) % 1;
+        for (let k = 0; k < 3; k++) {
+          const i = Math.round(((p + k / 3) % 1) * 9);
+          px(g, 106 + i, 55 - i, '#8fe3d6');
+          px(g, 124 - i, 37 + i, '#f3c28a');
+        }
+        rect(g, 96, 34, 7, 25, '#1a1512');
+        rect(g, 128, 34, 7, 25, '#1a1512');
+        for (let i = 0; i < 5; i++) {
+          rect(g, 97, 36 + i * 4, 5, 2, '#22302e');
+          rect(g, 97, 36 + i * 4, Math.max(1, Math.round(5 * (0.4 + 0.6 * Math.abs(Math.sin(i + t / 4000))))), 1, '#5fa8a0');
+          rect(g, 129, 36 + i * 4, 5, 2, '#30251a');
+          rect(g, 129, 36 + i * 4, Math.max(1, Math.round(5 * (0.4 + 0.6 * Math.abs(Math.cos(i + t / 4000))))), 1, '#d99a52');
+        }
+      }
+    };
+
+    // ---------- Escape room drawings ----------
+    function drawNote(g) {
+      if (!state.noteFound) return;
+      rect(g, 31, 83, 3, 2, '#efe4d2');
+      px(g, 33, 83, '#c9b79a');
+    }
+    function drawDeskDuck(g, t) {
+      if (!state.duck) return;
+      const music = screenOn('Music', t) && !state.duckAsleep;
+      const bob = music ? Math.floor(t / 400) % 2 : 0;
+      drawDuck(g, 82, 61 - bob, state.duckAsleep);
+      const age = (t / 1000) % 2;
+      const a = (1 - age / 2).toFixed(2);
+      if (music) {
+        NOTE.forEach((row, j) => [...row].forEach((ch, i) => { if (ch === '#') px(g, 88 + i + Math.round(age * 2), 56 - Math.round(age * 3) + j, `rgba(233, 176, 106, ${a})`); }));
+      }
+    }
+    // drawn after the room darkens, so the duck's z's stay readable
+    function drawDuckZ(g, t) {
+      if (!state.duck || !state.duckAsleep) return;
+      for (let k = 0; k < 2; k++) {
+        const age = (t / 1000 + k) % 2;
+        const a = (Math.min(1, age * 3) * (1 - age / 2)).toFixed(2);
+        Z_SMALL.forEach((row, j) => [...row].forEach((ch, i) => {
+          if (ch === '#') px(g, 87 + i + Math.round(age * 2), 57 - Math.round(age * 2.5) + j, `rgba(201, 211, 232, ${a})`);
+        }));
+      }
+    }
+    function drawZzz(g, t) {
+      for (let k = 0; k < 3; k++) {
+        const age = (t / 1000 + k * 0.8) % 2.4;
+        const a = Math.min(1, age * 2.5) * (1 - age / 2.4);
+        const music = screenOn('Music', t);
+        const rows = music ? NOTE : age < 1.2 ? Z_SMALL : Z_BIG;
+        const x = Math.round(MILA_SLEEP.x + 17 + age * 5), y = Math.round(73 - age * 0.9) - rows.length;
+        const c = music ? `rgba(233, 176, 106, ${a.toFixed(2)})` : `rgba(201, 211, 232, ${a.toFixed(2)})`;
+        rows.forEach((row, j) => [...row].forEach((ch, i) => {
+          if (ch === '#' && y + j >= 70) px(g, x + i, y + j, c);
+        }));
+      }
+    }
+    function drawMila(g, t) {
+      // a treat wakes her up, whatever time it is
+      if (state.milaTreat !== null) {
+        const e = t - state.milaTreat;
+        if (e < 3000) {
+          const munch = e > 500 && e < 2200 && Math.floor(e / 160) % 2 === 0;
+          sprite(g, MILA.front, MILA.pal, MILA_AT.x, MILA_AT.y, munch ? { T: MILA.pal.M } : null);
+          const bone = e < 500 ? 5 : Math.max(0, 5 - Math.floor((e - 500) / 340));
+          if (bone > 0) {
+            const bx = MILA_AT.x + 7 - Math.floor(bone / 2);
+            rect(g, bx, 78, bone, 1, '#e8d2a0');
+            px(g, bx, 77, '#e8d2a0');
+            if (bone > 2) px(g, bx + bone - 1, 77, '#e8d2a0');
+          }
+          if (e > 2200) {
+            [[1, 0], [3, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [1, 2], [2, 2], [3, 2], [2, 3]]
+              .forEach(([hx, hy]) => px(g, MILA_AT.x + 16 + hx, MILA_AT.y + 1 + hy, '#f2b8c8'));
+          }
+          if (e >= 1200 && state.noteUnderMila && !state.noteFound) {
+            state.noteFound = true;
+            clue('leaf', `Mila got up for her treat. She was sleeping on Bolita’s note: ${ROOM.code[1]}`);
+          }
+          return;
+        }
+        state.milaTreat = null;
+      }
+      // asleep, breathing, unless it's morning or someone woke her up
+      if (!state.morning && state.milaSpin === null) {
+        sprite(g, Math.sin(t / 560) > 0 ? MILA.sleepB : MILA.sleepA, MILA.pal, MILA_SLEEP.x, MILA_SLEEP.y);
+        drawZzz(g, t);
+        return;
+      }
+      let rows = MILA.front, dy = 0;
+      if (state.milaSpin !== null) {
+        const e = t - state.milaSpin;
+        if (e >= 300 && e < 1900) {
+          const f = Math.floor((e - 300) / 110) % 4;
+          rows = [MILA.front, MILA.side, MILA.back, MILA.sideL][f];
+          dy = f % 2 ? -1 : 0;
+          [[-2, 10], [16, 9], [-1, 5], [15, 4]].forEach(([ox, oy], i) => {
+            if ((f + i) % 2) px(g, MILA_AT.x + ox, MILA_AT.y + oy, 'rgba(239, 228, 210, 0.35)');
+          });
+        }
+        if (e >= 1900 && state.noteUnderMila && !state.noteFound) {
+          state.noteFound = true;
+          clue('leaf', `Mila was sleeping on Bolita’s note: ${ROOM.code[1]}`);
+        }
+        if (e >= 2600) state.milaSpin = null;
+      }
+      const blink = Math.floor(t / 180) % 30 === 0;
+      sprite(g, rows, MILA.pal, MILA_AT.x, MILA_AT.y + (MILA.front.length - rows.length) + dy, blink ? { E: MILA.pal.K, L: MILA.pal.K } : null);
+      if (state.morning && Math.floor(t / 700) % 3 === 0) {
+        [[1, 0], [3, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [1, 2], [2, 2], [3, 2], [2, 3]]
+          .forEach(([hx, hy]) => px(g, MILA_AT.x + 16 + hx, MILA_AT.y + 1 + hy, '#f2b8c8'));
+      }
+    }
+    function drawPorchBirds(g, t) {
+      const front = (who, x, y) => {
+        const blink = Math.floor((t + (who === 'flaquis' ? 900 : 0)) / 170) % 23 === 0;
+        sprite(g, BIRD_FRONT[who], BIRD_PAL, x, y, blink ? { E: BIRD_PAL.h } : null);
+      };
+      // Bolita turns up a few seconds after you arrive, the way he does every night
+      if (!state.morning && !state.bird && !state.knock) {
+        if (state.bolitaHome) {
+          const peek = Math.floor(t / 9000) !== Math.floor((t - 700) / 9000);
+          const bob = screenOn('Music', t) ? Math.floor(t / 400) % 2 : 0;
+          front('bolita', SPOT.bolita.x + (peek ? 1 : 0), SPOT.bolita.y + (peek ? 1 : bob));
+        } else if (state.bolitaArrive !== null && t >= state.bolitaArrive) {
+          const u = Math.min(1, (t - state.bolitaArrive) / 1400), s = u * u * (3 - 2 * u);
+          if (u >= 1) state.bolitaHome = true;
+          birdSprite(g, Math.round(90 + (SPOT.bolita.x - 90) * s), Math.round(SPOT.bolita.y - 10 + 10 * s - Math.sin(s * Math.PI) * 6), true, Math.floor(t / 90) % 2, false, t);
+        }
+      }
+      // Flaquis shows up later, like he did
+      if (!state.flq && (state.morning || (state.flaquisArrive !== null && t >= state.flaquisArrive))) {
+        const u = state.morning ? 1 : Math.min(1, (t - state.flaquisArrive) / 1400), s = u * u * (3 - 2 * u);
+        if (u >= 1) front('flaquis', SPOT.flaquis.x, SPOT.flaquis.y + (screenOn('Music', t) ? Math.floor(t / 400 + 1) % 2 : 0));
+        else birdSprite(g, Math.round(90 + (SPOT.flaquis.x - 90) * s), Math.round(SPOT.flaquis.y - 12 + 12 * s - Math.sin(s * Math.PI) * 6), true, Math.floor(t / 90) % 2, false, t);
+      }
+    }
+    function drawPhosphor(g, t) {
+      const dark = !state.lamp && !state.lantern && state.curtain > 0.95 && !state.morning;
+      if (!dark) return;
+      if (!found.has('moon')) clue('moon', 'Something glows on the wall in the dark');
+      const c = Math.sin(t / 900) > -0.6 ? '#a6f0bd' : '#7fcf98';
+      rect(g, 88, 16, 7, 14, 'rgba(166, 240, 189, 0.07)');
+      [[91, 18], [92, 18], [90, 19], [90, 20], [91, 21], [92, 21]].forEach(([x, y]) => px(g, x, y, c));
+      digit(g, ROOM.code[0], 90, 23, c);
+    }
+    function drawResult(g, t, blink) {
+      rect(g, 96, 34, 39, 25, '#120f0b');
+      px(g, 98, 36, '#d99a52'); rect(g, 100, 36, 14, 1, '#e3d7c3');
+      rect(g, 98, 38, 22, 1, '#8a7a66');
+      rect(g, 98, 40, 18, 1, '#8a7a66');
+      rect(g, 98, 42, 27, 1, '#a8c27a');
+      rect(g, 98, 47, 14, 1, '#e3d7c3');
+      digit(g, ROOM.code[3], 118, 44, '#e9b06a', 2);
+      px(g, 98, 56, '#d99a52');
+      if (blink) px(g, 100, 56, '#e3d7c3');
+    }
+    function drawFriend(g, t) {
+      const hop = Math.floor(t / 600) % 6 === 0 ? 1 : 0;
+      birdSprite(g, PERCH.x, PERCH.y - hop, false, 0, false, t);
+      if (Math.floor(t / 500) % 2 === 0) {
+        [[1, 0], [3, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [1, 2], [2, 2], [3, 2], [2, 3]]
+          .forEach(([dx, dy]) => px(g, PERCH.x + 7 + dx, PERCH.y - 6 + dy, '#f2b8c8'));
+      }
+    }
+
+    function drawScreen(g, t) {
+      if (pcIsOff(t)) {
+        rect(g, 96, 34, 39, 25, '#0b0907');
+        px(g, 133, 57, Math.floor(t / 900) % 2 ? '#d99a52' : '#5a3a1e');
+        return;
+      }
+      if (!state.run && state.runEnd !== null && t - state.runEnd < 12000) {
+        drawResult(g, t, Math.floor(t / 600) % 2 === 0);
+        rect(g, 96, 34, 39, 1, 'rgba(255, 255, 255, 0.04)');
+        return;
+      }
+      const name = state.run ? 'htop' : SCREENS[state.screen];
+      SCREEN_DRAW[name](g, t, Math.floor(t / 600) % 2 === 0);
+      if (name === 'Terminal' && state.typedT !== null && t - state.typedT < 4000) {
+        rect(g, 98, 52, 35, 1, '#120f0b');
+        px(g, 98, 52, K);
+        rect(g, 100, 52, Math.min(22, Math.floor((t - state.typedT) / 90)), 1, '#e9b06a');
+      }
+      if (name === 'Terminal' && state.duckDebug !== null && t - state.duckDebug < 5000) {
+        rect(g, 98, 54, 35, 1, '#120f0b');
+        rect(g, 98, 54, 3, 1, '#a8c27a');
+        rect(g, 102, 54, 22, 1, '#a8c27a');
+      }
+      if (name === 'Game night' && state.bird && state.bird.goal === 'keys' && t - state.bird.t0 > 1400) {
+        for (let k = 0; k < 6; k++) px(g, 105 + Math.floor(Math.random() * 20), 36 + Math.floor(Math.random() * 20), k % 2 ? '#8fe3d6' : '#f3c28a');
+      }
+      rect(g, 96, 34, 39, 1, 'rgba(255, 255, 255, 0.04)');
+    }
+
+    // ---------- Curtains: 0 open, 1 closed ----------
+    function drawCurtains(g, c) {
+      rect(g, 8, 8, 83, 1, C.rod);
+      px(g, 7, 8, C.frameHi);
+      px(g, 91, 8, C.frameHi);
+      const w = Math.round(6 + 34 * c);
+      for (let side = 0; side < 2; side++) {
+        for (let i = 0; i < w; i++) {
+          const x = side === 0 ? 10 + i : 89 - i;
+          const k = (i + side) % 4;
+          rect(g, x, 9, 1, 48, k === 0 ? C.curtainShade : (k === 2 ? C.curtainHi : C.curtain));
+          for (let y = 12; y < 55; y += 4) if ((x + y) % 3 === 0 && k !== 0) px(g, x, y, C.stitch);
+        }
+        rect(g, side === 0 ? 10 + w - 1 : 89 - (w - 1), 9, 1, 48, C.curtainHi);
+        rect(g, side === 0 ? 10 : 89 - (w - 1), 56, w, 1, C.curtainShade);
+      }
+    }
+
+    // ---------- Rain ----------
+    const drops = [];
+    seed = 29;
+    for (let i = 0; i < 46; i++) {
+      drops.push({ x: GX0 + rnd() * (GX1 - GX0 + 14), y: GY0 + rnd() * (GY1 - GY0), v: 1.4 + rnd() * 1.1 });
+    }
+
+    function render() {
+      paintBack(bg);
+      paintWall(wg);
+      paintFront(fg);
+    }
+
+    function frame(t) {
+      if (state.cup === 0 && narrow.matches && state.emptySince !== null && t - state.emptySince > 15000) {
+        state.cup = 3;
+        state.emptySince = null;
+      }
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(back, 0, 0);
+      ctx.save();
+      ctx.translate(OX, 0);
+      windows.forEach((w, i) => {
+        if (!reduce && Math.sin(t / 2600 + i * 12.9898) > 0.985) w.off = !w.off;
+        if (w.off) px(ctx, w.x, w.y, C.city);
+      });
+      if (!state.morning) stars.forEach(([x, y], i) => { if (Math.sin(t / 700 + i * 2.3) > 0.8) px(ctx, x, y, '#ffffff'); });
+      if (!state.morning) drops.forEach(d => {
+        for (let k = 0; k < 3; k++) {
+          const x = Math.round(d.x + k * 0.5), y = Math.round(d.y - k);
+          if (inGlass(x, y)) px(ctx, x, y, C.rain);
+        }
+      });
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(GX0, GY0, GX1 - GX0 + 1, GY1 - GY0 + 1);
+      ctx.clip();
+      drawPorchBirds(ctx, t);
+      drawKnock(ctx, t);
+      drawBird(ctx, t, true);
+      drawFlq(ctx, t, true);
+      ctx.restore();
+      ctx.restore();
+
+      ctx.drawImage(wall, 0, 0);
+      ctx.save();
+      ctx.translate(OX, 0);
+      drawSash(ctx);
+      for (let i = 0; i < state.seeds; i++) px(ctx, SEED_PX[i][0], SEED_PX[i][1], '#e8d2a0');
+      drawCurtains(ctx, state.curtain);
+      ctx.restore();
+      ctx.drawImage(front, 0, 0);
+
+      ctx.save();
+      ctx.translate(OX, 0);
+      drawBonsai(ctx, t);
+      drawLeaves(ctx, t);
+      drawCup(ctx, t);
+      drawNote(ctx);
+      drawMila(ctx, t);
+      drawDeskDuck(ctx, t);
+      drawPhosphor(ctx, t);
+      const p = (t / 1400) % 1;
+      if (p < 0.6) px(ctx, 27, 59 + Math.floor(p * 5), C.brew);
+      if (state.pourT !== null && t - state.pourT < 3200) {
+        const q = (t / 260) % 1;
+        px(ctx, 27, 59 + Math.floor(q * 5), C.brew);
+        px(ctx, 26 + Math.floor(t / 300) % 3, 53, 'rgba(239, 228, 210, 0.5)');
+      }
+      drawScreen(ctx, t);
+      drawTower(ctx, t);
+      if (state.lantern) {
+        ctx.globalAlpha = 0.05 + 0.04 * Math.sin(t / 1300);
+        rect(ctx, 110, 12, 9, 6, '#fff4d8');
+        ctx.globalAlpha = 1;
+      }
+      if (state.run && Math.sin(t / 37) > 0.55) {
+        rect(ctx, 116, 41, 42, 28, 'rgba(16, 11, 8, 0.45)');
+        rect(ctx, 108, 8, 13, 15, 'rgba(16, 11, 8, 0.4)');
+      }
+      ctx.restore();
+
+      drawNAS(ctx, t);
+      drawEspresso(ctx, t);
+      const darkness = state.morning ? 0 : (state.lamp ? 0 : 0.2) + (state.lantern ? 0 : 0.12) + (state.curtain > 0.95 ? 0.18 : 0);
+      if (darkness > 0) {
+        rect(ctx, 0, 0, W, H, `rgba(6, 4, 3, ${darkness})`);
+        ctx.save();
+        ctx.translate(OX, 0);
+        drawScreen(ctx, t);
+        drawPhosphor(ctx, t);
+        drawTower(ctx, t);
+        ctx.restore();
+        drawNAS(ctx, t);
+      }
+      ctx.save();
+      ctx.translate(OX, 0);
+      drawDuckZ(ctx, t);
+      ctx.restore();
+      if (state.knock && t - state.knock.t0 > 900 && state.win > 0.95 && state.curtain < 0.05) startTrip({ x: OX + KNOCK.x, y: KNOCK.y }, state.knock.goal);
+      if (state.duck && !state.duckAsleep && !state.lamp && !state.lantern && state.curtain > 0.95) state.duckAsleep = true;
+      if (state.crumbs && !state.flq && !state.bird && state.win > 0.95 && state.curtain < 0.05 &&
+          (state.morning || (state.flaquisArrive !== null && t > state.flaquisArrive + 1400))) {
+        state.flq = { t0: t };
+        flash('Flaquis saw the crumbs. He’s coming in', 2600);
+      }
+      drawBird(ctx, t, false);
+      drawFlq(ctx, t, false);
+      if (state.morning) {
+        if (!state.bird) drawFriend(ctx, t);
+        state.petals.forEach(q => px(ctx, Math.round(q.x), Math.round(q.y), '#f2b8c8'));
+      }
+      drawHover(ctx);
+    }
+
+    function step() {
+      drops.forEach(d => {
+        d.y += d.v;
+        d.x -= d.v * 0.3;
+        if (d.y > GY1 + 2) { d.y = GY0 - rnd() * 6; d.x = GX0 + rnd() * (GX1 - GX0 + 14); }
+      });
+      const d = state.curtainTarget - state.curtain;
+      if (d !== 0) state.curtain += Math.sign(d) * Math.min(Math.abs(d), 0.17);
+      const dw = state.winTarget - state.win;
+      if (dw !== 0) state.win += Math.sign(dw) * Math.min(Math.abs(dw), 0.08);
+      if (state.morning) {
+        while (state.petals.length < 26) state.petals.push(newPetal(true));
+        state.petals.forEach((q, i) => {
+          q.p += 0.2;
+          q.x += q.vx + Math.sin(q.p) * 0.25;
+          q.y += q.vy;
+          if (q.y > H || q.x > W) state.petals[i] = newPetal(false);
+        });
+      }
+    }
+    function newPetal(anywhere) {
+      return { x: Math.random() * W * (anywhere ? 1 : 0.8), y: anywhere ? Math.random() * H : -2, vx: 0.25 + Math.random() * 0.35, vy: 0.3 + Math.random() * 0.35, p: Math.random() * 6 };
+    }
+
+    // ---------- The escape room: four clues open the puzzle box ----------
+    const cluesEl = document.getElementById('secrets');
+    const found = new Set();
+    function updateClues() {
+      if (found.size >= 2 && state.flaquisArrive === null && !state.morning) {
+        state.flaquisArrive = performance.now() + 1500;
+        setTimeout(() => flash('Flaquis showed up too', 2600), 3000);
+      }
+      document.querySelectorAll('.dial').forEach(d => d.classList.toggle('found', found.has(d.dataset.clue)));
+      if (state.solved) { cluesEl.textContent = 'Morning reached'; cluesEl.classList.add('done'); return; }
+      cluesEl.textContent = found.size === 4 ? 'Clues 4/4. Try the box' : `Clues ${found.size}/4`;
+    }
+    function clue(k, text) {
+      flash(text, 3400);
+      if (found.has(k)) return;
+      found.add(k);
+      updateClues();
+    }
+    function discover() { /* the other things in the room are just for fun */ }
+
+    // ---------- Tips ----------
+    const tip = document.getElementById('scene-tip');
+    let flashTimer = null;
+    const live = document.getElementById('scene-live');
+    function flash(text, ms = 2200) {
+      tip.textContent = text;
+      live.textContent = text;
+      tip.classList.add('show', 'flash');
+      clearTimeout(flashTimer);
+      flashTimer = setTimeout(() => {
+        tip.classList.remove('flash');
+        const r = REGIONS.find(z => z.id === state.hover);
+        if (r) tip.textContent = r.tip(); else tip.classList.remove('show');
+      }, ms);
+    }
+
+    // ---------- Actions, shared by the canvas and the buttons ----------
+    const btnLamp = document.getElementById('lamp');
+    const btnLantern = document.getElementById('lantern');
+    const btnCurtains = document.getElementById('curtains');
+    const btnScreen = document.getElementById('screen');
+    const now = () => performance.now();
+    const redraw = () => frame(now());
+
+    function setLamp(on) { state.lamp = on; btnLamp.setAttribute('aria-pressed', String(on)); discover('lamp'); render(); redraw(); }
+    function setLantern(on) { state.lantern = on; btnLantern.setAttribute('aria-pressed', String(on)); discover('lantern'); render(); redraw(); }
+    function toggleWindow() {
+      if (state.bird || state.flq) { flash('Not now. Someone needs a way out'); return; }
+      state.winTarget = state.winTarget ? 0 : 1;
+      if (reduce) state.win = state.winTarget;
+      flash(state.winTarget ? 'Window open. Fresh air' : 'Window closed', 2000);
+      redraw();
+    }
+    function toggleCurtains() {
+      if ((state.bird || state.flq) && !state.curtainTarget) { flash('Not now. Someone needs a way out'); return; }
+      state.curtainTarget = state.curtainTarget ? 0 : 1;
+      if (reduce) state.curtain = state.curtainTarget;
+      btnCurtains.textContent = state.curtainTarget ? 'Open curtains' : 'Close curtains';
+      discover('curtains');
+      redraw();
+    }
+    function nextScreen() {
+      state.screen = (state.screen + 1) % SCREENS.length;
+      seen.add(state.screen);
+      btnScreen.textContent = `Screen: ${SCREENS[state.screen]}`;
+      if (seen.size === SCREENS.length) discover('screens');
+      redraw();
+    }
+    function trimBonsai() {
+      if (state.morning) { flash('Not in front of Bolita'); return; }
+      if (state.bird) { flash('Okay, okay. Leaving the bonsai alone.'); return; }
+      if (state.knock) { flash('Bolita is already at the window'); return; }
+      if (state.trimmedAt !== null) { flash('Still growing back'); return; }
+      const t = now();
+      state.trimmedAt = t;
+      if (!reduce) {
+        for (let i = 0; i < 7; i++) {
+          state.leaves.push({ x: 9 + Math.random() * 7, y: 49 + Math.random() * 4, t0: t + i * 60, dur: 700 + Math.random() * 500, c: i % 2 ? C.leaf : C.leafHi });
+        }
+      }
+      flash('Snip.');
+      setTimeout(() => {
+        if (state.trimmedAt !== t) return;
+        discover('bird');
+        state.bolitaHome = false;
+        const from = { x: OX + SPOT.bolita.x, y: SPOT.bolita.y };
+        if (state.win > 0.95 && state.curtain < 0.05) startTrip(from);
+        else {
+          state.knock = { t0: now(), goal: 'bonsai' };
+          flash(state.curtain > 0.5 ? 'Something is tapping on the window' : 'Bolita is knocking on the glass. Let him in?', 3400);
+          redraw();
+          setTimeout(redraw, 950);
+        }
+      }, 900);
+      setTimeout(redraw, 25100);
+      redraw();
+    }
+    function sip() {
+      if (state.cup === 0) { flash(`Empty. Potter’s mark at the bottom: ${ROOM.code[2]}. Refills at the minibar`); return; }
+      state.cup -= 1;
+      discover('sip');
+      if (state.cup === 0) { state.emptySince = now(); clue('cup', `A potter’s mark at the bottom of the cup: ${ROOM.code[2]}`); } else flash('Sip');
+      redraw();
+    }
+    function runPC() {
+      if (pcIsOff(now())) { flash('Bolita turned it off. Give it a minute'); return; }
+      if (state.run) return;
+      const run = state.run = { t0: now() };
+      discover('pc');
+      flash('Running a DFT job. The CFE bill felt that.', 3000);
+      redraw();
+      setTimeout(() => {
+        if (state.run !== run) return;
+        state.run = null;
+        state.runEnd = now();
+        clue('bolt', `SCF converged in ${ROOM.code[3]} iterations`);
+        redraw();
+        setTimeout(redraw, 12100);
+      }, 6000);
+    }
+    function backupNAS() {
+      if (state.nas) return;
+      if (state.run) { flash('Still running. The results land on the NAS when it’s done', 2600); return; }
+      state.nas = { t0: now() };
+      discover('nas');
+      if (state.runEnd !== null) {
+        flash('Pulling the DFT results off the NAS…', 2000);
+        setTimeout(() => {
+          noteBody.textContent = scfOutput();
+          openDialog(noteDlg);
+        }, reduce ? 200 : 1400);
+      } else {
+        flash('Backing up 16 TB of band structures', 2600);
+      }
+      redraw();
+      setTimeout(() => { state.nas = null; redraw(); }, 3000);
+    }
+    // The end of a Quantum ESPRESSO-style output, with part of the puzzle (and Mila) inside
+    function scfOutput() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const stamp = `${d.getDate()}${d.toLocaleString('en', { month: 'short' })}${d.getFullYear()} at ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      const it = ROOM.code[3];
+      const E = [-210.43912204, -210.47268119, -210.47981530, -210.48093377, -210.48119052, -210.48126418, -210.48127493, -210.48127731, -210.48127745];
+      const e = i => E[Math.min(i, E.length) - 1].toFixed(8).padStart(17);
+      const out = [
+        `     Program PWSCF v.7.3 starts on ${stamp}`,
+        '     (pulled from the NAS on Max\'s desk: /tank/runs/mosse/scf.out)',
+        '',
+        '     ...',
+        ''
+      ];
+      for (let i = Math.max(1, it - 2); i <= it; i++) {
+        out.push(`     iteration #${String(i).padStart(3)}     ecut=    60.00 Ry     beta= 0.30`);
+        out.push(`     total energy              = ${e(i)} Ry`, '');
+      }
+      out.push(
+        '     End of self-consistent calculation', '',
+        `     convergence has been achieved in ${String(it).padStart(3)} iterations`, '',
+        `!    total energy              = ${e(it)} Ry`, '',
+        '     JOB DONE.', '', '',
+        ' ------------------------------------------------------------',
+        '  README, left next to the run',
+        '',
+        '    The bolt on the puzzle box wants the number of iterations.',
+        '    P.S. Some things only glow in the dark.',
+        '',
+        '    add me on league: BladedGoose13 on LAN',
+        '',
+        '    Thanks for digging through my NAS. Most people don\'t.',
+        '                                                     - Max',
+        ' ------------------------------------------------------------'
+      );
+      return out.join('\n') + '\n';
+    }
+    function pullShot() {
+      if (state.brew) return;
+      state.brew = { t0: now() };
+      discover('espresso');
+      flash('Pulling a shot', 2400);
+      redraw();
+      setTimeout(() => {
+        state.brew = null;
+        if (state.cup < 3) { state.cup = 3; state.emptySince = null; flash('Refilled the cup on the desk'); }
+        redraw();
+      }, reduce ? 300 : 4200);
+    }
+
+    // ---------- The puzzle box, the bird's note and the morning ----------
+    const lock = document.getElementById('lockbox');
+    const lockMsg = document.getElementById('lock-msg');
+    const morningDlg = document.getElementById('morning');
+    const dials = [0, 0, 0, 0];
+    const noteDlg = document.getElementById('nas-note');
+    const noteBody = document.getElementById('note-body');
+    document.getElementById('note-close').addEventListener('click', () => closeDialog(noteDlg));
+    const openDialog = d => { if (d.showModal) d.showModal(); else d.setAttribute('open', ''); };
+    const closeDialog = d => { if (d.close) d.close(); else d.removeAttribute('open'); };
+
+    lock.querySelectorAll('.dial').forEach((dial, i) => {
+      dial.querySelectorAll('.turn').forEach(b => b.addEventListener('click', () => {
+        dials[i] = (dials[i] + Number(b.dataset.step) + 10) % 10;
+        dial.querySelector('.digit').textContent = dials[i];
+      }));
+    });
+
+    function toggleCabL() {
+      state.cabL = !state.cabL;
+      if (state.cabL) flash('Bird seeds, Mila’s treats and old lab notebooks', 2600);
+      render();
+      redraw();
+    }
+    function toggleCabR() {
+      state.cabR = !state.cabR;
+      if (state.cabR) flash('A concha, a rubber duck and spare coffee', 2600);
+      render();
+      redraw();
+    }
+    function useSeeds() {
+      if (state.morning) { flash('Bolita already had breakfast'); return; }
+      if (state.bird || state.knock) { flash('Bolita is busy right now'); return; }
+      if (state.seeds > 0) { flash('There are seeds on the sill already'); return; }
+      state.seeds = SEED_PX.length;
+      flash('A few seeds on the windowsill', 2200);
+      redraw();
+      setTimeout(() => {
+        if (!state.seeds || state.bird || state.knock || state.morning) return;
+        state.bolitaHome = false;
+        const from = { x: OX + SPOT.bolita.x, y: SPOT.bolita.y };
+        let goal = 'seeds';
+        if (screenOn('Game night', now())) goal = state.gameEgg++ % 2 === 0 ? 'keys' : 'power';
+        if (state.win > 0.95 && state.curtain < 0.05) startTrip(from, goal);
+        else {
+          state.knock = { t0: now(), goal };
+          flash(state.curtain > 0.5 ? 'Something is tapping on the window' : 'Bolita saw the seeds. Let him in?', 3400);
+          redraw();
+          setTimeout(redraw, 950);
+        }
+      }, 1200);
+    }
+    function useTreats() {
+      if (state.milaTreat !== null || state.milaSpin !== null) return;
+      state.milaTreat = now();
+      flash(state.morning ? 'Crunch. Mila’s favorite' : 'Mila wakes up for exactly one thing', 2600);
+      redraw();
+      setTimeout(redraw, 1300);
+      setTimeout(redraw, 3050);
+    }
+    function useConcha() {
+      state.concha = 3;
+      flash('A concha on the desk. Vanilla, obviously', 2600);
+      render();
+      redraw();
+    }
+    function biteConcha() {
+      state.concha -= 1;
+      const training = screenOn('Training', now());
+      if (state.concha <= 0) {
+        state.concha = null;
+        state.conchaEaten = true;
+        state.crumbs = true;
+        flash(training ? 'The loss went down. Correlation, not causation' : 'Gone. Crumbs everywhere', 2600);
+      } else flash(training ? 'The loss dropped after that bite. Coincidence' : state.concha === 2 ? 'Mmm' : 'One more bite', 2200);
+      render();
+      redraw();
+    }
+    function useDuck() {
+      state.duck = true;
+      flash('The rubber duck is on duty', 2200);
+      render();
+      redraw();
+    }
+    function quackDuck() {
+      if (state.duckAsleep) { state.duckAsleep = false; flash('The duck is up. Back to debugging', 2400); redraw(); return; }
+      const t = now();
+      if (screenOn('Terminal', t)) { state.duckDebug = t; flash('Rubber duck debugging: the duck found the bug without saying a word', 3600); redraw(); return; }
+      if (screenOn('Music', t)) { flash('Quack, on beat', 2000); return; }
+      if (screenOn('Game night', t)) { flash('The duck is backseat gaming', 2600); return; }
+      const lines = ['Quack', 'Explained my bug to the duck. Fixed it halfway through the sentence', 'The duck has no further comments'];
+      flash(lines[state.duckSay++ % lines.length], 3200);
+    }
+    // ---------- little things all over the room ----------
+    const KEY_LINES = {
+      'Terminal': '$ sudo brew coffee. Permission granted',
+      'VS Code': 'Ctrl+S, out of habit',
+      'Quantum ESPRESSO': 'Ctrl+C? Never. It’s on iteration 8',
+      'Training': 'Hands off, it’s converging',
+      'htop': 'Closed the browser. 2 GB of RAM back',
+      'Music': 'Next lofi track',
+      'Wallpaper': 'Nothing to type. Just looking at Fuji',
+      'Game night': 'Typed “gg” in all chat'
+    };
+    function typeKeys() {
+      const t = now();
+      if (pcIsOff(t)) { flash('The PC is off. Bolita’s orders'); return; }
+      if (state.run) { flash('Busy. The DFT job has the keyboard'); return; }
+      const name = SCREENS[state.screen];
+      if (name === 'Music') { state.track++; state.trackT = t; }
+      if (name === 'Terminal') state.typedT = t;
+      flash(KEY_LINES[name], 2600);
+      redraw();
+    }
+    function restartRouter() {
+      state.routerT = now();
+      flash(screenOn('Game night', now()) ? 'Lag spike. Blamed the router' : 'Turned it off and on again. Works now', 2600);
+      redraw();
+      setTimeout(redraw, 2700);
+    }
+    function waterPlant() {
+      state.plantT = now();
+      flash('Watered. The bonsai is jealous', 2200);
+      redraw();
+    }
+    function brewPourOver() {
+      state.pourT = now();
+      flash('Blooming the pour-over. Thirty seconds of patience', 2600);
+      redraw();
+    }
+    function whiskMatcha() {
+      state.matchaT = now();
+      flash('Whisked in an M, not in circles', 2400);
+      redraw();
+    }
+    const readingDlg = document.getElementById('reading');
+    function openReading(id) {
+      readingDlg.querySelectorAll('.book').forEach(b => b.classList.toggle('current', b.dataset.book === id));
+      openDialog(readingDlg);
+      const cur = readingDlg.querySelector('.book.current');
+      if (cur) cur.scrollIntoView({ block: 'nearest' });
+    }
+    document.getElementById('reading-close').addEventListener('click', () => closeDialog(readingDlg));
+    function petMila() {
+      if (state.milaSpin !== null || state.milaTreat !== null) return;
+      state.milaSpin = now();
+      if (!(state.noteUnderMila && !state.noteFound)) {
+        flash(state.morning ? 'Mila is happy it’s morning' : 'Mila, my pug since I was five. She chased her tail just like this.', 3600);
+      }
+      redraw();
+      setTimeout(redraw, 1950);
+      setTimeout(redraw, 2650);
+    }
+    function readNote() {
+      clue('leaf', `A note in tiny handwriting: ${ROOM.code[1]}`);
+    }
+    function openLock() {
+      if (state.solved) { flash('Empty now. The morning was inside.'); return; }
+      lockMsg.textContent = '';
+      updateClues();
+      openDialog(lock);
+    }
+    document.getElementById('lock-try').addEventListener('click', () => {
+      if (dials.every((v, i) => v === ROOM.code[i])) {
+        lockMsg.textContent = 'Click.';
+        setTimeout(() => { closeDialog(lock); startMorning(); }, 650);
+      } else {
+        lockMsg.textContent = 'It doesn’t budge.';
+        lock.classList.remove('shake');
+        void lock.offsetWidth;
+        lock.classList.add('shake');
+      }
+    });
+    document.getElementById('lock-close').addEventListener('click', () => closeDialog(lock));
+
+    function startMorning() {
+      state.solved = true;
+      state.morning = true;
+      state.curtainTarget = 0;
+      if (reduce) state.curtain = 0;
+      btnCurtains.textContent = 'Close curtains';
+      state.winTarget = 1;
+      if (reduce) state.win = 1;
+      state.knock = null;
+      state.lantern = true;
+      btnLantern.setAttribute('aria-pressed', 'true');
+      if (state.flaquisArrive === null) state.flaquisArrive = now() - 2000;
+      state.petals = [];
+      for (let i = 0; i < 26; i++) state.petals.push(newPetal(true));
+      render();
+      updateClues();
+      redraw();
+      flash('The box opens. It’s getting light outside.', 3000);
+      setTimeout(() => { if (state.morning) openDialog(morningDlg); }, 2400);
+    }
+    document.getElementById('morning-close').addEventListener('click', () => {
+      closeDialog(morningDlg);
+      state.morning = false;
+      state.petals = [];
+      render();
+      redraw();
+    });
+    document.getElementById('morning-mail').href = 'mailto:' + ['BladedGoose', 'gmail.com'].join('@');
+    document.getElementById('morning-stay').addEventListener('click', () => {
+      closeDialog(morningDlg);
+      flash('Staying in the morning', 2200);
+    });
+
+    function resetRoom() {
+      [lock, morningDlg, noteDlg, readingDlg].forEach(d => { if (d.open) closeDialog(d); });
+      found.clear();
+      Object.assign(state, {
+        trimmedAt: null, bird: null, leaves: [], run: null, nas: null, brew: null, cup: 3, emptySince: null,
+        solved: false, morning: false, runEnd: null, petals: [], flaquisArrive: null, milaSpin: null,
+        noteUnderMila: false, noteFound: false, winTarget: 0, knock: null, curtainTarget: 0, bolitaHome: true,
+        cabL: false, cabR: false, seeds: 0, milaTreat: null, concha: null, conchaEaten: false, duck: false, duckSay: 0,
+        crumbs: false, flq: null, duckAsleep: false, duckDebug: null, pcOff: null, gameEgg: 0, typedT: null
+      });
+      if (reduce) { state.win = 0; state.curtain = 0; }
+      btnCurtains.textContent = 'Close curtains';
+      setLamp(true);
+      setLantern(true);
+      dials.fill(0);
+      lock.querySelectorAll('.digit').forEach(o => { o.textContent = '0'; });
+      cluesEl.classList.remove('done');
+      render();
+      updateClues();
+      redraw();
+      flash('Back to the start. It’s night again', 2600);
+    }
+    document.getElementById('reset').addEventListener('click', resetRoom);
+
+    const REGIONS = [
+      { id: 'bk-cotton', x: 6, y: 23, w: 2, h: 11, act: () => openReading('cotton'), tip: () => 'Chemical Applications of Group Theory' },
+      { id: 'bk-qe', x: 8, y: 25, w: 2, h: 9, act: () => openReading('qe'), tip: () => 'Quantum ESPRESSO Course for Solid-State Physics' },
+      { id: 'bk-manga', x: 10, y: 22, w: 1, h: 12, act: () => flash('A manga volume, for balance', 2200), tip: () => 'A manga volume' },
+      { id: 'bk-lab', x: 11, y: 24, w: 2, h: 10, act: () => flash('Lab notebook. Mostly convergence tests', 2400), tip: () => 'Lab notebook' },
+      { id: 'bk-khomskii', x: 13, y: 23, w: 2, h: 11, act: () => openReading('khomskii'), tip: () => 'Transition Metal Compounds' },
+      { id: 'bk-later', x: 15, y: 26, w: 1, h: 8, act: () => flash('A book I keep meaning to read', 2200), tip: () => 'Someday' },
+      { id: 'bk-pastry', x: 16, y: 22, w: 2, h: 12, act: () => flash('A pastry book. The concha page is the most worn', 2600), tip: () => 'A pastry book' },
+      { id: 'bk-lean', x: 18, y: 25, w: 5, h: 9, act: () => flash('Leaning since 2025. Statics says it’s fine', 2400), tip: () => 'A leaning book' },
+      { id: 'plant', x: 23, y: 26, w: 3, h: 8, act: waterPlant, tip: () => 'Water the plant' },
+      { id: 'router', x: 20, y: 39, w: 7, h: 9, act: restartRouter, tip: () => 'Restart the router' },
+      { id: 'daruma', x: 6, y: 53, w: 8, h: 10, act: () => flash(state.solved ? 'Both eyes painted. Wish granted' : 'One eye painted. The wish is still on its way', 2800), tip: () => 'Daruma' },
+      { id: 'shelf', x: 14, y: 55, w: 12, h: 8, act: () => flash('Kanji flashcards. Still on N5', 2400), tip: () => 'Flashcards and notes' },
+      { id: 'talavera', x: 196, y: 30, w: 8, h: 8, act: () => flash('Talavera, from Puebla. Too pretty for daily coffee', 2600), tip: () => 'Talavera cup' },
+      { id: 'yunomi', x: 204, y: 29, w: 6, h: 9, act: () => flash('A yunomi from Japan. Hojicha only', 2400), tip: () => 'Yunomi' },
+      { id: 'matcha', x: 210, y: 32, w: 10, h: 6, act: whiskMatcha, tip: () => 'Whisk some matcha' },
+      { id: 'beans', x: 213, y: 53, w: 5, h: 11, act: () => flash('Garat espresso roast. Smells like 6 a.m.', 2400), tip: () => 'Coffee beans' },
+      { id: 'pencup', x: 218, y: 59, w: 5, h: 6, act: () => flash('My other cup. Currently holding pens', 2400), tip: () => 'Another cup' },
+      { id: 'pourover', x: OX + 20, y: 53, w: 15, h: 13, act: brewPourOver, tip: () => 'Brew a pour-over' },
+      { id: 'keyboard', x: OX + 91, y: 63, w: 28, h: 4, act: typeKeys, tip: () => 'Type something' },
+      { id: 'moon', x: OX + 63, y: 12, w: 16, h: 15, when: () => !state.morning && state.curtain < 0.5, act: () => flash('Same moon I saw from Tsukuba', 2600), tip: () => 'The moon' },
+      { id: 'sun', x: OX + 64, y: 24, w: 15, h: 15, when: () => state.morning && state.curtain < 0.5, act: () => flash('Good morning, Monterrey', 2400), tip: () => 'The sun' },
+      { id: 'concha', x: OX + 65, y: 60, w: 9, h: 6, when: () => state.concha !== null, act: biteConcha, tip: () => 'Take a bite' },
+      { id: 'duck', x: OX + 81, y: 60, w: 8, h: 6, when: () => state.duck, act: quackDuck, tip: () => (state.duckAsleep ? 'The duck is asleep. Wake it up' : 'Rubber duck') },
+      { id: 'seeds', x: 7, y: 65, w: 8, h: 9, when: () => state.cabL, act: useSeeds, tip: () => 'Bird seeds, for Bolita' },
+      { id: 'treats', x: 17, y: 65, w: 8, h: 9, when: () => state.cabL, act: useTreats, tip: () => 'Mila’s treats' },
+      { id: 'conchaCab', x: 197, y: 68, w: 10, h: 7, when: () => state.cabR && state.concha === null && !state.conchaEaten, act: useConcha, tip: () => 'A concha' },
+      { id: 'duckCab', x: 211, y: 68, w: 8, h: 7, when: () => state.cabR && !state.duck, act: useDuck, tip: () => 'A rubber duck' },
+      { id: 'cabL', x: 2, y: 64, w: 28, h: 21, act: toggleCabL, tip: () => (state.cabL ? 'Close the cabinet' : 'Open the cabinet') },
+      { id: 'cabR', x: 192, y: 65, w: 32, h: 21, act: toggleCabR, tip: () => (state.cabR ? 'Close the cabinet' : 'Open the cabinet') },
+      { id: 'box', x: OX + 55, y: 58, w: 10, h: 9, act: openLock, tip: () => (state.solved ? 'The box is open' : 'A locked puzzle box') },
+      { id: 'mila', x: OX + 11, y: 69, w: 19, h: 16, act: petMila, tip: () => (state.noteUnderMila && !state.noteFound ? 'Mila is sleeping on something' : (state.morning ? 'Mila' : 'Mila, asleep')) },
+      { id: 'bolita', x: OX + SPOT.bolita.x - 1, y: SPOT.bolita.y - 1, w: 9, h: 8, when: () => state.bolitaHome && !state.bird && !state.morning && state.curtain < 0.5, act: () => flash('Bolita. He comes every night at the same time, just to stare at me.', 3600), tip: () => 'Bolita' },
+      { id: 'flaquis', x: OX + SPOT.flaquis.x - 1, y: SPOT.flaquis.y - 1, w: 7, h: 9, when: () => !state.flq && (state.morning || (state.flaquisArrive !== null && performance.now() > state.flaquisArrive + 1400)) && state.curtain < 0.5, act: () => flash('Flaquis, Bolita’s skinny friend. A whole year on this beam.', 3600), tip: () => 'Flaquis' },
+      { id: 'bonsai', x: OX + 3, y: 46, w: 17, h: 20, act: trimBonsai, tip: () => (state.bird ? 'Leave the bird alone' : state.trimmedAt !== null ? 'Still growing back' : 'Trim the bonsai') },
+      { id: 'cup', x: OX + 37, y: 57, w: 14, h: 9, act: sip, tip: () => (state.cup ? 'Take a sip' : 'Empty. The minibar is to the right') },
+      { id: 'pc', x: OX + 123, y: 70, w: 16, h: 16, act: runPC, tip: () => (state.run ? 'Working on it' : 'Run a DFT job') },
+      { id: 'nas', x: 6, y: 38, w: 14, h: 10, act: backupNAS, tip: () => (state.nas ? 'Busy' : state.runEnd !== null ? 'Pull the results off the NAS' : 'Back up the NAS') },
+      { id: 'espresso', x: 196, y: 46, w: 17, h: 19, act: pullShot, tip: () => (state.brew ? 'Pulling a shot' : 'Pull a shot') },
+      { id: 'lantern', x: OX + 106, y: 3, w: 17, h: 22, act: () => setLantern(!state.lantern), tip: () => (state.lantern ? 'Turn off the lantern' : 'Turn on the lantern') },
+      { id: 'lamp', x: OX + 136, y: 40, w: 19, h: 27, act: () => setLamp(!state.lamp), tip: () => (state.lamp ? 'Turn off the lamp' : 'Turn on the lamp') },
+      { id: 'screen', x: OX + 94, y: 32, w: 42, h: 29, act: nextScreen, tip: () => `Next screen: ${SCREENS[(state.screen + 1) % SCREENS.length]}` },
+      { id: 'glass', x: OX + 14, y: 12, w: 71, h: 39, when: () => state.curtain < 0.5, act: toggleWindow, tip: () => (state.winTarget ? 'Slide the window closed' : 'Slide the window open') },
+      { id: 'window', x: OX + 7, y: 7, w: 85, h: 48, act: toggleCurtains, tip: () => (state.curtainTarget ? 'Open the curtains' : 'Close the curtains') }
+    ];
+
+    function drawHover(g) {
+      const r = REGIONS.find(z => z.id === state.hover);
+      if (!r) return;
+      const c = 'rgba(255, 240, 210, 0.45)';
+      for (let x = r.x; x < r.x + r.w; x += 2) { px(g, x, r.y, c); px(g, x, r.y + r.h - 1, c); }
+      for (let y = r.y; y < r.y + r.h; y += 2) { px(g, r.x, y, c); px(g, r.x + r.w - 1, y, c); }
+    }
+
+    btnLamp.addEventListener('click', () => setLamp(!state.lamp));
+    btnLantern.addEventListener('click', () => setLantern(!state.lantern));
+    btnCurtains.addEventListener('click', toggleCurtains);
+    btnScreen.addEventListener('click', nextScreen);
+
+    function regionAt(e) {
+      const b = canvas.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width * W;
+      const y = (e.clientY - b.top) / b.height * H;
+      return REGIONS.find(r => (!r.when || r.when()) && x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) || null;
+    }
+    canvas.addEventListener('mousemove', e => {
+      const r = regionAt(e);
+      canvas.style.cursor = r ? 'pointer' : 'default';
+      if (!tip.classList.contains('flash')) {
+        if (r) { tip.textContent = r.tip(); tip.classList.add('show'); } else tip.classList.remove('show');
+      }
+      const id = r ? r.id : null;
+      if (id !== state.hover) { state.hover = id; redraw(); }
+    });
+    canvas.addEventListener('mouseleave', () => {
+      state.hover = null;
+      if (!tip.classList.contains('flash')) tip.classList.remove('show');
+      redraw();
+    });
+    canvas.addEventListener('click', e => {
+      const r = regionAt(e);
+      if (r) r.act();
+    });
+
+    function visibleRange() {
+      const cb = canvas.getBoundingClientRect(), vb = canvas.parentElement.getBoundingClientRect();
+      return [Math.max(0, (vb.left - cb.left) / cb.width * W), Math.min(W, (vb.right - cb.left) / cb.width * W)];
+    }
+    function focusables() {
+      const [x0, x1] = visibleRange();
+      return REGIONS.filter(r => (!r.when || r.when()) && r.x + r.w / 2 >= x0 && r.x + r.w / 2 <= x1)
+        .sort((a, b) => (a.x + a.w / 2) - (b.x + b.w / 2) || (a.y - b.y));
+    }
+    function kbShow(r) {
+      state.hover = r ? r.id : null;
+      if (r) { tip.textContent = r.tip(); tip.classList.add('show'); live.textContent = r.tip(); }
+      else if (!tip.classList.contains('flash')) tip.classList.remove('show');
+      redraw();
+    }
+    canvas.addEventListener('keydown', e => {
+      const list = focusables();
+      if (!list.length) return;
+      let i = list.findIndex(r => r.id === state.hover);
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        (list[i] || list[0]).act();
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') i = (i + 1) % list.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') i = (i - 1 + list.length) % list.length;
+      else if (e.key === 'Home') i = 0;
+      else if (e.key === 'End') i = list.length - 1;
+      else if (e.key === 'Escape') { kbShow(null); return; }
+      else return;
+      e.preventDefault();
+      kbShow(list[i]);
+    });
+    canvas.addEventListener('focus', () => {
+      if (state.hover) return;
+      const list = focusables();
+      if (list.length) kbShow(list[0]);
+    });
+    canvas.addEventListener('blur', () => kbShow(null));
+
+    render();
+    updateClues();
+    state.bolitaArrive = performance.now() + (reduce ? 0 : 3500);
+    if (reduce) state.bolitaHome = true;
+    frame(0);
+    if (reduce) return;
+
+    // About twelve frames a second, only while the desk is on screen
+    let visible = true, last = 0;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => { visible = entries[0].isIntersecting; }).observe(canvas);
+    }
+    function loop(t) {
+      if (visible && !document.hidden && t - last > 83) {
+        step();
+        frame(t);
+        last = t;
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  })();
+
+// Photo sliders in Experience
+(function () {
+  document.querySelectorAll('.xp-media').forEach(media => {
+    const track = media.querySelector('.slides');
+    const slides = [...track.children];
+    const prev = media.querySelector('.prev');
+    const next = media.querySelector('.next');
+    const dotsEl = media.querySelector('.dots');
+    const index = () => Math.round(track.scrollLeft / track.clientWidth);
+    const go = i => track.scrollTo({ left: i * track.clientWidth });
+    const dots = slides.map((slide, i) => {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', `${i + 1} of ${slides.length}`);
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Show slide ${i + 1}`);
+      b.addEventListener('click', () => go(i));
+      dotsEl.appendChild(b);
+      return b;
+    });
+    function sync() {
+      const i = index();
+      dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+    }
+    prev.addEventListener('click', () => go(Math.max(0, index() - 1)));
+    next.addEventListener('click', () => go(Math.min(slides.length - 1, index() + 1)));
+    track.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(Math.min(slides.length - 1, index() + 1)); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(Math.max(0, index() - 1)); }
+    });
+    let raf = 0;
+    track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); });
+    window.addEventListener('resize', () => go(index()));
+    sync();
+  });
+})();
+</script>
+</body>
+</html>
