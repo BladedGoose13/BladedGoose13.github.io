@@ -182,6 +182,26 @@
     font-size: .76rem;
   }
   .bar-left { display: flex; flex-wrap: wrap; gap: .3rem 1.25rem; }
+  /* the playlist, small, in the top-right corner of the desk */
+  .sc-card { position: absolute; top: .55rem; right: .55rem; z-index: 2; width: 6.5rem; }
+  .sc-art { position: relative; display: block; width: 100%; aspect-ratio: 1; padding: 0; overflow: hidden; border: 2px solid rgba(239, 228, 210, .9); border-radius: 12px; background: #241b14; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); cursor: pointer; }
+  .sc-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .sc-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(0, 0, 0, .35)); pointer-events: none; }
+  .sc-viz { position: absolute; left: 6%; bottom: 10%; z-index: 1; width: 88%; height: 34%; pointer-events: none; }
+  .sc-state { position: absolute; top: .3rem; left: .35rem; z-index: 1; color: #fff; font-family: var(--mono); font-size: .65rem; text-shadow: 0 1px 3px rgba(0, 0, 0, .8); }
+  .sc-mini { height: 20px; margin-top: .3rem; overflow: hidden; border-radius: 4px; opacity: .9; }
+  .sc-mini:hover, .sc-mini:focus-within { opacity: 1; }
+  .sc-mini iframe { display: block; width: 100%; height: 20px; border: 0; }
+  @media (max-width: 640px) { .sc-card { top: .35rem; right: auto; left: .35rem; width: 4.4rem; } .sc-art { border-width: 1.5px; border-radius: 9px; } }
+
+  /* volume */
+  .vol { position: relative; }
+  .vol > summary { list-style: none; }
+  .vol > summary::-webkit-details-marker { display: none; }
+  .vol-panel { position: absolute; right: 0; bottom: calc(100% + .5rem); z-index: 6; display: grid; gap: .6rem; width: 14rem; max-width: calc(100vw - 2rem); padding: .85rem .95rem; border: 1px solid var(--hair-2); border-radius: 10px; background: #1c1510; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
+  .vol-panel label { display: grid; grid-template-columns: 4.3rem 1fr 2rem; align-items: center; gap: .55rem; color: var(--muted); }
+  .vol-panel input[type="range"] { width: 100%; accent-color: var(--amber); }
+  .vol-panel output { color: var(--ink); text-align: right; }
   .secrets.done { color: var(--amber-hi); }
   .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   #scene:focus-visible { outline: 2px solid var(--amber-hi); outline-offset: -2px; }
@@ -716,6 +736,14 @@
   <figure class="cell hero">
     <div class="scene">
       <canvas id="scene" width="224" height="90" tabindex="0" role="application" aria-roledescription="interactive scene" aria-label="A pixel-art room at night: a bookcase with a NAS, a desk by a latticed window with indigo curtains and rain, a paper lantern, a bonsai, a pour-over set and a cup, a monitor, a desk lamp, a computer under the desk, and a coffee minibar with an espresso machine. Many things in it can be clicked, and a locked puzzle box sits on the desk. Mila, a black pug, sleeps on a cushion under the desk, and two birds, Bolita and Flaquis, visit the porch beam outside the window. The cabinets on both sides open. Use the arrow keys to move between things and Enter to use them."></canvas>
+      <div class="sc-card" id="sc-card">
+        <button class="sc-art" id="sc-art" type="button" aria-label="Play the soundtrack">
+          <img id="sc-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%23241b14'/%3E%3Cpath fill='%23d99a52' d='M7 3h5v2H9v6H8v1H6v1H4v-1H3v-2h1V9h2v1h1z'/%3E%3C/svg%3E" alt="">
+          <canvas class="sc-viz" id="sc-viz" width="120" height="44" aria-hidden="true"></canvas>
+          <span class="sc-state" id="sc-state" aria-hidden="true"></span>
+        </button>
+        <div class="sc-mini"><iframe id="sc-frame" title="Soundtrack playlist on SoundCloud" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2327492208&color=%2300aabb&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false"></iframe></div>
+      </div>
       <span class="scene-tip" id="scene-tip" aria-hidden="true"></span>
       <p class="sr-only" id="scene-live" aria-live="polite"></p>
     </div>
@@ -726,6 +754,14 @@
         <button class="reset-btn" id="reset" type="button">Restart</button>
       </div>
       <div class="controls">
+        <button class="switch" id="sound" type="button" aria-pressed="false">Sound <span class="track" aria-hidden="true"><span class="knob"></span></span></button>
+        <details class="vol">
+          <summary class="chip-btn">Volume</summary>
+          <div class="vol-panel">
+            <label>Music <input type="range" id="vol-music" min="0" max="100" value="35"><output id="vol-music-out">35</output></label>
+            <label>Effects <input type="range" id="vol-fx" min="0" max="100" value="70"><output id="vol-fx-out">70</output></label>
+          </div>
+        </details>
         <button class="chip-btn" id="curtains" type="button">Close curtains</button>
         <button class="switch" id="lantern" type="button" aria-pressed="true">Lantern <span class="track" aria-hidden="true"><span class="knob"></span></span></button>
         <button class="switch" id="lamp" type="button" aria-pressed="true">Desk lamp <span class="track" aria-hidden="true"><span class="knob"></span></span></button>
@@ -1200,7 +1236,7 @@
   </section>
 
   <footer class="cell foot">
-    <p>© 2026 Maximilien Tragarz Quintana. Set in Geist; the desk is 224 by 90 pixels.</p>
+    <p>© 2026 Maximilien Tragarz Quintana. Set in Geist; the desk is 224 by 90 pixels. Soundtrack: <a href="https://soundcloud.com/maximilien-tragarz-quintana/sets/webpage">my playlist on SoundCloud</a>.<span id="music-credit"></span></p>
   </footer>
 </main>
 
@@ -2052,9 +2088,11 @@
         return;
       }
       if (p.eating !== undefined) state.seeds = Math.ceil(SEED_PX.length * (1 - p.eating));
+      if (!outside && p.eating !== undefined) { const ph = Math.floor(t / 260) % 2; if (ph && !snd.peckB) sfx('peck'); snd.peckB = ph; }
+      if (!outside && p.playing) { const kp = Math.floor(t / 650); if (kp !== snd.keyPh) { snd.keyPh = kp; sfx('keys'); } }
       const b = state.bird;
-      if (p.playing && !b.said) { b.said = true; flash('Bolita took over the keyboard. He’s doing better than you', 3400); }
-      if (p.press && !b.said) { b.said = true; state.pcOff = t; flash('Bolita turned off your PC. For your own good. Go to sleep', 3800); }
+      if (p.playing && !b.said) { b.said = true; sfx('keys'); flash('Bolita took over the keyboard. He’s doing better than you', 3400); }
+      if (p.press && !b.said) { b.said = true; state.pcOff = t; sfx('powerdown'); flash('Bolita turned off your PC. For your own good. Go to sleep', 3800); }
       if (p.playing && !outside) for (let k = 0; k < 3; k++) px(g, 93 + Math.floor(Math.random() * 24) + OX, 65, '#e9b06a');
       if (!!p.out !== outside) return;
       birdSprite(g, Math.round(p.x - (outside ? OX : 0)), Math.round(p.y), !!p.flip, p.still ? 0 : Math.floor(t / 90) % 2, !!p.angry, t);
@@ -2075,6 +2113,7 @@
       const p = flqAt(t);
       if (!p) { state.flq = null; flash('Flaquis cleaned up the crumbs and went back to his beam', 3000); return; }
       if (p.eating > 0.6 && state.crumbs) { state.crumbs = false; render(); }
+      if (!outside && p.eating !== undefined) { const ph = Math.floor(t / 240) % 2; if (ph && !snd.peckF) sfx('peck'); snd.peckF = ph; }
       if (!!p.out !== outside) return;
       birdSprite(g, Math.round(p.x - (outside ? OX : 0)), Math.round(p.y), !!p.flip, p.still ? 0 : Math.floor(t / 90) % 2, false, t, true);
     }
@@ -2089,6 +2128,8 @@
       }
       const angry = state.knock.goal !== 'seeds';
       const tap = Math.floor(t / 260) % 3 === 0 && angry;
+      if (tap && !snd.lastTap) sfx('tap');
+      snd.lastTap = tap;
       birdSprite(g, KNOCK.x - (tap ? 1 : 0), KNOCK.y + (Math.floor(t / 520) % 2), true, Math.floor(t / 110) % 2, angry, t);
       if (tap) { px(g, KNOCK.x - 3, KNOCK.y, 'rgba(239, 228, 210, 0.6)'); px(g, KNOCK.x - 3, KNOCK.y + 2, 'rgba(239, 228, 210, 0.6)'); }
     }
@@ -2104,6 +2145,8 @@
       state.knock = null;
       state.bolitaHome = false;
       state.bird = { t0: now(), from, goal };
+      sfx('flutter');
+      sfx(goal === 'bonsai' ? 'angry' : 'tweet');
       flash(goal === 'seeds' ? 'Bolita came in for the seeds' : 'Tweet! (very angry)', 2600);
       redraw();
       setTimeout(redraw, 7500);
@@ -2239,7 +2282,9 @@
           rect(g, 113 + i * 2, 49 - h, 1, h, i % 3 === 0 ? K : STR);
         }
         rect(g, 98, 52, 34, 1, '#3d342a');
-        rect(g, 98, 52, 1 + Math.floor(((t - state.trackT) / 900) % 34), 1, K);
+        const prog = SC_PLAYLIST && sc.playing ? sc.pos : snd.on && !snd.music.paused && snd.music.duration ? snd.music.currentTime / snd.music.duration : ((t - state.trackT) / 900 % 34) / 34;
+        rect(g, 98, 52, 1 + Math.floor(prog * 33), 1, K);
+        digit(g, Math.min(9, (SC_PLAYLIST ? sc.index : snd.track) + 1), 131, 36, K);
         px(g, 109, 55, '#8a7a66'); px(g, 108, 56, '#8a7a66'); px(g, 109, 57, '#8a7a66');
         rect(g, 114, 54, 1, 4, N); rect(g, 116, 54, 1, 4, N);
         px(g, 121, 55, '#8a7a66'); px(g, 122, 56, '#8a7a66'); px(g, 121, 57, '#8a7a66');
@@ -2398,7 +2443,7 @@
           front('bolita', SPOT.bolita.x + (peek ? 1 : 0), SPOT.bolita.y + (peek ? 1 : bob));
         } else if (state.bolitaArrive !== null && t >= state.bolitaArrive) {
           const u = Math.min(1, (t - state.bolitaArrive) / 1400), s = u * u * (3 - 2 * u);
-          if (u >= 1) state.bolitaHome = true;
+          if (u >= 1) { state.bolitaHome = true; sfx('flap'); sfx('pip'); }
           birdSprite(g, Math.round(90 + (SPOT.bolita.x - 90) * s), Math.round(SPOT.bolita.y - 10 + 10 * s - Math.sin(s * Math.PI) * 6), true, Math.floor(t / 90) % 2, false, t);
         }
       }
@@ -2585,10 +2630,13 @@
       drawDuckZ(ctx, t);
       ctx.restore();
       if (state.knock && t - state.knock.t0 > 900 && state.win > 0.95 && state.curtain < 0.05) startTrip({ x: OX + KNOCK.x, y: KNOCK.y }, state.knock.goal);
+      audioSync(t);
+      drawViz(t);
       if (state.duck && !state.duckAsleep && !state.lamp && !state.lantern && state.curtain > 0.95) state.duckAsleep = true;
       if (state.crumbs && !state.flq && !state.bird && state.win > 0.95 && state.curtain < 0.05 &&
           (state.morning || (state.flaquisArrive !== null && t > state.flaquisArrive + 1400))) {
         state.flq = { t0: t };
+        sfx('flutter');
         flash('Flaquis saw the crumbs. He’s coming in', 2600);
       }
       drawBird(ctx, t, false);
@@ -2624,13 +2672,295 @@
       return { x: Math.random() * W * (anywhere ? 1 : 0.8), y: anywhere ? Math.random() * H : -2, vx: 0.25 + Math.random() * 0.35, vy: 0.3 + Math.random() * 0.35, p: Math.random() * 6 };
     }
 
+
+    // ---------- Sound: off until the visitor turns it on ----------
+    // Music, option A: the SoundCloud playlist in the mini player at the top-right of the desk.
+    const SC_PLAYLIST = document.getElementById('sc-frame').src;
+    // Music, option B (used when SC_PLAYLIST is empty): your own files in /audio. The footer credits whatever is playing.
+    const TRACKS = [
+      { src: 'audio/track-1.mp3', title: 'Track title', by: 'Artist', via: 'Pixabay' }
+    ];
+    const snd = { musicVol: 35, fxVol: 1, on: false, ctx: null, music: new Audio(), track: 0, bad: new Set(), rain: -1, lastTap: false, breath: false, snore: false, retry: 0 };
+    snd.music.preload = 'none';
+    snd.music.addEventListener('ended', () => nextTrack(false));
+    snd.music.addEventListener('error', () => {
+      snd.bad.add(snd.track);
+      if (snd.bad.size < TRACKS.length) nextTrack(false);
+      updateCredit();
+    });
+    snd.music.addEventListener('playing', updateCredit);
+    const creditEl = document.getElementById('music-credit');
+    function updateCredit() {
+      if (SC_PLAYLIST) {
+        const on = snd.on && sc.playing && sc.title;
+        creditEl.textContent = on ? ` Music: “${sc.title}”${sc.by ? ` by ${sc.by}` : ''}, on SoundCloud.` : '';
+        return;
+      }
+      const tr = TRACKS[snd.track];
+      creditEl.textContent = snd.on && tr && !snd.music.paused && !snd.bad.has(snd.track) ? ` Music: “${tr.title}” by ${tr.by}, via ${tr.via}.` : '';
+    }
+    // SoundCloud widget: loaded on demand, driven through its official API
+    const sc = { widget: null, ready: false, loading: false, playing: false, pos: 0, index: 0, title: '', by: '', expectPause: false, userPaused: false };
+    const scArt = document.getElementById('sc-art'), scImg = document.getElementById('sc-img');
+    const scViz = document.getElementById('sc-viz'), scState = document.getElementById('sc-state');
+    const vizG = scViz.getContext('2d');
+    // the bars are a picture of the music, not a reading of it (the player lives in another site's frame)
+    function drawViz(t) {
+      const playing = snd.on && sc.playing;
+      scState.textContent = playing ? '' : '▶';
+      scArt.setAttribute('aria-label', playing ? 'Pause the soundtrack' : 'Play the soundtrack');
+      vizG.clearRect(0, 0, 120, 44);
+      vizG.fillStyle = 'rgba(255, 255, 255, 0.92)';
+      const n = 30;
+      for (let i = 0; i < n; i++) {
+        const x = i * 4;
+        const shape = Math.sin((i / (n - 1)) * Math.PI);
+        let h = 3;
+        if (playing && !reduce) h = 3 + shape * 34 * (0.35 + 0.65 * Math.abs(Math.sin(t / 170 + i * 1.7) * Math.cos(t / 410 + i * 0.6)));
+        else if (playing) h = 3 + shape * 18;
+        vizG.fillRect(x, 22 - h / 2, 2, h);
+      }
+    }
+    scArt.addEventListener('click', () => {
+      if (!snd.on) { setSound(true); return; }
+      if (sc.playing) { sc.userPaused = true; sc.expectPause = true; if (sc.widget) sc.widget.pause(); }
+      else { sc.userPaused = false; musicPlay(); }
+      sfx('tick');
+    });
+    function scInfo(announce) {
+      if (!sc.widget) return;
+      sc.widget.getCurrentSound(cur => {
+        if (cur) {
+          sc.title = cur.title || '';
+          sc.by = (cur.user && cur.user.username) || '';
+          const art = cur.artwork_url || (cur.user && cur.user.avatar_url);
+          if (art) scImg.src = art.replace('-large', '-t300x300');
+          scArt.title = sc.by ? `${sc.title}, by ${sc.by}` : sc.title;
+        }
+        updateCredit();
+        if (announce && sc.title) flash(`Now playing: ${sc.title}`, 2800);
+      });
+      sc.widget.getCurrentSoundIndex(i => { sc.index = i || 0; state.track = sc.index; });
+    }
+    function scLoad() {
+      if (sc.loading || !SC_PLAYLIST) return;
+      sc.loading = true;
+      const f = document.getElementById('sc-frame');
+      const js = document.createElement('script');
+      js.src = 'https://w.soundcloud.com/player/api.js';
+      js.onload = () => {
+        const w = sc.widget = window.SC.Widget(f);
+        const E = window.SC.Widget.Events;
+        w.bind(E.READY, () => {
+          sc.ready = true;
+          w.setVolume(snd.musicVol);
+          scInfo(false);
+          if (snd.on && !pcIsOff(now())) w.play();
+        });
+        w.bind(E.PLAY, () => {
+          sc.playing = true;
+          sc.userPaused = false;
+          if (!snd.on) setSound(true);   // pressing play in the player turns the desk's sound on too
+          scInfo(false);
+        });
+        w.bind(E.PAUSE, () => {
+          sc.playing = false;
+          if (sc.expectPause) sc.expectPause = false; else sc.userPaused = true;
+          updateCredit();
+        });
+        w.bind(E.FINISH, () => {
+          sc.playing = false;
+          setTimeout(() => {
+            if (sc.playing || !snd.on) return;
+            w.getCurrentSoundIndex(i => w.getSounds(list => w.skip(i + 1 < list.length ? i + 1 : 0)));
+          }, 800);
+        });
+        w.bind(E.PLAY_PROGRESS, d => { sc.pos = (d && d.relativePosition) || 0; });
+      };
+      document.head.appendChild(js);
+    }
+    scLoad();
+    const hasMusic = () => (SC_PLAYLIST ? true : TRACKS.length > 0 && snd.bad.size < TRACKS.length);
+    const musicOn = () => (SC_PLAYLIST ? sc.playing : !snd.music.paused);
+    function musicPlay() {
+      if (!SC_PLAYLIST) { playMusic(); return; }
+      if (!sc.loading) scLoad();
+      else if (sc.ready) sc.widget.play();
+    }
+    function musicPause() {
+      if (!SC_PLAYLIST) { snd.music.pause(); return; }
+      if (sc.ready && sc.playing) { sc.expectPause = true; sc.widget.pause(); }
+    }
+    function musicNext() {
+      if (!SC_PLAYLIST) { nextTrack(true); return; }
+      sc.userPaused = false;
+      if (sc.ready) { sc.widget.next(); setTimeout(() => scInfo(true), 700); }
+    }
+    function audioInit() {
+      if (snd.ctx) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const c = snd.ctx = new AC();
+      snd.master = c.createGain(); snd.master.gain.value = 0.9 * snd.fxVol;
+      snd.comp = c.createDynamicsCompressor(); snd.comp.threshold.value = -18; snd.comp.ratio.value = 6;
+      snd.master.connect(snd.comp); snd.comp.connect(c.destination);
+      snd.fx = c.createGain(); snd.fx.gain.value = 1; snd.fx.connect(snd.master);
+      snd.amb = c.createGain(); snd.amb.gain.value = 0; snd.amb.connect(snd.master);
+      const buf = c.createBuffer(1, c.sampleRate * 2, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      snd.noise = buf;
+      // rain: looping, filtered noise
+      const src = c.createBufferSource(); src.buffer = buf; src.loop = true;
+      const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 400;
+      const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1600;
+      src.connect(hp); hp.connect(lp); lp.connect(snd.amb); src.start();
+    }
+    function env(g, t0, vol, attack, dur) {
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(vol, t0 + attack);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    }
+    function tone(freq, dur, { type = 'sine', vol = 0.3, at = 0, to = null, attack = 0.005 } = {}) {
+      if (!snd.on || !snd.ctx) return;
+      const c = snd.ctx, t0 = c.currentTime + at, o = c.createOscillator(), g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(freq, t0);
+      if (to) o.frequency.exponentialRampToValueAtTime(to, t0 + dur);
+      env(g, t0, vol, attack, dur);
+      o.connect(g); g.connect(snd.fx);
+      o.start(t0); o.stop(t0 + dur + 0.05);
+    }
+    function hiss(dur, { vol = 0.3, at = 0, type = 'bandpass', freq = 1000, q = 1, to = null, attack = 0.005 } = {}) {
+      if (!snd.on || !snd.ctx) return;
+      const c = snd.ctx, t0 = c.currentTime + at, n = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+      n.buffer = snd.noise;
+      f.type = type; f.Q.value = q;
+      f.frequency.setValueAtTime(freq, t0);
+      if (to) f.frequency.exponentialRampToValueAtTime(to, t0 + dur);
+      env(g, t0, vol, attack, dur);
+      n.connect(f); f.connect(g); g.connect(snd.fx);
+      n.start(t0, Math.random()); n.stop(t0 + dur + 0.05);
+    }
+    const SFX = {
+      switch: () => { tone(1800, 0.03, { type: 'square', vol: 0.1 }); hiss(0.03, { freq: 3000, vol: 0.1 }); },
+      button: () => tone(900, 0.05, { type: 'triangle', vol: 0.12 }),
+      curtain: () => hiss(0.45, { freq: 500, to: 1500, q: 0.8, vol: 0.22, attack: 0.08 }),
+      window: () => hiss(0.55, { type: 'lowpass', freq: 420, to: 240, vol: 0.32, attack: 0.05 }),
+      snip: () => { hiss(0.04, { freq: 4200, q: 4, vol: 0.3 }); hiss(0.04, { freq: 4600, q: 4, vol: 0.3, at: 0.13 }); },
+      tweet: () => { for (let i = 0; i < 3; i++) tone(2600, 0.07, { to: 3600, vol: 0.1, at: i * 0.11 }); },
+      angry: () => { for (let i = 0; i < 4; i++) tone(2300, 0.06, { type: 'sawtooth', to: 1500, vol: 0.05, at: i * 0.08 }); },
+      tap: () => { tone(190, 0.05, { type: 'triangle', vol: 0.22 }); hiss(0.03, { freq: 1800, q: 3, vol: 0.1 }); },
+      flutter: () => { for (let i = 0; i < 6; i++) hiss(0.04, { freq: 900, q: 1.5, vol: 0.07, at: i * 0.045 }); },
+      sip: () => hiss(0.3, { freq: 700, to: 1100, q: 3, vol: 0.4, attack: 0.05 }),
+      espresso: () => { tone(58, 2.6, { type: 'sawtooth', vol: 0.045, attack: 0.2 }); hiss(2.4, { freq: 3500, q: 0.7, vol: 0.045, at: 0.3, attack: 0.3 }); },
+      fan: () => { SFX.switch(); hiss(6, { type: 'lowpass', freq: 300, to: 900, vol: 0.08, attack: 0.8 }); },
+      beep: () => { tone(1200, 0.08, { type: 'square', vol: 0.07 }); tone(1600, 0.08, { type: 'square', vol: 0.07, at: 0.12 }); },
+      keys: () => { for (let i = 0; i < 6; i++) hiss(0.025, { freq: 2500 + Math.random() * 1500, q: 2, vol: 0.2, at: i * 0.07 + Math.random() * 0.03 }); },
+      tick: () => tone(2600, 0.025, { type: 'square', vol: 0.07 }),
+      wood: () => hiss(0.09, { freq: 900, q: 3, vol: 0.45 }),
+      wrong: () => tone(110, 0.25, { type: 'square', vol: 0.06 }),
+      open: () => { SFX.wood(); [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.6, { vol: 0.1, at: 0.15 + i * 0.12 })); },
+      morning: () => { [392, 494, 587, 784].forEach((f, i) => tone(f, 1.6, { type: 'triangle', vol: 0.07, at: i * 0.18, attack: 0.05 })); setTimeout(SFX.tweet, 900); },
+      clue: () => { tone(880, 0.6, { vol: 0.09 }); tone(1320, 0.7, { vol: 0.06, at: 0.08 }); },
+      crunch: () => { for (let i = 0; i < 4; i++) hiss(0.05, { freq: 3000, q: 1, vol: 0.24, at: i * 0.12 }); },
+      quack: () => { tone(520, 0.14, { type: 'sawtooth', to: 380, vol: 0.07 }); hiss(0.12, { freq: 1100, q: 6, vol: 0.12 }); },
+      boof: () => tone(160, 0.18, { type: 'triangle', to: 120, vol: 0.16 }),
+      drip: () => { tone(1400, 0.08, { to: 700, vol: 0.1 }); tone(1100, 0.08, { to: 600, vol: 0.08, at: 0.25 }); },
+      pour: () => hiss(1.6, { freq: 1800, q: 1.5, vol: 0.13, attack: 0.08 }),
+      whisk: () => { for (let i = 0; i < 10; i++) hiss(0.05, { freq: 3500, q: 1, vol: 0.06, at: i * 0.09 }); },
+      scatter: () => { for (let i = 0; i < 6; i++) tone(3000 + Math.random() * 2000, 0.02, { type: 'square', vol: 0.06, at: i * 0.05 }); },
+      cabinet: () => hiss(0.12, { type: 'lowpass', freq: 500, vol: 0.22 }),
+      page: () => hiss(0.18, { freq: 2500, to: 1200, q: 0.8, vol: 0.2, attack: 0.02 }),
+      router: () => { tone(2600, 0.025, { type: 'square', vol: 0.08 }); tone(1000, 0.1, { type: 'square', vol: 0.045, at: 1.2 }); },
+      powerdown: () => tone(440, 0.5, { type: 'triangle', to: 90, vol: 0.12 }),
+      reset: () => [784, 659, 523].forEach((f, i) => tone(f, 0.25, { type: 'triangle', vol: 0.07, at: i * 0.1 })),
+      book: () => { hiss(0.06, { type: 'lowpass', freq: 600, vol: 0.45 }); hiss(0.12, { freq: 2200, q: 0.8, vol: 0.12, at: 0.03 }); },
+      cards: () => { for (let i = 0; i < 5; i++) hiss(0.03, { freq: 2800, q: 1.2, vol: 0.14, at: i * 0.05 }); },
+      clink: () => { tone(2400, 0.35, { vol: 0.05 }); tone(3650, 0.25, { vol: 0.03, at: 0.01 }); },
+      knock: () => tone(320, 0.08, { type: 'triangle', to: 220, vol: 0.12 }),
+      rattle: () => { for (let i = 0; i < 7; i++) hiss(0.03, { freq: 2600, q: 2, vol: 0.12, at: i * 0.045 + Math.random() * 0.02 }); },
+      chime: () => { tone(1046, 1.2, { vol: 0.06, attack: 0.02 }); tone(1568, 1.4, { vol: 0.04, at: 0.15, attack: 0.02 }); },
+      chirp: () => tone(3000, 0.06, { to: 4200, vol: 0.06 }),
+      // the birds: Bolita is round and low, Flaquis thin and high
+      pip: () => { tone(2100, 0.05, { to: 2700, vol: 0.08 }); tone(2300, 0.06, { to: 2900, vol: 0.07, at: 0.09 }); },
+      tsee: () => { tone(4300, 0.07, { to: 5200, vol: 0.05 }); tone(4600, 0.05, { to: 5400, vol: 0.04, at: 0.1 }); tone(4400, 0.05, { to: 5300, vol: 0.035, at: 0.18 }); },
+      peck: () => tone(3600, 0.012, { type: 'square', vol: 0.035 }),
+      flap: () => { for (let i = 0; i < 3; i++) hiss(0.035, { freq: 1100, q: 1.4, vol: 0.06, at: i * 0.05 }); },
+      // the rubber duck squeaks; quacks are for special occasions
+      squeak: () => { tone(1150, 0.11, { type: 'triangle', to: 1550, vol: 0.07 }); tone(1500, 0.1, { type: 'triangle', to: 1050, vol: 0.06, at: 0.1 }); },
+      squeakSoft: () => tone(1250, 0.09, { type: 'triangle', to: 1500, vol: 0.03 }),
+      duckSnore: () => tone(1700, 0.45, { to: 1350, vol: 0.012, attack: 0.15 }),
+      // Mila
+      snort: () => { hiss(0.12, { type: 'lowpass', freq: 420, vol: 0.12 }); tone(110, 0.1, { type: 'triangle', vol: 0.06 }); },
+      patter: () => { for (let i = 0; i < 8; i++) tone(260 + (i % 2) * 40, 0.03, { type: 'triangle', vol: 0.06, at: i * 0.19 }); },
+      yip: () => tone(880, 0.09, { type: 'triangle', to: 1250, vol: 0.06 }),
+      lick: () => { for (let i = 0; i < 3; i++) hiss(0.05, { type: 'highpass', freq: 2500, vol: 0.04, at: i * 0.13 }); },
+      sigh: () => hiss(0.6, { type: 'lowpass', freq: 500, to: 250, vol: 0.05, attack: 0.15 }),
+      // the room
+      paper: () => hiss(0.22, { freq: 3200, q: 0.6, vol: 0.06, attack: 0.03 }),
+      monitor: () => { tone(900, 0.05, { type: 'triangle', vol: 0.1 }); tone(3400, 0.03, { type: 'square', vol: 0.03, at: 0.02 }); hiss(0.05, { freq: 5000, q: 1, vol: 0.05 }); },
+      seek: () => { for (let i = 0; i < 9; i++) tone(1800 + Math.random() * 900, 0.012, { type: 'square', vol: 0.025, at: 0.1 + i * 0.06 + Math.random() * 0.03 }); },
+      creak: () => tone(150, 0.32, { type: 'sawtooth', to: 115, vol: 0.025, attack: 0.04 }),
+      jingle: () => { for (let i = 0; i < 4; i++) tone(3900 + i * 220, 0.06, { vol: 0.02, at: 0.05 + i * 0.07 }); },
+      latch: () => tone(2200, 0.02, { type: 'square', vol: 0.05, at: 0.5 }),
+      plate: () => tone(1900, 0.25, { vol: 0.04 }),
+      cupdrip: () => { tone(1300, 0.06, { to: 700, vol: 0.06 }); tone(1100, 0.06, { to: 600, vol: 0.05, at: 0.2 }); }
+    };
+    function sfx(name) { if (snd.on && SFX[name]) { snd.fxCount = (snd.fxCount || 0) + 1; SFX[name](); } }
+    // every item answers a click: if its action made no sound, a soft tick
+    function actWithSound(r) { const n = snd.fxCount; r.act(); if (snd.fxCount === n) sfx('tick'); }
+    function playMusic() {
+      if (!TRACKS.length || snd.bad.size >= TRACKS.length) return;
+      const tr = TRACKS[snd.track];
+      if (!snd.music.src.endsWith(tr.src)) snd.music.src = tr.src;
+      snd.music.volume = snd.musicVol / 100;
+      snd.music.play().catch(() => {});
+    }
+    function nextTrack(manual) {
+      if (!TRACKS.length) return;
+      for (let k = 0; k < TRACKS.length; k++) {
+        snd.track = (snd.track + 1) % TRACKS.length;
+        if (!snd.bad.has(snd.track)) break;
+      }
+      state.track = snd.track;
+      state.trackT = now();
+      snd.music.src = TRACKS[snd.track].src;
+      if (snd.on && !pcIsOff(now())) snd.music.play().catch(() => {});
+      updateCredit();
+    }
+    // Called every frame: rain follows the window and curtains, music stays in the background
+    function audioSync(t) {
+      if (!snd.ctx) return;
+      const rain = snd.on && !state.morning ? (0.05 + state.win * 0.11) * (1 - state.curtain * 0.5) : 0;
+      if (Math.abs(rain - snd.rain) > 0.002) { snd.amb.gain.setTargetAtTime(rain, snd.ctx.currentTime, 0.3); snd.rain = rain; }
+      const want = snd.on && !pcIsOff(t) && hasMusic() && !sc.userPaused;
+      if (want && !musicOn() && t > snd.retry) { snd.retry = t + 2500; musicPlay(); }
+      if (!want && musicOn() && !sc.userPaused) { musicPause(); updateCredit(); }
+      if (!snd.on) return;
+      if (state.morning && Math.random() < 0.004) SFX.tweet();
+      const breath = Math.sin(t / 560) > 0;
+      if (breath && !snd.breath && !state.morning && state.milaSpin === null && state.milaTreat === null) {
+        snd.snore = !snd.snore;
+        if (snd.snore) hiss(0.7, { type: 'lowpass', freq: 220, vol: 0.045, attack: 0.25 });
+      }
+      snd.breath = breath;
+      if (!state.morning && state.bolitaHome && !state.bird && !state.knock && state.curtain < 0.9 && Math.random() < 0.0012) {
+        const flaquisHere = state.flaquisArrive !== null && t > state.flaquisArrive + 1400 && !state.flq;
+        sfx(flaquisHere && Math.random() < 0.45 ? 'tsee' : 'pip');
+      }
+      if (!state.morning && state.milaSpin === null && state.milaTreat === null && Math.random() < 0.0005) sfx('snort');
+      if (state.duck && state.duckAsleep) { const d = Math.floor(t / 2600); if (d !== snd.duckPh) { snd.duckPh = d; sfx('duckSnore'); } }
+      if (state.duck && !state.duckAsleep && screenOn('Music', t)) { const d = Math.floor(t / 3200); if (d !== snd.dancePh) { snd.dancePh = d; if (Math.random() < 0.4) sfx('squeakSoft'); } }
+    }
+
     // ---------- The escape room: four clues open the puzzle box ----------
     const cluesEl = document.getElementById('secrets');
     const found = new Set();
     function updateClues() {
       if (found.size >= 2 && state.flaquisArrive === null && !state.morning) {
         state.flaquisArrive = performance.now() + 1500;
-        setTimeout(() => flash('Flaquis showed up too', 2600), 3000);
+        setTimeout(() => { sfx('tsee'); flash('Flaquis showed up too', 2600); }, 3000);
       }
       document.querySelectorAll('.dial').forEach(d => d.classList.toggle('found', found.has(d.dataset.clue)));
       if (state.solved) { cluesEl.textContent = 'Morning reached'; cluesEl.classList.add('done'); return; }
@@ -2639,6 +2969,7 @@
     function clue(k, text) {
       flash(text, 3400);
       if (found.has(k)) return;
+      sfx('clue');
       found.add(k);
       updateClues();
     }
@@ -2668,11 +2999,45 @@
     const now = () => performance.now();
     const redraw = () => frame(now());
 
-    function setLamp(on) { state.lamp = on; btnLamp.setAttribute('aria-pressed', String(on)); discover('lamp'); render(); redraw(); }
-    function setLantern(on) { state.lantern = on; btnLantern.setAttribute('aria-pressed', String(on)); discover('lantern'); render(); redraw(); }
+    const btnSound = document.getElementById('sound');
+    const volMusic = document.getElementById('vol-music'), volFx = document.getElementById('vol-fx');
+    volMusic.addEventListener('input', () => {
+      snd.musicVol = Number(volMusic.value);
+      document.getElementById('vol-music-out').textContent = volMusic.value;
+      if (sc.ready) sc.widget.setVolume(snd.musicVol);
+      snd.music.volume = snd.musicVol / 100;
+    });
+    volFx.addEventListener('input', () => {
+      snd.fxVol = Number(volFx.value) / 70;
+      document.getElementById('vol-fx-out').textContent = volFx.value;
+      if (snd.master) snd.master.gain.value = 0.9 * snd.fxVol;
+    });
+    volFx.addEventListener('change', () => sfx('pip'));
+    btnSound.addEventListener('click', () => setSound(!snd.on));
+    document.addEventListener('pointerdown', () => { if (snd.on && snd.ctx && snd.ctx.state === 'suspended') snd.ctx.resume(); });
+    function setSound(on) {
+      audioInit();
+      snd.on = on;
+      btnSound.setAttribute('aria-pressed', String(snd.on));
+      if (!snd.keep) { snd.keep = new Audio('data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=='); snd.keep.loop = true; }
+      if (snd.on) snd.keep.play().catch(() => {}); else snd.keep.pause();
+      if (snd.ctx && snd.ctx.state === 'suspended') snd.ctx.resume();
+      sc.userPaused = false;
+      if (snd.on) { musicPlay(); sfx('switch'); flash('Sound on', 1600); }
+      else { musicPause(); flash('Sound off', 1600); }
+      if (snd.on) setTimeout(() => {
+        if (!snd.ctx || snd.ctx.state !== 'running') flash('This browser is blocking sound here. Try opening the page directly', 4000);
+      }, 700);
+      updateCredit();
+      audioSync(now());
+    }
+    function setLamp(on) { sfx('switch'); state.lamp = on; btnLamp.setAttribute('aria-pressed', String(on)); discover('lamp'); render(); redraw(); }
+    function setLantern(on) { sfx('switch'); sfx('paper'); state.lantern = on; btnLantern.setAttribute('aria-pressed', String(on)); discover('lantern'); render(); redraw(); }
     function toggleWindow() {
       if (state.bird || state.flq) { flash('Not now. Someone needs a way out'); return; }
       state.winTarget = state.winTarget ? 0 : 1;
+      sfx('window');
+      sfx('latch');
       if (reduce) state.win = state.winTarget;
       flash(state.winTarget ? 'Window open. Fresh air' : 'Window closed', 2000);
       redraw();
@@ -2680,12 +3045,15 @@
     function toggleCurtains() {
       if ((state.bird || state.flq) && !state.curtainTarget) { flash('Not now. Someone needs a way out'); return; }
       state.curtainTarget = state.curtainTarget ? 0 : 1;
+      sfx('curtain');
+      sfx('jingle');
       if (reduce) state.curtain = state.curtainTarget;
       btnCurtains.textContent = state.curtainTarget ? 'Open curtains' : 'Close curtains';
       discover('curtains');
       redraw();
     }
     function nextScreen() {
+      sfx('monitor');
       state.screen = (state.screen + 1) % SCREENS.length;
       seen.add(state.screen);
       btnScreen.textContent = `Screen: ${SCREENS[state.screen]}`;
@@ -2699,6 +3067,7 @@
       if (state.trimmedAt !== null) { flash('Still growing back'); return; }
       const t = now();
       state.trimmedAt = t;
+      sfx('snip');
       if (!reduce) {
         for (let i = 0; i < 7; i++) {
           state.leaves.push({ x: 9 + Math.random() * 7, y: 49 + Math.random() * 4, t0: t + i * 60, dur: 700 + Math.random() * 500, c: i % 2 ? C.leaf : C.leafHi });
@@ -2722,8 +3091,9 @@
       redraw();
     }
     function sip() {
-      if (state.cup === 0) { flash(`Empty. Potter’s mark at the bottom: ${ROOM.code[2]}. Refills at the minibar`); return; }
+      if (state.cup === 0) { sfx('clink'); flash(`Empty. Potter’s mark at the bottom: ${ROOM.code[2]}. Refills at the minibar`); return; }
       state.cup -= 1;
+      sfx('sip');
       discover('sip');
       if (state.cup === 0) { state.emptySince = now(); clue('cup', `A potter’s mark at the bottom of the cup: ${ROOM.code[2]}`); } else flash('Sip');
       redraw();
@@ -2732,6 +3102,7 @@
       if (pcIsOff(now())) { flash('Bolita turned it off. Give it a minute'); return; }
       if (state.run) return;
       const run = state.run = { t0: now() };
+      sfx('fan');
       discover('pc');
       flash('Running a DFT job. The CFE bill felt that.', 3000);
       redraw();
@@ -2748,6 +3119,8 @@
       if (state.nas) return;
       if (state.run) { flash('Still running. The results land on the NAS when it’s done', 2600); return; }
       state.nas = { t0: now() };
+      sfx('beep');
+      sfx('seek');
       discover('nas');
       if (state.runEnd !== null) {
         flash('Pulling the DFT results off the NAS…', 2000);
@@ -2802,6 +3175,8 @@
     function pullShot() {
       if (state.brew) return;
       state.brew = { t0: now() };
+      sfx('espresso');
+      setTimeout(() => sfx('cupdrip'), 2500);
       discover('espresso');
       flash('Pulling a shot', 2400);
       redraw();
@@ -2826,17 +3201,22 @@
     lock.querySelectorAll('.dial').forEach((dial, i) => {
       dial.querySelectorAll('.turn').forEach(b => b.addEventListener('click', () => {
         dials[i] = (dials[i] + Number(b.dataset.step) + 10) % 10;
+        sfx('tick');
         dial.querySelector('.digit').textContent = dials[i];
       }));
     });
 
     function toggleCabL() {
+      sfx('cabinet');
+      sfx('creak');
       state.cabL = !state.cabL;
       if (state.cabL) flash('Bird seeds, Mila’s treats and old lab notebooks', 2600);
       render();
       redraw();
     }
     function toggleCabR() {
+      sfx('cabinet');
+      sfx('creak');
       state.cabR = !state.cabR;
       if (state.cabR) flash('A concha, a rubber duck and spare coffee', 2600);
       render();
@@ -2847,6 +3227,7 @@
       if (state.bird || state.knock) { flash('Bolita is busy right now'); return; }
       if (state.seeds > 0) { flash('There are seeds on the sill already'); return; }
       state.seeds = SEED_PX.length;
+      sfx('scatter');
       flash('A few seeds on the windowsill', 2200);
       redraw();
       setTimeout(() => {
@@ -2867,18 +3248,23 @@
     function useTreats() {
       if (state.milaTreat !== null || state.milaSpin !== null) return;
       state.milaTreat = now();
+      sfx('boof');
+      setTimeout(() => sfx('crunch'), 600);
+      setTimeout(() => sfx('lick'), 2200);
       flash(state.morning ? 'Crunch. Mila’s favorite' : 'Mila wakes up for exactly one thing', 2600);
       redraw();
       setTimeout(redraw, 1300);
       setTimeout(redraw, 3050);
     }
     function useConcha() {
+      sfx('plate');
       state.concha = 3;
       flash('A concha on the desk. Vanilla, obviously', 2600);
       render();
       redraw();
     }
     function biteConcha() {
+      sfx('crunch');
       state.concha -= 1;
       const training = screenOn('Training', now());
       if (state.concha <= 0) {
@@ -2891,16 +3277,18 @@
       redraw();
     }
     function useDuck() {
+      sfx('squeak');
       state.duck = true;
       flash('The rubber duck is on duty', 2200);
       render();
       redraw();
     }
     function quackDuck() {
-      if (state.duckAsleep) { state.duckAsleep = false; flash('The duck is up. Back to debugging', 2400); redraw(); return; }
+      sfx('squeak');
+      if (state.duckAsleep) { setTimeout(() => sfx('quack'), 250); state.duckAsleep = false; flash('The duck is up. Back to debugging', 2400); redraw(); return; }
       const t = now();
       if (screenOn('Terminal', t)) { state.duckDebug = t; flash('Rubber duck debugging: the duck found the bug without saying a word', 3600); redraw(); return; }
-      if (screenOn('Music', t)) { flash('Quack, on beat', 2000); return; }
+      if (screenOn('Music', t)) { sfx('quack'); flash('Quack, on beat', 2000); return; }
       if (screenOn('Game night', t)) { flash('The duck is backseat gaming', 2600); return; }
       const lines = ['Quack', 'Explained my bug to the duck. Fixed it halfway through the sentence', 'The duck has no further comments'];
       flash(lines[state.duckSay++ % lines.length], 3200);
@@ -2921,34 +3309,53 @@
       if (pcIsOff(t)) { flash('The PC is off. Bolita’s orders'); return; }
       if (state.run) { flash('Busy. The DFT job has the keyboard'); return; }
       const name = SCREENS[state.screen];
-      if (name === 'Music') { state.track++; state.trackT = t; }
+      sfx('keys');
       if (name === 'Terminal') state.typedT = t;
+      if (name === 'Music') {
+        if (SC_PLAYLIST) {
+          if (snd.on) { musicNext(); flash('Next track', 1600); } else flash('Turn the sound on to hear it', 2400);
+        } else if (TRACKS.length > 1) {
+          nextTrack(true);
+          flash(snd.on ? `Now playing: ${TRACKS[snd.track].title}` : 'Next track. Turn the sound on to hear it', 2800);
+        } else {
+          state.track++;
+          state.trackT = t;
+          flash(snd.on ? 'Only one track for now. It’s a good one' : 'Turn the sound on to hear it', 2600);
+        }
+        redraw();
+        return;
+      }
       flash(KEY_LINES[name], 2600);
       redraw();
     }
     function restartRouter() {
+      sfx('router');
       state.routerT = now();
       flash(screenOn('Game night', now()) ? 'Lag spike. Blamed the router' : 'Turned it off and on again. Works now', 2600);
       redraw();
       setTimeout(redraw, 2700);
     }
     function waterPlant() {
+      sfx('drip');
       state.plantT = now();
       flash('Watered. The bonsai is jealous', 2200);
       redraw();
     }
     function brewPourOver() {
+      sfx('pour');
       state.pourT = now();
       flash('Blooming the pour-over. Thirty seconds of patience', 2600);
       redraw();
     }
     function whiskMatcha() {
+      sfx('whisk');
       state.matchaT = now();
       flash('Whisked in an M, not in circles', 2400);
       redraw();
     }
     const readingDlg = document.getElementById('reading');
     function openReading(id) {
+      sfx('page');
       readingDlg.querySelectorAll('.book').forEach(b => b.classList.toggle('current', b.dataset.book === id));
       openDialog(readingDlg);
       const cur = readingDlg.querySelector('.book.current');
@@ -2958,6 +3365,9 @@
     function petMila() {
       if (state.milaSpin !== null || state.milaTreat !== null) return;
       state.milaSpin = now();
+      sfx('snort');
+      setTimeout(() => sfx('patter'), 300);
+      setTimeout(() => sfx('yip'), 1900);
       if (!(state.noteUnderMila && !state.noteFound)) {
         flash(state.morning ? 'Mila is happy it’s morning' : 'Mila, my pug since I was five. She chased her tail just like this.', 3600);
       }
@@ -2972,14 +3382,17 @@
       if (state.solved) { flash('Empty now. The morning was inside.'); return; }
       lockMsg.textContent = '';
       updateClues();
+      sfx('wood');
       openDialog(lock);
     }
     document.getElementById('lock-try').addEventListener('click', () => {
       if (dials.every((v, i) => v === ROOM.code[i])) {
         lockMsg.textContent = 'Click.';
+        sfx('open');
         setTimeout(() => { closeDialog(lock); startMorning(); }, 650);
       } else {
         lockMsg.textContent = 'It doesn’t budge.';
+        sfx('wrong');
         lock.classList.remove('shake');
         void lock.offsetWidth;
         lock.classList.add('shake');
@@ -2988,6 +3401,8 @@
     document.getElementById('lock-close').addEventListener('click', () => closeDialog(lock));
 
     function startMorning() {
+      sfx('morning');
+      setTimeout(() => sfx('yip'), 2600);
       state.solved = true;
       state.morning = true;
       state.curtainTarget = 0;
@@ -3021,6 +3436,7 @@
     });
 
     function resetRoom() {
+      sfx('reset');
       [lock, morningDlg, noteDlg, readingDlg].forEach(d => { if (d.open) closeDialog(d); });
       found.clear();
       Object.assign(state, {
@@ -3047,25 +3463,25 @@
     const REGIONS = [
       { id: 'bk-cotton', x: 6, y: 23, w: 2, h: 11, act: () => openReading('cotton'), tip: () => 'Chemical Applications of Group Theory' },
       { id: 'bk-qe', x: 8, y: 25, w: 2, h: 9, act: () => openReading('qe'), tip: () => 'Quantum ESPRESSO Course for Solid-State Physics' },
-      { id: 'bk-manga', x: 10, y: 22, w: 1, h: 12, act: () => flash('A manga volume, for balance', 2200), tip: () => 'A manga volume' },
-      { id: 'bk-lab', x: 11, y: 24, w: 2, h: 10, act: () => flash('Lab notebook. Mostly convergence tests', 2400), tip: () => 'Lab notebook' },
+      { id: 'bk-manga', x: 10, y: 22, w: 1, h: 12, act: () => { sfx('book'); (() => flash('A manga volume, for balance', 2200))(); }, tip: () => 'A manga volume' },
+      { id: 'bk-lab', x: 11, y: 24, w: 2, h: 10, act: () => { sfx('book'); (() => flash('Lab notebook. Mostly convergence tests', 2400))(); }, tip: () => 'Lab notebook' },
       { id: 'bk-khomskii', x: 13, y: 23, w: 2, h: 11, act: () => openReading('khomskii'), tip: () => 'Transition Metal Compounds' },
-      { id: 'bk-later', x: 15, y: 26, w: 1, h: 8, act: () => flash('A book I keep meaning to read', 2200), tip: () => 'Someday' },
-      { id: 'bk-pastry', x: 16, y: 22, w: 2, h: 12, act: () => flash('A pastry book. The concha page is the most worn', 2600), tip: () => 'A pastry book' },
-      { id: 'bk-lean', x: 18, y: 25, w: 5, h: 9, act: () => flash('Leaning since 2025. Statics says it’s fine', 2400), tip: () => 'A leaning book' },
+      { id: 'bk-later', x: 15, y: 26, w: 1, h: 8, act: () => { sfx('book'); (() => flash('A book I keep meaning to read', 2200))(); }, tip: () => 'Someday' },
+      { id: 'bk-pastry', x: 16, y: 22, w: 2, h: 12, act: () => { sfx('book'); (() => flash('A pastry book. The concha page is the most worn', 2600))(); }, tip: () => 'A pastry book' },
+      { id: 'bk-lean', x: 18, y: 25, w: 5, h: 9, act: () => { sfx('book'); (() => flash('Leaning since 2025. Statics says it’s fine', 2400))(); }, tip: () => 'A leaning book' },
       { id: 'plant', x: 23, y: 26, w: 3, h: 8, act: waterPlant, tip: () => 'Water the plant' },
       { id: 'router', x: 20, y: 39, w: 7, h: 9, act: restartRouter, tip: () => 'Restart the router' },
-      { id: 'daruma', x: 6, y: 53, w: 8, h: 10, act: () => flash(state.solved ? 'Both eyes painted. Wish granted' : 'One eye painted. The wish is still on its way', 2800), tip: () => 'Daruma' },
-      { id: 'shelf', x: 14, y: 55, w: 12, h: 8, act: () => flash('Kanji flashcards. Still on N5', 2400), tip: () => 'Flashcards and notes' },
-      { id: 'talavera', x: 196, y: 30, w: 8, h: 8, act: () => flash('Talavera, from Puebla. Too pretty for daily coffee', 2600), tip: () => 'Talavera cup' },
-      { id: 'yunomi', x: 204, y: 29, w: 6, h: 9, act: () => flash('A yunomi from Japan. Hojicha only', 2400), tip: () => 'Yunomi' },
+      { id: 'daruma', x: 6, y: 53, w: 8, h: 10, act: () => { sfx('knock'); (() => flash(state.solved ? 'Both eyes painted. Wish granted' : 'One eye painted. The wish is still on its way', 2800))(); }, tip: () => 'Daruma' },
+      { id: 'shelf', x: 14, y: 55, w: 12, h: 8, act: () => { sfx('cards'); (() => flash('Kanji flashcards. Still on N5', 2400))(); }, tip: () => 'Flashcards and notes' },
+      { id: 'talavera', x: 196, y: 30, w: 8, h: 8, act: () => { sfx('clink'); (() => flash('Talavera, from Puebla. Too pretty for daily coffee', 2600))(); }, tip: () => 'Talavera cup' },
+      { id: 'yunomi', x: 204, y: 29, w: 6, h: 9, act: () => { sfx('clink'); (() => flash('A yunomi from Japan. Hojicha only', 2400))(); }, tip: () => 'Yunomi' },
       { id: 'matcha', x: 210, y: 32, w: 10, h: 6, act: whiskMatcha, tip: () => 'Whisk some matcha' },
-      { id: 'beans', x: 213, y: 53, w: 5, h: 11, act: () => flash('Garat espresso roast. Smells like 6 a.m.', 2400), tip: () => 'Coffee beans' },
-      { id: 'pencup', x: 218, y: 59, w: 5, h: 6, act: () => flash('My other cup. Currently holding pens', 2400), tip: () => 'Another cup' },
+      { id: 'beans', x: 213, y: 53, w: 5, h: 11, act: () => { sfx('rattle'); (() => flash('Garat espresso roast. Smells like 6 a.m.', 2400))(); }, tip: () => 'Coffee beans' },
+      { id: 'pencup', x: 218, y: 59, w: 5, h: 6, act: () => { sfx('clink'); (() => flash('My other cup. Currently holding pens', 2400))(); }, tip: () => 'Another cup' },
       { id: 'pourover', x: OX + 20, y: 53, w: 15, h: 13, act: brewPourOver, tip: () => 'Brew a pour-over' },
       { id: 'keyboard', x: OX + 91, y: 63, w: 28, h: 4, act: typeKeys, tip: () => 'Type something' },
-      { id: 'moon', x: OX + 63, y: 12, w: 16, h: 15, when: () => !state.morning && state.curtain < 0.5, act: () => flash('Same moon I saw from Tsukuba', 2600), tip: () => 'The moon' },
-      { id: 'sun', x: OX + 64, y: 24, w: 15, h: 15, when: () => state.morning && state.curtain < 0.5, act: () => flash('Good morning, Monterrey', 2400), tip: () => 'The sun' },
+      { id: 'moon', x: OX + 63, y: 12, w: 16, h: 15, when: () => !state.morning && state.curtain < 0.5, act: () => { sfx('chime'); (() => flash('Same moon I saw from Tsukuba', 2600))(); }, tip: () => 'The moon' },
+      { id: 'sun', x: OX + 64, y: 24, w: 15, h: 15, when: () => state.morning && state.curtain < 0.5, act: () => { sfx('chime'); (() => flash('Good morning, Monterrey', 2400))(); }, tip: () => 'The sun' },
       { id: 'concha', x: OX + 65, y: 60, w: 9, h: 6, when: () => state.concha !== null, act: biteConcha, tip: () => 'Take a bite' },
       { id: 'duck', x: OX + 81, y: 60, w: 8, h: 6, when: () => state.duck, act: quackDuck, tip: () => (state.duckAsleep ? 'The duck is asleep. Wake it up' : 'Rubber duck') },
       { id: 'seeds', x: 7, y: 65, w: 8, h: 9, when: () => state.cabL, act: useSeeds, tip: () => 'Bird seeds, for Bolita' },
@@ -3076,8 +3492,8 @@
       { id: 'cabR', x: 192, y: 65, w: 32, h: 21, act: toggleCabR, tip: () => (state.cabR ? 'Close the cabinet' : 'Open the cabinet') },
       { id: 'box', x: OX + 55, y: 58, w: 10, h: 9, act: openLock, tip: () => (state.solved ? 'The box is open' : 'A locked puzzle box') },
       { id: 'mila', x: OX + 11, y: 69, w: 19, h: 16, act: petMila, tip: () => (state.noteUnderMila && !state.noteFound ? 'Mila is sleeping on something' : (state.morning ? 'Mila' : 'Mila, asleep')) },
-      { id: 'bolita', x: OX + SPOT.bolita.x - 1, y: SPOT.bolita.y - 1, w: 9, h: 8, when: () => state.bolitaHome && !state.bird && !state.morning && state.curtain < 0.5, act: () => flash('Bolita. He comes every night at the same time, just to stare at me.', 3600), tip: () => 'Bolita' },
-      { id: 'flaquis', x: OX + SPOT.flaquis.x - 1, y: SPOT.flaquis.y - 1, w: 7, h: 9, when: () => !state.flq && (state.morning || (state.flaquisArrive !== null && performance.now() > state.flaquisArrive + 1400)) && state.curtain < 0.5, act: () => flash('Flaquis, Bolita’s skinny friend. A whole year on this beam.', 3600), tip: () => 'Flaquis' },
+      { id: 'bolita', x: OX + SPOT.bolita.x - 1, y: SPOT.bolita.y - 1, w: 9, h: 8, when: () => state.bolitaHome && !state.bird && !state.morning && state.curtain < 0.5, act: () => { sfx('chirp'); (() => flash('Bolita. He comes every night at the same time, just to stare at me.', 3600))(); }, tip: () => 'Bolita' },
+      { id: 'flaquis', x: OX + SPOT.flaquis.x - 1, y: SPOT.flaquis.y - 1, w: 7, h: 9, when: () => !state.flq && (state.morning || (state.flaquisArrive !== null && performance.now() > state.flaquisArrive + 1400)) && state.curtain < 0.5, act: () => { sfx('chirp'); (() => flash('Flaquis, Bolita’s skinny friend. A whole year on this beam.', 3600))(); }, tip: () => 'Flaquis' },
       { id: 'bonsai', x: OX + 3, y: 46, w: 17, h: 20, act: trimBonsai, tip: () => (state.bird ? 'Leave the bird alone' : state.trimmedAt !== null ? 'Still growing back' : 'Trim the bonsai') },
       { id: 'cup', x: OX + 37, y: 57, w: 14, h: 9, act: sip, tip: () => (state.cup ? 'Take a sip' : 'Empty. The minibar is to the right') },
       { id: 'pc', x: OX + 123, y: 70, w: 16, h: 16, act: runPC, tip: () => (state.run ? 'Working on it' : 'Run a DFT job') },
@@ -3125,7 +3541,7 @@
     });
     canvas.addEventListener('click', e => {
       const r = regionAt(e);
-      if (r) r.act();
+      if (r) actWithSound(r);
     });
 
     function visibleRange() {
@@ -3149,7 +3565,7 @@
       let i = list.findIndex(r => r.id === state.hover);
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        (list[i] || list[0]).act();
+        actWithSound(list[i] || list[0]);
         return;
       }
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') i = (i + 1) % list.length;
