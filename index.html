@@ -183,10 +183,20 @@
   }
   .bar-left { display: flex; flex-wrap: wrap; gap: .3rem 1.25rem; }
   /* the playlist, small, in the top-right corner of the desk */
-  .sc-player { position: absolute; top: 1.1rem; right: 1.2rem; z-index: 2; width: 232px; height: 110px; overflow: hidden; border-radius: 8px; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); opacity: .8; transition: opacity .2s ease; }
-  .sc-player:hover, .sc-player:focus-within { opacity: 1; }
-  .sc-player iframe { display: block; width: 352px; height: 166px; border: 0; transform: scale(.66); transform-origin: top left; }
-  @media (max-width: 640px) { .sc-player { top: .6rem; right: auto; left: .7rem; width: 169px; height: 80px; } .sc-player iframe { transform: scale(.48); } }
+  /* tiny and faint until you reach for it; full size on hover or focus */
+  .sc-player { position: absolute; top: 1.1rem; right: 1.2rem; z-index: 2; width: 106px; height: 50px; overflow: hidden; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, .4); opacity: .4; transition: width .25s ease, height .25s ease, opacity .2s ease; }
+  .sc-player iframe { display: block; width: 352px; height: 166px; border: 0; transform: scale(.3); transform-origin: top left; transition: transform .25s ease; }
+  .sc-hit { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .sc-player.open { width: 232px; height: 110px; opacity: 1; }
+  .sc-player.open iframe { transform: scale(.66); }
+  .sc-player.open .sc-hit { pointer-events: none; }
+  @media (max-width: 640px) {
+    .sc-player { top: .6rem; right: auto; left: .7rem; width: 88px; height: 42px; }
+    .sc-player iframe { transform: scale(.25); }
+    .sc-player.open { width: 169px; height: 80px; }
+    .sc-player.open iframe { transform: scale(.48); }
+  }
+  @media (prefers-reduced-motion: reduce) { .sc-player, .sc-player iframe { transition: none; } }
 
   /* volume */
   .vol { position: relative; }
@@ -732,6 +742,7 @@
       <canvas id="scene" width="224" height="90" tabindex="0" role="application" aria-roledescription="interactive scene" aria-label="A pixel-art room at night: a bookcase with a NAS, a desk by a latticed window with indigo curtains and rain, a paper lantern, a bonsai, a pour-over set and a cup, a monitor, a desk lamp, a computer under the desk, and a coffee minibar with an espresso machine. Many things in it can be clicked, and a locked puzzle box sits on the desk. Mila, a black pug, sleeps on a cushion under the desk, and two birds, Bolita and Flaquis, visit the porch beam outside the window. The cabinets on both sides open. Use the arrow keys to move between things and Enter to use them."></canvas>
       <div class="sc-player" id="sc-player">
         <iframe id="sc-frame" title="Soundtrack playlist on SoundCloud" width="352" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2327492208&color=%2300aabb&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+        <button class="sc-hit" id="sc-hit" type="button" aria-label="Show the music player"></button>
       </div>
       <span class="scene-tip" id="scene-tip" aria-hidden="true"></span>
       <p class="sr-only" id="scene-live" aria-live="polite"></p>
@@ -2687,6 +2698,20 @@
       const tr = TRACKS[snd.track];
       creditEl.textContent = snd.on && tr && !snd.music.paused && !snd.bad.has(snd.track) ? ` Music: “${tr.title}” by ${tr.by}, via ${tr.via}.` : '';
     }
+    // The player stays tiny until the pointer reaches it; it shrinks back once the pointer leaves
+    const scBox = document.getElementById('sc-player'), scHit = document.getElementById('sc-hit');
+    const openPlayer = () => scBox.classList.add('open');
+    const closePlayer = () => scBox.classList.remove('open');
+    scHit.addEventListener('mouseenter', openPlayer);
+    scHit.addEventListener('click', openPlayer);
+    scHit.addEventListener('focus', openPlayer);
+    document.addEventListener('mousemove', e => {
+      if (!scBox.classList.contains('open')) return;
+      const r = scBox.getBoundingClientRect(), m = 14;
+      if (e.clientX < r.left - m || e.clientX > r.right + m || e.clientY < r.top - m || e.clientY > r.bottom + m) closePlayer();
+    });
+    document.addEventListener('pointerdown', e => { if (scBox.classList.contains('open') && !scBox.contains(e.target)) closePlayer(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePlayer(); });
     // SoundCloud widget: loaded on demand, driven through its official API
     const sc = { widget: null, ready: false, loading: false, playing: false, pos: 0, index: 0, title: '', by: '', expectPause: false, userPaused: false };
     function scInfo(announce) {
@@ -2705,6 +2730,7 @@
       const js = document.createElement('script');
       js.src = 'https://w.soundcloud.com/player/api.js';
       js.onload = () => {
+        if (!window.SC || !window.SC.Widget) return;
         const w = sc.widget = window.SC.Widget(f);
         const E = window.SC.Widget.Events;
         w.bind(E.READY, () => {
